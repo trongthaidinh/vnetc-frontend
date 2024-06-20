@@ -1,0 +1,61 @@
+.navbar {
+    background-color: #2D2E89; /* Màu nền */
+  }
+  
+  .navbar-brand {
+    color: white; /* Màu chữ */
+    font-weight: bold; /* Đậm chữ */
+    padding: 0.5rem 1rem; /* Khoảng cách của navbar brand */
+  }
+  
+  .navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa các menu */
+  }
+  
+  .nav-link {
+    color: white; /* Màu chữ của menu */
+    font-weight: bold; /* Đậm chữ */
+    padding: 0.5rem 1rem; /* Khoảng cách của menu */
+    cursor: pointer; /* Con trỏ chuột */
+  }
+  
+  .nav-item.dropdown {
+    position: relative; /* Để các dropdown menu hiển thị đúng */
+  }
+  
+  .dropdown-menu {
+    display: none; /* Mặc định ẩn dropdown menu */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000; /* Để menu dropdown lớn hơn các phần tử khác */
+    background-color: #343a40; /* Màu nền của dropdown menu */
+    padding: 0.5rem 0;
+    border: none;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+  }
+  
+  .dropdown-menu.show {
+    display: block; /* Hiển thị dropdown menu khi hover */
+  }
+  
+  .dropdown-item {
+    color: white; /* Màu chữ của các mục trong dropdown menu */
+    padding: 0.5rem 1rem; /* Khoảng cách của các mục */
+  }
+  
+  .dropdown-item:hover {
+    background-color: #495057; /* Màu nền khi hover */
+  }
+  
+  .form-control {
+    width: 300px; /* Độ rộng của ô tìm kiếm */
+  }
+  
+  .btn-outline-light {
+    color: white; /* Màu chữ của nút tìm kiếm */
+    border-color: white; /* Màu viền của nút tìm kiếm */
+  }
+  
