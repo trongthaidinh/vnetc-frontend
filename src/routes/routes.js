@@ -12,10 +12,11 @@ import Organizational from '~/pages/Organizational';
 import Vision from '~/pages/Vission';
 import Capacity from '~/pages/Capacity';
 import Quality from '~/pages/Quality';
+import Search from '~/pages/Search';
 
 // Public Routes
 const publicRoutes = [
-    { path: config.routes.home, component: Home },
+    { path: config.routes.home, component: Home, layout: OnlyHeaderLayout },
     { path: config.routes.about, component: About },
     { path: config.routes.history, component: History },
     { path: config.routes.vision, component: Vision },
@@ -23,6 +24,7 @@ const publicRoutes = [
     { path: config.routes.organizational, component: Organizational },
     { path: config.routes.qualityGoals, component: Quality },
     { path: config.routes.news, component: News, layout: OnlyHeaderLayout },
+    { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },
 ];
 
 // Private Routes

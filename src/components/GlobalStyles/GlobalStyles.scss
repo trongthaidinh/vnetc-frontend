@@ -3,9 +3,11 @@
 
 :root {
     --primary: #2d2e89;
+    --secondary: #d53630;
     --white: #fff;
     --black: #000;
     --text-color: #000;
+    --font-family: 'Roboto', sans-serif;
     --default-layout-header-height: 200px;
     --default-layout-width: 1200px;
     --default-layout-horizontal-spacer: 20px;
@@ -24,6 +26,6 @@ html {
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 1.6rem;
-    line-height: 1.5rem;
+    line-height: 1.5;
     text-rendering: optimizeSpeed;
 }
