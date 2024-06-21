@@ -1,0 +1,59 @@
+import classNames from 'classnames/bind';
+import React, { useEffect, useState } from 'react';
+import Product from '~/components/Product';
+import { getProducts } from '~/services/productService';
+import styles from './Products.module.scss';
+import Title from '~/components/Title';
+
+const cx = classNames.bind(styles);
+
+function Products() {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const data = await getProducts();
+                setProducts(data);
+                setLoading(false);
+            } catch (err) {
+                setError(err);
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
+    return (
+        <div className={cx('wrapper')}>
+            <div className={cx('inner')}>
+                <Title text="Sản phẩm nổi bật" />
+                <div className={cx('product-list')}>
+                    {products.map((product) => (
+                        <Product
+                            key={product.id}
+                            image={product.image}
+                            name={product.name}
+                            description={product.description}
+                            price={product.price}
+                            link={`/products/${product.id}`}
+                        />
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Products;
