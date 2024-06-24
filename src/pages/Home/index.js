@@ -1,20 +1,23 @@
 import React from 'react';
-import images from '~/assets/images/slider';
-import Slider from '~/components/Slider';
 import Overview from './Overview';
 import Products from './Products';
 import Services from './Services';
+import Projects from './Projects';
+import NewsLibrary from './NewsLibrary';
+import Banner from './Banner';
+import Teams from './Teams';
+import Partners from './Partners';
 
 const Home = () => (
     <article>
-        <Slider>
-            {images.map((image, index) => (
-                <img key={index} src={image.imgURL} alt={image.imgAlt} />
-            ))}
-        </Slider>
+        <Banner />
         <Overview />
         <Products />
         <Services />
+        <Projects />
+        <NewsLibrary />
+        <Teams />
+        <Partners />
     </article>
 );
 

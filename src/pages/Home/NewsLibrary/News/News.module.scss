@@ -1,0 +1,22 @@
+.wrapper {
+    display: flex;
+    gap: 20px;
+}
+
+.inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.news-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: space-between;
+    gap: 22px;
+}
+
+.card {
+    flex: 0 0 calc(33.33% - 20px);
+    max-width: 380px;
+}

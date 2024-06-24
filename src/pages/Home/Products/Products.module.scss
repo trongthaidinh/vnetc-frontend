@@ -12,20 +12,12 @@
     flex-direction: column;
 }
 
-.header {
-    width: auto;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 40px;
-    position: relative;
-}
-
 .product-list {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     justify-content: space-between;
     gap: 20px;
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 .product-item {

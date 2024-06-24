@@ -1,0 +1,12 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+.inner {
+    display: grid;
+    grid-template-columns: calc(66.66% - 10px) calc(33.33% - 10px);
+    gap: 22px;
+    width: var(--default-layout-width);
+}

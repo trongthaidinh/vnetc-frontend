@@ -12,7 +12,6 @@ const Service = ({ image, title, link }) => {
             <div className={cx('image-container')} style={{ backgroundImage: `url(${image})` }}>
                 <div className={cx('overlay')}>
                     <h3 className={cx('title')}>{title}</h3>
-                    {/* <button className={cx('button')}>Xem thêm</button> */}
                     <Link to={link}>
                         <Button className={cx('button')} primary>
                             Xem thêm

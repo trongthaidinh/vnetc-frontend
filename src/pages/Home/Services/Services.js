@@ -15,25 +15,24 @@ const Services = () => {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const data = await getServices(); // Hàm lấy dữ liệu từ API
-                console.log(data);
-                setServices(data); // Lưu dữ liệu vào state
-                setLoading(false); // Kết thúc loading
+                const data = await getServices();
+                setServices(data);
+                setLoading(false);
             } catch (err) {
-                setError(err); // Xử lý lỗi
+                setError(err);
                 setLoading(false);
             }
         };
 
-        fetchServices(); // Gọi hàm lấy dữ liệu
+        fetchServices();
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>; // Hiển thị khi đang loading
+        return <div>Loading...</div>;
     }
 
     if (error) {
-        return <div>Error: {error.message}</div>; // Hiển thị khi có lỗi
+        return <div>Error: {error.message}</div>;
     }
 
     return (
@@ -43,10 +42,10 @@ const Services = () => {
                 <div className={cx('service-list')}>
                     {services.map((service) => (
                         <Service
-                            key={service.id} // Key của mỗi service là id (giả sử)
-                            image={service.image} // Ảnh của service
-                            title={service.title} // Tiêu đề của service
-                            link={`/services/${service.id}`} // Đường dẫn khi click vào service
+                            key={service.id}
+                            image={service.image}
+                            title={service.title}
+                            link={`/services/${service.id}`}
                         />
                     ))}
                 </div>

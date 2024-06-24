@@ -1,0 +1,17 @@
+.info {
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: #a9a9a9;
+
+    .icon {
+        color: var(--primary);
+        margin-right: 8px;
+    }
+
+    .readers-number {
+        color: var(--secondary);
+        font-weight: 500;
+    }
+}

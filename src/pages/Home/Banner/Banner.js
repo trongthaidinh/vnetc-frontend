@@ -1,0 +1,68 @@
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import styles from './Banner.module.scss';
+import images from '~/assets/images/slider';
+
+const Banner = () => {
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const slideIntervalRef = useRef(null);
+
+    const nextSlide = useCallback(() => {
+        setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length);
+    }, []);
+
+    const prevSlide = useCallback(() => {
+        setCurrentSlide((prevSlide) => (prevSlide - 1 + images.length) % images.length);
+    }, []);
+
+    const startSlideInterval = useCallback(() => {
+        slideIntervalRef.current = setInterval(nextSlide, 5000);
+    }, [nextSlide]);
+
+    const stopSlideInterval = useCallback(() => {
+        if (slideIntervalRef.current) {
+            clearInterval(slideIntervalRef.current);
+        }
+    }, []);
+
+    const goToSlide = (index) => {
+        setCurrentSlide(index);
+    };
+
+    useEffect(() => {
+        startSlideInterval();
+        return () => {
+            stopSlideInterval();
+        };
+    }, [startSlideInterval, stopSlideInterval]);
+
+    return (
+        <div className={styles.banner}>
+            <div className={styles.slidesContainer} style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+                {images.map((image, index) => (
+                    <div key={index} className={styles.slide}>
+                        <img src={image.imgURL} alt={image.imgAlt} className={styles.image} />
+                    </div>
+                ))}
+            </div>
+            <div className={`${styles.arrow} ${styles.prev}`} onClick={prevSlide}>
+                <FontAwesomeIcon icon={faChevronLeft} />
+            </div>
+            <div className={`${styles.arrow} ${styles.next}`} onClick={nextSlide}>
+                <FontAwesomeIcon icon={faChevronRight} />
+            </div>
+            <div className={styles.pagination}>
+                {images.map((_, index) => (
+                    <span
+                        key={index}
+                        className={`${styles.dot} ${currentSlide === index ? styles.active : ''}`}
+                        onClick={() => goToSlide(index)}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default Banner;

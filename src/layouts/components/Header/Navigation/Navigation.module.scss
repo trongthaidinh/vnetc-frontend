@@ -4,6 +4,7 @@
     justify-content: center;
     background-color: var(--primary);
     height: var(--nav-height);
+
     .inner {
         width: var(--default-layout-width);
         display: flex;
@@ -17,19 +18,65 @@
             margin: 0;
 
             li {
+                position: relative;
                 margin-right: 20px;
-            }
+                height: var(--nav-height);
+                display: flex;
+                align-items: center;
+                z-index: 999;
 
-            a {
-                text-decoration: none;
-                color: white;
-                font-weight: bold;
-                font-size: 16px;
-                padding: 10px;
-                transition: color 0.3s ease;
+                &.has-children {
+                    &:hover .dropdown {
+                        display: block;
+                    }
+                }
 
-                &:hover {
-                    color: lightgray;
+                a {
+                    text-decoration: none;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 16px;
+                    padding: 10px;
+                    transition: color 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+
+                    &:hover {
+                        color: lightgray;
+                    }
+                }
+
+                .dropdown {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background-color: white;
+                    border-bottom-right-radius: 8px;
+                    border-bottom-left-radius: 8px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    overflow: hidden;
+
+                    li {
+                        height: 40px;
+                        margin: 0;
+                        white-space: nowrap;
+                        a {
+                            width: 100%;
+                            padding: 8px 16px;
+                            color: black;
+                            background-color: white;
+                            display: flex;
+                            align-items: center;
+                            transition: all ease-in-out 0.3s;
+
+                            &:hover {
+                                color: white;
+                                background-color: var(--primary);
+                            }
+                        }
+                    }
                 }
             }
         }
