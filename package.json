@@ -25,12 +25,11 @@
     },
     "scripts": {
         "start": "react-app-rewired start",
-        "build": "react-app-rewired build",
         "test": "react-app-rewired test",
         "eject": "react-app-rewired eject",
         "serve": "npm run serve-json & npm start",
         "serve-json": "json-server --watch db.json --port 5000",
-        "build-and-serve": "concurrently \"npm run build\" \"npm run serve-json\""
+        "build": "concurrently \"npm run build\" \"npm run serve-json\""
     },
     "eslintConfig": {
         "extends": [
