@@ -24,11 +24,10 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "start": "concurrently \"react-app-rewired start\" \"npm run serve-json\"",
+        "start": "react-app-rewired start",
         "test": "react-app-rewired test",
         "eject": "react-app-rewired eject",
-        "serve-json": "json-server --watch db.json --port 5000",
-        "build": "concurrently \"react-app-rewired build\" \"npm run serve-json\""
+        "build": "react-app-rewired build"
     },
     "eslintConfig": {
         "extends": [
@@ -52,7 +51,6 @@
         "babel-plugin-module-resolver": "^5.0.2",
         "concurrently": "^8.2.2",
         "customize-cra": "^1.0.0",
-        "json-server": "^1.0.0-beta.1",
         "react-app-rewired": "^2.2.1",
         "sass": "^1.77.6"
     }
