@@ -7,7 +7,14 @@ import DateTime from '~/components/DateTime';
 
 const cx = classNames.bind(styles);
 
-function Card({ title, description, image, link, createdAt, readers }) {
+function Card({
+    title = 'Default Title',
+    description = 'Default Description',
+    image = 'default.jpg',
+    link = '/default-link',
+    createdAt = Date.now(),
+    readers = 0,
+}) {
     return (
         <div className={cx('card')}>
             <Link to={link}>

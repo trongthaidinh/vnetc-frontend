@@ -25,7 +25,7 @@ const formatDate = (timestamp) => {
     return { date: formattedDate, time: formattedTime };
 };
 
-function DateTime({ timestamp, readers, showDate, showTime, showReaders }) {
+function DateTime({ timestamp, readers = 0, showDate = true, showTime = true, showReaders = true }) {
     const date = timestamp ? formatDate(timestamp).date : null;
     const time = timestamp ? formatDate(timestamp).time : null;
 
@@ -53,12 +53,6 @@ DateTime.propTypes = {
     showDate: PropTypes.bool,
     showTime: PropTypes.bool,
     showReaders: PropTypes.bool,
-};
-
-DateTime.defaultProps = {
-    showDate: true,
-    showTime: true,
-    showReaders: true,
 };
 
 export default DateTime;
