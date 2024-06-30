@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { NavLink } from 'react-router-dom';
-import { getNavigationLinks, getChildNavigation } from '~/services/navigationService';
+import { getNavigationLinks } from '~/services/navigationService';
 import styles from './Navigation.module.scss';
 import Search from '~/layouts/components/Search';
 
@@ -9,7 +9,6 @@ const cx = classNames.bind(styles);
 
 function Navigation() {
     const [navigationLinks, setNavigationLinks] = useState([]);
-    const [childLinks, setChildLinks] = useState({});
 
     useEffect(() => {
         const fetchNavigationLinks = async () => {
@@ -24,43 +23,32 @@ function Navigation() {
         fetchNavigationLinks();
     }, []);
 
-    const handleMouseEnter = async (parentNavigationId) => {
-        if (!childLinks[parentNavigationId]) {
-            try {
-                const children = await getChildNavigation(parentNavigationId);
-                setChildLinks((prevChildLinks) => ({
-                    ...prevChildLinks,
-                    [parentNavigationId]: children,
-                }));
-            } catch (error) {
-                console.error('Error fetching child navigation:', error);
-            }
-        }
-    };
+    if (navigationLinks.length === 0) {
+        return null;
+    }
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <ul className={cx('navigation-links')}>
                     <li>
-                        <NavLink exact="true" to="/" activeclassname={cx('active-link')}>
+                        <NavLink exact to="/" activeClassName={cx('active-link')}>
                             Trang Chủ
                         </NavLink>
                     </li>
                     {navigationLinks.map((link) => (
-                        <li
-                            key={link.id}
-                            onMouseEnter={() => handleMouseEnter(link.id)}
-                            className={cx({ 'has-children': !!childLinks[link.id] })}
-                        >
-                            <NavLink exact="true" to={link.path} activeclassname={cx('active-link')}>
-                                {link.name}
+                        <li key={link._id} className={cx({ 'has-children': link.childs.length > 0 })}>
+                            <NavLink exact to={`/${link.slug}`} activeClassName={cx('active-link')}>
+                                {link.title}
                             </NavLink>
-                            {childLinks[link.id] && (
+                            {link.childs.length > 0 && (
                                 <ul className={cx('dropdown')}>
-                                    {childLinks[link.id].map((childLink) => (
-                                        <li key={childLink.id}>
-                                            <NavLink to={childLink.path} activeclassname={cx('active-link')}>
+                                    {link.childs.map((childLink) => (
+                                        <li key={childLink._id}>
+                                            <NavLink
+                                                to={`/${link.slug}/${childLink.slug}`}
+                                                activeClassName={cx('active-link')}
+                                            >
                                                 {childLink.title}
                                             </NavLink>
                                         </li>

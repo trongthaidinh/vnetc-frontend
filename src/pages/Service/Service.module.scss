@@ -4,24 +4,25 @@
     margin-top: 60px;
 }
 
-.news-section {
+.service-section {
     width: var(--default-layout-width);
     gap: 20px;
     display: flex;
 }
 
-.news-column {
+.service-column {
     flex: 3;
 
-    .news-specialized,
-    .news-socio-economic {
+    .service-accreditation,
+    .service-test,
+    .service-calibration {
         display: flex;
         flex-direction: column;
         gap: 10px;
         margin-bottom: 40px;
     }
 
-    .news-items {
+    .service-items {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         justify-content: space-between;
@@ -29,7 +30,7 @@
         margin-top: 20px;
     }
 
-    .news-title {
+    .service-title {
         font-size: 20px;
         min-width: 120px;
         width: 150px;
