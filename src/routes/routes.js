@@ -17,6 +17,7 @@ import Search from '~/pages/Search';
 import Products from '~/pages/Products';
 import Error404 from '~/pages/Error404';
 import NothingLayout from '~/layouts/NothingLayout';
+import Projects from '~/pages/Projects';
 
 // Public Routes
 const publicRoutes = [
@@ -25,6 +26,8 @@ const publicRoutes = [
     { path: config.routes.history, component: History },
     { path: config.routes.vision, component: Vision },
     { path: config.routes.products, component: Products },
+    { path: config.routes.projects, component: Projects },
+    { path: config.routes.ongoingProjects, component: Projects },
     { path: config.routes.introduction, component: About },
     { path: config.routes.capacityProfile, component: Capacity },
     { path: config.routes.organizational, component: Organizational },

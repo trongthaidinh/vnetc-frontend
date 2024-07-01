@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faPhone } from '@fortawesome/free-solid-svg-icons';
 import vietnamFlag from '~/assets/images/vietnam-flag.png';
 import ukFlag from '~/assets/images/uk-flag.png';
 import classNames from 'classnames/bind';
@@ -8,9 +8,15 @@ import styles from './Tophead.module.scss';
 
 const cx = classNames.bind(styles);
 
-function Tophead() {
+const Tophead = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [language, setLanguage] = useState('Tiếng Việt');
+
+    const hotlines = [
+        { number: '02623977171', name: '' },
+        { number: '0931951140', name: 'Mr.Phi' },
+        { number: '0982064747', name: 'Ms.Ngọc' },
+    ];
 
     const handleLanguageClick = () => {
         setIsOpen(!isOpen);
@@ -24,6 +30,24 @@ function Tophead() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
+                <div className={cx('hotline-container')}>
+                    <div className={cx('hotline')}>
+                        <span className={cx('hotline-label')}>
+                            <FontAwesomeIcon icon={faPhone} className={cx('phone-icon')} />
+                            Hotline:
+                        </span>
+                        <div className={cx('hotline-numbers')}>
+                            {hotlines.map((hotline, index) => (
+                                <React.Fragment key={index}>
+                                    {index > 0 && <span className={cx('separator')}> - </span>}
+                                    <a className={cx('hotline-number')} href={`tel:${hotline.number}`}>
+                                        {hotline.number} {hotline.name && `(${hotline.name})`}
+                                    </a>
+                                </React.Fragment>
+                            ))}
+                        </div>
+                    </div>
+                </div>
                 <button className={cx('language-button')} onClick={handleLanguageClick}>
                     <img
                         src={language === 'Tiếng Việt' ? vietnamFlag : ukFlag}
@@ -55,6 +79,6 @@ function Tophead() {
             </div>
         </div>
     );
-}
+};
 
 export default Tophead;

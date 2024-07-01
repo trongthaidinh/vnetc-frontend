@@ -21,64 +21,37 @@
         object-fit: cover;
     }
 
-    .hotlineContainer {
+    .contentContainer {
         position: absolute;
         top: 50%;
         transform: translate(0, -50%);
-        width: 42%;
+        width: 40%;
         z-index: 10;
-        overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: rgba(73, 74, 162, 0.3);
-        padding: 16px;
+        background-color: rgba(77, 71, 157, 0.5);
+        padding: 20px 70px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 50%, calc(100% - 30px) 100%, 0 100%, 30px 50%);
+        clip-path: polygon(52px 0, 100% 0, calc(100% - 52px) 100%, 0 100%);
     }
 
-    .scrollTextWrapper {
-        white-space: nowrap;
+    .textWrapper {
+        white-space: normal;
         overflow: hidden;
         box-sizing: border-box;
-        width: 100%; // Ensure it fits within the hotline container
-    }
-
-    .scrollText {
-        display: inline-block;
-        padding-left: 100%;
-        animation: scroll-text 10s linear infinite;
-        white-space: nowrap;
-        font-size: 2rem;
+        width: 100%;
         color: var(--white);
-    }
-
-    @keyframes scroll-text {
-        0% {
-            transform: translateX(0%);
-        }
-        100% {
-            transform: translateX(-100%);
-        }
+        text-align: justify;
+        font-size: 2.4rem;
     }
 
     .left {
-        left: 0;
+        left: 2%;
     }
 
     .right {
-        left: auto;
-        right: 0;
-    }
-
-    .label {
-        font-size: 2rem;
-        color: var(--secondary);
-    }
-
-    .icon {
-        margin-right: 8px;
-        color: var(--secondary);
+        right: 2%;
     }
 
     .arrow {

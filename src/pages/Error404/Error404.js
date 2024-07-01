@@ -6,9 +6,9 @@ const Error404 = () => {
     return (
         <div className={styles.errorContainer}>
             <div className={styles.errorContent}>
-                <h1>404</h1>
-                <h2>Page Not Found</h2>
-                <p>
+                <h1 className={styles.errorTitle}>404</h1>
+                <h2 className={styles.errorSubTitle}>Page Not Found</h2>
+                <p className={styles.errorText}>
                     Oops! The page you're looking for cannot be found. It may have been removed, renamed, or is
                     temporarily unavailable.
                 </p>

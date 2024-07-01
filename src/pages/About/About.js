@@ -40,12 +40,12 @@ const About = () => (
                 đầu trong ngành công nghiệp này, đồng thời cam kết đảm bảo chất lượng và an toàn cho khách hàng và đối
                 tác.
             </p>
-            <p>
+            <p className={cx('company-history')}>
                 Với tầm nhìn đó, VNETC đã đầu tư vào việc nâng cao năng lực sản xuất bằng cách tập trung vào nghiên cứu
                 và phát triển công nghệ tiên tiến. Công ty đã thành lập các phòng thí nghiệm hiện đại và trang bị các
                 thiết bị và công cụ tiên tiến nhằm đáp ứng đúng yêu cầu kỹ thuật và tiêu chuẩn chất lượng.
             </p>
-            <p>
+            <p className={cx('company-history')}>
                 Ngoài ra, VNETC đã mở rộng phạm vi hoạt động bằng cách đưa công nghệ thông tin và an toàn thông tin trên
                 môi trường mạng vào danh mục dịch vụ. Công ty đã đầu tư vào việc tạo ra các giải pháp công nghệ thông
                 tin tiên tiến và hệ thống bảo mật mạng hiệu quả để đáp ứng nhu cầu ngày càng cao về an ninh thông tin và

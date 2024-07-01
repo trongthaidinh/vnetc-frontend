@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faChevronLeft, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from './Banner.module.scss';
 import images from '~/assets/images/slider';
 
@@ -57,13 +57,9 @@ const Banner = () => {
                 {images.map((image, index) => (
                     <div key={index} className={styles.slide}>
                         <img src={image.imgURL} alt={image.imgAlt} className={styles.image} />
-                        <div className={`${styles.hotlineContainer} ${styles[image.position]}`}>
-                            <div className={styles.scrollTextWrapper}>
-                                <span className={styles.scrollText}>
-                                    <FontAwesomeIcon icon={faPhone} className={styles.icon} />
-                                    <span className={styles.label}>Hotline: </span>
-                                    {image.hotline}
-                                </span>
+                        <div className={`${styles.contentContainer} ${styles[image.position]}`}>
+                            <div className={styles.textWrapper}>
+                                <span className={styles.text}>{image.content}</span>
                             </div>
                         </div>
                     </div>

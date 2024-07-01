@@ -11,6 +11,7 @@ const routes = {
     news: '/news',
     search: '/search',
     projects: '/projects',
+    ongoingProjects: '/projects/ongoing-projects',
     services: '/services',
     team: '/team',
     error404: '/404',

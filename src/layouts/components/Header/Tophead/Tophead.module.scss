@@ -13,9 +13,50 @@
         height: inherit;
         width: var(--default-layout-width);
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: center;
         position: relative;
+
+        .hotline-container {
+            flex-grow: 1;
+            overflow: hidden;
+            position: relative;
+
+            .hotline {
+                display: flex;
+                align-items: center;
+                animation: slideRightToLeft 10s linear infinite;
+
+                .hotline-label {
+                    display: flex;
+                    align-items: center;
+                    color: var(--white);
+                    margin-right: 10px;
+
+                    .phone-icon {
+                        margin-right: 5px;
+                    }
+                }
+
+                .hotline-numbers {
+                    display: flex;
+                    align-items: center;
+                    white-space: nowrap;
+
+                    .hotline-number {
+                        color: var(--white);
+                        margin-right: 5px;
+                        text-decoration: none;
+                        font-weight: bold;
+                    }
+
+                    .separator {
+                        color: var(--white);
+                        margin: 0 10px;
+                    }
+                }
+            }
+        }
 
         .language-button {
             width: 140px;
