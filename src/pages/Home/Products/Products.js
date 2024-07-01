@@ -1,9 +1,15 @@
+import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
+import Product from '~/components/Product';
+import { getProducts } from '~/services/productService';
+import styles from './Products.module.scss';
+import Title from '~/components/Title';
 import LoadingScreen from '~/components/LoadingScreen';
 import PushNotification from '~/components/PushNotification';
-import { getProducts } from '~/services/productService';
 
-const ProductList = () => {
+const cx = classNames.bind(styles);
+
+function Products() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,9 +20,10 @@ const ProductList = () => {
                 const data = await getProducts();
                 setProducts(data);
                 setLoading(false);
-            } catch (error) {
-                setError(error.message); // Lưu thông báo lỗi vào state để hiển thị cho người dùng
+            } catch (err) {
+                setError(err); // Set error object here
                 setLoading(false);
+                console.error('Error fetching products:', err);
             }
         };
 
@@ -24,8 +31,7 @@ const ProductList = () => {
     }, []);
 
     if (error) {
-        const errorMessage = error.response ? error.response.data.message : 'Network Error';
-        return <PushNotification message={errorMessage} />;
+        return <PushNotification message={error.message} />;
     }
 
     if (loading) {
@@ -33,15 +39,24 @@ const ProductList = () => {
     }
 
     return (
-        <div>
-            <h1>Product List</h1>
-            <ul>
-                {products.map((product) => (
-                    <li key={product.id}>{product.name}</li>
-                ))}
-            </ul>
+        <div className={cx('wrapper')}>
+            <div className={cx('inner')}>
+                <Title text="Sản phẩm nổi bật" />
+                <div className={cx('product-list')}>
+                    {products.map((product) => (
+                        <Product
+                            key={product.id}
+                            image={product.image}
+                            name={product.name}
+                            description={product.description}
+                            price={product.price}
+                            link={`/products/${product.id}`}
+                        />
+                    ))}
+                </div>
+            </div>
         </div>
     );
-};
+}
 
-export default ProductList;
+export default Products;
