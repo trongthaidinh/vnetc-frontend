@@ -18,6 +18,7 @@ import Products from '~/pages/Products';
 import Error404 from '~/pages/Error404';
 import NothingLayout from '~/layouts/NothingLayout';
 import Projects from '~/pages/Projects';
+import Contact from '~/pages/Contact';
 
 // Public Routes
 const publicRoutes = [
@@ -36,6 +37,7 @@ const publicRoutes = [
     { path: config.routes.services, component: Service, layout: OnlyHeaderLayout },
     { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },
     { path: config.routes.error404, component: Error404, layout: NothingLayout },
+    { path: config.routes.contact, component: Contact, layout: OnlyHeaderLayout },
 ];
 
 // Private Routes

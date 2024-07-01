@@ -15,6 +15,7 @@ const routes = {
     services: '/services',
     team: '/team',
     error404: '/404',
+    contact: '/contact',
 };
 
 export default routes;

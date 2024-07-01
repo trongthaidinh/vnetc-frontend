@@ -37,11 +37,11 @@ const Footer = () => {
                     <div className={cx('contactInfo')}>
                         <div className={cx('contactItem')}>
                             <FontAwesomeIcon icon={faPhone} />
-                            <span>+1 234 567 890</span>
+                            <span>+84 262 397 7171</span>
                         </div>
                         <div className={cx('contactItem')}>
                             <FontAwesomeIcon icon={faEnvelope} />
-                            <span>contact@example.com</span>
+                            <span>vietnam.etc.ltd@gmail.com</span>
                         </div>
                     </div>
                     <div className={cx('socialIcons')}>
