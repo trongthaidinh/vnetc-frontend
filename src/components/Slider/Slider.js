@@ -27,7 +27,7 @@ function Slider({ children }) {
                 setSlideDone(true);
             }, 5000);
             setTimeID(id);
-            return () => clearTimeout(id); // Clean up timeout on component unmount
+            return () => clearTimeout(id);
         }
     }, [slideDone, slideNext]);
 

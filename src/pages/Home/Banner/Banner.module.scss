@@ -12,12 +12,73 @@
     .slide {
         min-width: 100%;
         transition: opacity 1s ease-in-out;
+        position: relative;
     }
 
     .image {
         width: 100%;
         height: 300px;
         object-fit: cover;
+    }
+
+    .hotlineContainer {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        width: 42%;
+        z-index: 10;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(73, 74, 162, 0.3);
+        padding: 16px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 50%, calc(100% - 30px) 100%, 0 100%, 30px 50%);
+    }
+
+    .scrollTextWrapper {
+        white-space: nowrap;
+        overflow: hidden;
+        box-sizing: border-box;
+        width: 100%; // Ensure it fits within the hotline container
+    }
+
+    .scrollText {
+        display: inline-block;
+        padding-left: 100%;
+        animation: scroll-text 10s linear infinite;
+        white-space: nowrap;
+        font-size: 2rem;
+        color: var(--white);
+    }
+
+    @keyframes scroll-text {
+        0% {
+            transform: translateX(0%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
+    .left {
+        left: 0;
+    }
+
+    .right {
+        left: auto;
+        right: 0;
+    }
+
+    .label {
+        font-size: 2rem;
+        color: var(--secondary);
+    }
+
+    .icon {
+        margin-right: 8px;
+        color: var(--secondary);
     }
 
     .arrow {

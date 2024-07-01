@@ -32,13 +32,17 @@ function Navigation() {
             <div className={cx('inner')}>
                 <ul className={cx('navigation-links')}>
                     <li>
-                        <NavLink exact to="/" activeClassName={cx('active-link')}>
+                        <NavLink end to="/" className={({ isActive }) => cx({ 'active-link': isActive })}>
                             Trang Chủ
                         </NavLink>
                     </li>
                     {navigationLinks.map((link) => (
                         <li key={link._id} className={cx({ 'has-children': link.childs.length > 0 })}>
-                            <NavLink exact to={`/${link.slug}`} activeClassName={cx('active-link')}>
+                            <NavLink
+                                end
+                                to={`/${link.slug}`}
+                                className={({ isActive }) => cx({ 'active-link': isActive })}
+                            >
                                 {link.title}
                             </NavLink>
                             {link.childs.length > 0 && (
@@ -47,7 +51,7 @@ function Navigation() {
                                         <li key={childLink._id}>
                                             <NavLink
                                                 to={`/${link.slug}/${childLink.slug}`}
-                                                activeClassName={cx('active-link')}
+                                                className={({ isActive }) => cx({ 'active-link': isActive })}
                                             >
                                                 {childLink.title}
                                             </NavLink>
