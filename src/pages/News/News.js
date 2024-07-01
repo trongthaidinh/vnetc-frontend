@@ -6,11 +6,14 @@ import { getNews } from '~/services/newsService';
 import styles from './News.module.scss';
 import Title from '~/components/Title';
 import ButtonGroup from '~/components/ButtonGroup';
+import PushNotification from '~/components/PushNotification';
+import LoadingScreen from '~/components/LoadingScreen';
 
 const cx = classNames.bind(styles);
 
 const News = () => {
     const [newsItems, setNewsItems] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -19,8 +22,10 @@ const News = () => {
                 const data = await getNews();
                 setNewsItems(data);
             } catch (error) {
-                setError('Lỗi khi tải dữ liệu');
+                setError(error);
                 console.error('Error fetching news:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -28,7 +33,12 @@ const News = () => {
     }, []);
 
     if (error) {
-        return <div>{error}</div>;
+        const errorMessage = error.response ? error.response.data.message : 'Network Error';
+        return <PushNotification message={errorMessage} />;
+    }
+
+    if (loading) {
+        return <LoadingScreen />;
     }
 
     return (

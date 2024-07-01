@@ -5,6 +5,8 @@ import { getNews } from '~/services/newsService';
 import CardContent from '~/components/CardContent';
 import ButtonGroup from '~/components/ButtonGroup';
 import Title from '~/components/Title';
+import PushNotification from '~/components/PushNotification';
+import LoadingScreen from '~/components/LoadingScreen';
 
 const cx = classNames.bind(styles);
 
@@ -29,12 +31,13 @@ function News() {
         loadNews();
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
+    if (error) {
+        const errorMessage = error.response ? error.response.data.message : 'Network Error';
+        return <PushNotification message={errorMessage} />;
     }
 
-    if (error) {
-        return <div>Error loading News: {error.message}</div>;
+    if (loading) {
+        return <LoadingScreen />;
     }
 
     return (

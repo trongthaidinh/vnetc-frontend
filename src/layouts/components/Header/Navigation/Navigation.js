@@ -4,11 +4,15 @@ import { NavLink } from 'react-router-dom';
 import { getNavigationLinks } from '~/services/navigationService';
 import styles from './Navigation.module.scss';
 import Search from '~/layouts/components/Search';
+import PushNotification from '~/components/PushNotification';
+import LoadingScreen from '~/components/LoadingScreen';
 
 const cx = classNames.bind(styles);
 
 function Navigation() {
     const [navigationLinks, setNavigationLinks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchNavigationLinks = async () => {
@@ -16,15 +20,24 @@ function Navigation() {
                 const links = await getNavigationLinks();
                 setNavigationLinks(links);
             } catch (error) {
+                setError(error);
+                setLoading(false);
                 console.error('Error fetching navigation links:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchNavigationLinks();
     }, []);
 
-    if (navigationLinks.length === 0) {
-        return null;
+    if (error) {
+        const errorMessage = error.response ? error.response.data.message : 'Network Error';
+        return <PushNotification message={errorMessage} />;
+    }
+
+    if (loading) {
+        return <LoadingScreen />;
     }
 
     return (

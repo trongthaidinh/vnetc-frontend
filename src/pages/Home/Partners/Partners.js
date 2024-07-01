@@ -7,6 +7,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import SwiperCore from 'swiper';
 import { Autoplay } from 'swiper/modules';
+import PushNotification from '~/components/PushNotification';
+import LoadingScreen from '~/components/LoadingScreen';
 
 SwiperCore.use([Autoplay]);
 
@@ -32,12 +34,13 @@ function Partners() {
         loadPartners();
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
+    if (error) {
+        const errorMessage = error.response ? error.response.data.message : 'Network Error';
+        return <PushNotification message={errorMessage} />;
     }
 
-    if (error) {
-        return <div>Error loading Partners: {error.message}</div>;
+    if (loading) {
+        return <LoadingScreen />;
     }
 
     return (

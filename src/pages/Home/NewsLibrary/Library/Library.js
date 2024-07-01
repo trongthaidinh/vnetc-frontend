@@ -8,6 +8,8 @@ import styles from './Library.module.scss';
 import { getProjects } from '~/services/libraryService';
 import ButtonGroup from '~/components/ButtonGroup';
 import Title from '~/components/Title';
+import PushNotification from '~/components/PushNotification';
+import LoadingScreen from '~/components/LoadingScreen';
 
 const cx = classNames.bind(styles);
 
@@ -47,12 +49,13 @@ function Library() {
         loadLibrary();
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
+    if (error) {
+        const errorMessage = error.response ? error.response.data.message : 'Network Error';
+        return <PushNotification message={errorMessage} />;
     }
 
-    if (error) {
-        return <div>Error loading Library: {error.message}</div>;
+    if (loading) {
+        return <LoadingScreen />;
     }
 
     const handleThumbnailClick = (link) => {

@@ -15,6 +15,8 @@ import Capacity from '~/pages/Capacity';
 import Quality from '~/pages/Quality';
 import Search from '~/pages/Search';
 import Products from '~/pages/Products';
+import Error404 from '~/pages/Error404';
+import NothingLayout from '~/layouts/NothingLayout';
 
 // Public Routes
 const publicRoutes = [
@@ -30,6 +32,7 @@ const publicRoutes = [
     { path: config.routes.news, component: News, layout: OnlyHeaderLayout },
     { path: config.routes.services, component: Service, layout: OnlyHeaderLayout },
     { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },
+    { path: config.routes.error404, component: Error404, layout: NothingLayout },
 ];
 
 // Private Routes

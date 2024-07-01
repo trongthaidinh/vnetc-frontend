@@ -8,6 +8,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import SwiperCore from 'swiper';
 import { Autoplay } from 'swiper/modules';
+import PushNotification from '~/components/PushNotification';
+import LoadingScreen from '~/components/LoadingScreen';
 
 SwiperCore.use([Autoplay]);
 
@@ -35,14 +37,14 @@ function Teams() {
         loadTeams();
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
     if (error) {
-        return <div>Error loading Teams: {error.message}</div>;
+        const errorMessage = error.response ? error.response.data.message : 'Network Error';
+        return <PushNotification message={errorMessage} />;
     }
 
+    if (loading) {
+        return <LoadingScreen />;
+    }
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>

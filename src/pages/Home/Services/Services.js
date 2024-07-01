@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Service from './ServiceItem';
 import { getServices } from '~/services/serviceService';
 import Title from '~/components/Title';
+import PushNotification from '~/components/PushNotification';
+import LoadingScreen from '~/components/LoadingScreen';
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +22,7 @@ const Services = () => {
                 setLoading(false);
             } catch (err) {
                 setError(err);
+            } finally {
                 setLoading(false);
             }
         };
@@ -27,12 +30,13 @@ const Services = () => {
         fetchServices();
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
+    if (error) {
+        const errorMessage = error.response ? error.response.data.message : 'Network Error';
+        return <PushNotification message={errorMessage} />;
     }
 
-    if (error) {
-        return <div>Error: {error.message}</div>;
+    if (loading) {
+        return <LoadingScreen />;
     }
 
     return (

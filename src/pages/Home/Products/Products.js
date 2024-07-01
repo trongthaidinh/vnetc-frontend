@@ -1,13 +1,9 @@
-import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
-import Product from '~/components/Product';
+import LoadingScreen from '~/components/LoadingScreen';
+import PushNotification from '~/components/PushNotification';
 import { getProducts } from '~/services/productService';
-import styles from './Products.module.scss';
-import Title from '~/components/Title';
 
-const cx = classNames.bind(styles);
-
-function Products() {
+const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -18,8 +14,8 @@ function Products() {
                 const data = await getProducts();
                 setProducts(data);
                 setLoading(false);
-            } catch (err) {
-                setError(err);
+            } catch (error) {
+                setError(error.message); // Lưu thông báo lỗi vào state để hiển thị cho người dùng
                 setLoading(false);
             }
         };
@@ -27,33 +23,25 @@ function Products() {
         fetchProducts();
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
+    if (error) {
+        const errorMessage = error.response ? error.response.data.message : 'Network Error';
+        return <PushNotification message={errorMessage} />;
     }
 
-    if (error) {
-        return <div>Error: {error.message}</div>;
+    if (loading) {
+        return <LoadingScreen />;
     }
 
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('inner')}>
-                <Title text="Sản phẩm nổi bật" />
-                <div className={cx('product-list')}>
-                    {products.map((product) => (
-                        <Product
-                            key={product.id}
-                            image={product.image}
-                            name={product.name}
-                            description={product.description}
-                            price={product.price}
-                            link={`/products/${product.id}`}
-                        />
-                    ))}
-                </div>
-            </div>
+        <div>
+            <h1>Product List</h1>
+            <ul>
+                {products.map((product) => (
+                    <li key={product.id}>{product.name}</li>
+                ))}
+            </ul>
         </div>
     );
-}
+};
 
-export default Products;
+export default ProductList;

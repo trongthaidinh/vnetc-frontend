@@ -13,6 +13,7 @@ const routes = {
     projects: '/projects',
     services: '/services',
     team: '/team',
+    error404: '/404',
 };
 
 export default routes;
