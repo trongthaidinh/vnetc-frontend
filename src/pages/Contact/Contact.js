@@ -13,7 +13,7 @@ const ContactPage = () => {
 
     useEffect(() => {
         const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBkfBIH1wda3i56MWDffDvto5U0cUO1PjI`;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
         script.async = true;
         script.defer = true;
         script.onload = () => {
