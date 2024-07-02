@@ -51,10 +51,10 @@ const ContactPage = () => {
 
     return (
         <div className={cx('contactPage')}>
+            <div className={cx('mapContainer')}>
+                <div className={cx('map')} id="map"></div>
+            </div>
             <div className={cx('inner')}>
-                <div className={cx('mapContainer')}>
-                    <div className={cx('map')} id="map"></div>
-                </div>
                 <div className={cx('formWrapper')}>
                     <div className={cx('contactInfo')}>
                         <div className={cx('infoTitle')}>
