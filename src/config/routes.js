@@ -13,7 +13,7 @@ const routes = {
     projects: '/projects',
     ongoingProjects: '/projects/ongoing-projects',
     services: '/services',
-    team: '/team',
+    teams: '/teams',
     error404: '/404',
     contact: '/contact',
 };

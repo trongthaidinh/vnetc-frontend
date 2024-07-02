@@ -5,7 +5,7 @@ export const getTeams = async () => {
         const response = await httpRequest.get('/teams');
         return response.data.data;
     } catch (error) {
-        console.error('Error fetching products', error);
+        console.error('Error fetching teams', error);
         throw error;
     }
 };

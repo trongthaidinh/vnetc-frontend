@@ -19,6 +19,7 @@ import Error404 from '~/pages/Error404';
 import NothingLayout from '~/layouts/NothingLayout';
 import Projects from '~/pages/Projects';
 import Contact from '~/pages/Contact';
+import Teams from '~/pages/Teams';
 
 // Public Routes
 const publicRoutes = [
@@ -38,6 +39,7 @@ const publicRoutes = [
     { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },
     { path: config.routes.error404, component: Error404, layout: NothingLayout },
     { path: config.routes.contact, component: Contact, layout: OnlyHeaderLayout },
+    { path: config.routes.teams, component: Teams },
 ];
 
 // Private Routes
