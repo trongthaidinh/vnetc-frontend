@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import TeamItem from './TeamItem';
+import Title from '~/components/Title';
 import { getTeams } from '~/services/teamService';
 import classNames from 'classnames/bind';
 import styles from './Teams.module.scss';
-import Title from '~/components/Title';
 
 const cx = classNames.bind(styles);
 
@@ -23,20 +23,28 @@ const TeamPage = () => {
         fetchTeams();
     }, []);
 
+    const teamTypes = [...new Set(teams.map((team) => team.type))];
+
     return (
         <div className={cx('teamPage')}>
-            <Title text="Ban Lãnh Đạo" />
-            <div className={cx('teamGrid')}>
-                {teams.map((team, index) => (
-                    <TeamItem
-                        key={team.id}
-                        imageUrl={team.image}
-                        gender={team.gender}
-                        name={team.name}
-                        position={team.position}
-                    />
-                ))}
-            </div>
+            {teamTypes.map((type) => (
+                <React.Fragment key={type}>
+                    <Title text={type} />
+                    <div className={cx('teamGrid')}>
+                        {teams
+                            .filter((team) => team.type === type)
+                            .map((team) => (
+                                <TeamItem
+                                    key={team.id}
+                                    imageUrl={team.image}
+                                    gender={team.gender}
+                                    name={team.name}
+                                    position={team.position}
+                                />
+                            ))}
+                    </div>
+                </React.Fragment>
+            ))}
         </div>
     );
 };
