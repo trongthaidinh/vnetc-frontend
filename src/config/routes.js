@@ -9,6 +9,7 @@ const routes = {
     qualityGoals: '/about/quality-goals',
     products: '/products',
     news: '/news',
+    socialEconomicNews: '/news/social-economic-news',
     search: '/search',
     projects: '/projects',
     ongoingProjects: '/projects/ongoing-projects',

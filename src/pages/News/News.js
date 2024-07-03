@@ -41,13 +41,17 @@ const News = () => {
         return <LoadingScreen />;
     }
 
+    const handleSeeAllClick = () => {
+        window.location.href = '/news/social-economic-news';
+    };
+
     return (
         <article className={cx('wrapper')}>
             <div className={cx('news-section')}>
                 <div className={cx('news-column')}>
                     <h2 className={cx('news-title')}>Tin Tức</h2>
                     <div className={cx('news-specialized')}>
-                        <Title text="Tin ngành" />
+                        <Title text="Tin ngành" showSeeAll={true} onSeeAllClick={handleSeeAllClick} />
                         <div className={cx('news-items')}>
                             {newsItems.map((item, index) => (
                                 <Card
@@ -63,7 +67,7 @@ const News = () => {
                         </div>
                     </div>
                     <div className={cx('news-socio-economic')}>
-                        <Title text="Tin kinh tế - xã hội" />
+                        <Title text="Tin kinh tế - xã hội" showSeeAll={true} onSeeAllClick={handleSeeAllClick} />
                         <div className={cx('news-items')}>
                             {newsItems.map((item, index) => (
                                 <Card

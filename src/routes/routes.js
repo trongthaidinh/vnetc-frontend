@@ -20,6 +20,7 @@ import NothingLayout from '~/layouts/NothingLayout';
 import Projects from '~/pages/Projects';
 import Contact from '~/pages/Contact';
 import Teams from '~/pages/Teams';
+import SocialEconomicNews from '~/pages/SocialEconomicNews';
 
 // Public Routes
 const publicRoutes = [
@@ -34,6 +35,7 @@ const publicRoutes = [
     { path: config.routes.capacityProfile, component: Capacity },
     { path: config.routes.organizational, component: Organizational },
     { path: config.routes.qualityGoals, component: Quality },
+    { path: config.routes.socialEconomicNews, component: SocialEconomicNews },
     { path: config.routes.news, component: News, layout: OnlyHeaderLayout },
     { path: config.routes.services, component: Service, layout: OnlyHeaderLayout },
     { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },
