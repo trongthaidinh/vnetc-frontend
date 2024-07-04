@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import Card from '~/components/CardContent';
 import SuggestCard from '~/components/SuggestCard';
 import { getNews } from '~/services/newsService';
+// import { getCategoryName } from '~/services/categoryService';
 import styles from './News.module.scss';
 import Title from '~/components/Title';
 import ButtonGroup from '~/components/ButtonGroup';
@@ -14,14 +15,51 @@ const cx = classNames.bind(styles);
 
 const News = () => {
     const [newsItems, setNewsItems] = useState([]);
+    const [categoryNames, setCategoryNames] = useState({});
+    const [categorySlugs, setCategorySlugs] = useState({});
+    const [groupedNews, setGroupedNews] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const getCategoryName = (categoryId) => {
+        switch (categoryId) {
+            case 1:
+                return { name: 'Tin ngành', slug: 'industry-news' };
+            case 2:
+                return { name: 'Tin kinh tế - xã hội', slug: 'social-economic-news' };
+            default:
+                return { name: 'Tin tức', slug: 'general-news' };
+        }
+    };
 
     useEffect(() => {
         const fetchNews = async () => {
             try {
                 const data = await getNews();
                 setNewsItems(data);
+
+                const categoryNamesMap = {};
+                const categorySlugsMap = {};
+                const groupedNewsMap = {};
+
+                await Promise.all(
+                    data.map(async (item) => {
+                        if (!categoryNamesMap[item.categoryId]) {
+                            const category = await getCategoryName(item.categoryId);
+                            categoryNamesMap[item.categoryId] = category.name;
+                            categorySlugsMap[item.categoryId] = category.slug;
+                        }
+
+                        if (!groupedNewsMap[item.categoryId]) {
+                            groupedNewsMap[item.categoryId] = [];
+                        }
+                        groupedNewsMap[item.categoryId].push(item);
+                    }),
+                );
+
+                setCategoryNames(categoryNamesMap);
+                setCategorySlugs(categorySlugsMap);
+                setGroupedNews(groupedNewsMap);
             } catch (error) {
                 setError(error);
                 console.error('Error fetching news:', error);
@@ -42,47 +80,27 @@ const News = () => {
         return <LoadingScreen />;
     }
 
-    const handleSeeAllClick = () => {
-        window.location.href = '/news/social-economic-news';
-    };
-
     return (
         <article className={cx('wrapper')}>
             <div className={cx('news-section')}>
                 <div className={cx('news-column')}>
                     <h2 className={cx('news-title')}>Tin Tức</h2>
-                    <div className={cx('news-specialized')}>
-                        <Title text="Tin ngành" showSeeAll={true} onSeeAllClick={handleSeeAllClick} />
-                        <div className={cx('news-items')}>
-                            {newsItems.map((item, index) => (
-                                <Link to={`/news/${item._id}`} key={index}>
-                                    <Card
-                                        title={item.title}
-                                        image={item.image}
-                                        summary={item.summary}
-                                        createdAt={item.createdAt}
-                                        views={item.views}
-                                    />
-                                </Link>
-                            ))}
+                    {Object.keys(groupedNews).map((categoryId) => (
+                        <div key={categoryId} className={cx('news-category')}>
+                            <Title
+                                text={categoryNames[categoryId] || 'Loading...'}
+                                showSeeAll={true}
+                                slug={`/news/${categorySlugs[categoryId]}`}
+                            />
+                            <div className={cx('news-items')}>
+                                {groupedNews[categoryId].map((item, index) => (
+                                    <Link to={`/news/${item._id}`} key={index}>
+                                        <Card {...item} />
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                    <div className={cx('news-socio-economic')}>
-                        <Title text="Tin kinh tế - xã hội" showSeeAll={true} onSeeAllClick={handleSeeAllClick} />
-                        <div className={cx('news-items')}>
-                            {newsItems.map((item, index) => (
-                                <Link to={`/news/${item._id}`} key={index}>
-                                    <Card
-                                        title={item.title}
-                                        image={item.image}
-                                        description={item.description}
-                                        createdAt={item.createdAt}
-                                        views={item.views}
-                                    />
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
+                    ))}
                 </div>
                 <div className={cx('suggest')}>
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
@@ -90,13 +108,7 @@ const News = () => {
                         <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} />
                         {newsItems.map((item, index) => (
                             <Link to={`/news/${item._id}`} key={index}>
-                                <SuggestCard
-                                    key={index}
-                                    title={item.title}
-                                    image={item.image}
-                                    summary={item.summary}
-                                    createdAt={item.createdAt}
-                                />
+                                <SuggestCard {...item} />
                             </Link>
                         ))}
                     </div>

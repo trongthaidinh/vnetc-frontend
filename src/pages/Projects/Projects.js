@@ -45,10 +45,9 @@ function Projects() {
                 key={project._id}
                 image={project.image}
                 title={project.title}
-                description={project.description}
+                summary={project.summary}
                 createdAt={project.createdAt}
-                readers={project.readers}
-                link={`/project/${project.slug}`}
+                views={project.views}
             />
         ));
     };

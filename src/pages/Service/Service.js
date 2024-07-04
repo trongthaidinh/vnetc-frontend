@@ -44,10 +44,10 @@ const Service = () => {
                                     key={index}
                                     title={item.title}
                                     image={item.image}
-                                    description={item.description}
+                                    summary={item.summary}
                                     link={item.link}
                                     createdAt={item.createdAt}
-                                    readers={item.readers}
+                                    views={item.views}
                                 />
                             ))}
                         </div>
@@ -60,10 +60,10 @@ const Service = () => {
                                     key={index}
                                     title={item.title}
                                     image={item.image}
-                                    description={item.description}
+                                    summary={item.summary}
                                     link={item.link}
                                     createdAt={item.createdAt}
-                                    readers={item.readers}
+                                    views={item.views}
                                 />
                             ))}
                         </div>
@@ -76,10 +76,10 @@ const Service = () => {
                                     key={index}
                                     title={item.title}
                                     image={item.image}
-                                    description={item.description}
+                                    summary={item.summary}
                                     link={item.link}
                                     createdAt={item.createdAt}
-                                    readers={item.readers}
+                                    views={item.views}
                                 />
                             ))}
                         </div>
@@ -94,7 +94,7 @@ const Service = () => {
                                 key={index}
                                 title={item.title}
                                 image={item.image}
-                                description={item.description}
+                                summary={item.summary}
                                 link={item.link}
                                 createdAt={item.createdAt}
                             />

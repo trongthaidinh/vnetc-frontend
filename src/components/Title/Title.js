@@ -2,17 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import styles from './Title.module.scss';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-function Title({ text, showSeeAll, onSeeAllClick }) {
+function Title({ text, showSeeAll, slug }) {
     return (
         <div className={cx('header')}>
             <span className={cx('title')}>{text}</span>
             {showSeeAll && (
-                <button className={cx('see-all')} onClick={onSeeAllClick}>
-                    Xem tất cả
-                </button>
+                <Link to={slug}>
+                    <button className={cx('see-all')}>Xem tất cả</button>
+                </Link>
             )}
             <div className={cx('line')} />
         </div>
@@ -22,12 +23,10 @@ function Title({ text, showSeeAll, onSeeAllClick }) {
 Title.propTypes = {
     text: PropTypes.string.isRequired,
     showSeeAll: PropTypes.bool,
-    onSeeAllClick: PropTypes.func,
 };
 
 Title.defaultProps = {
     showSeeAll: false,
-    onSeeAllClick: () => {},
 };
 
 export default Title;

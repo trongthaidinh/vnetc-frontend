@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import styles from './ProductDetail.module.scss'; // Import CSS module for styling
-import LoadingScreen from '~/components/LoadingScreen'; // Import loading screen component
-import PushNotification from '~/components/PushNotification'; // Import notification component
+import styles from './ProductDetail.module.scss';
+import LoadingScreen from '~/components/LoadingScreen';
+import PushNotification from '~/components/PushNotification';
 import Title from '~/components/Title';
 import Button from '~/components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,7 +32,7 @@ const ProductDetail = () => {
                     category: 'Category Name',
                     status: true,
                     code: '#123456',
-                    warranty: '1 year',
+                    warranty: '1 năm',
                     createdAt: '2023-01-01T12:00:00Z',
                     updatedAt: '2023-01-01T13:00:00Z',
                     content: `
@@ -76,20 +76,13 @@ const ProductDetail = () => {
                             },
                         ],
                         images: [
-                            'https://static.himelo.vn/May-bien-ap-dau-ABB/May-bien-ap-dau-co-binh-dau-phu-ABB-35kV-1.jpg',
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx3RY5TpOamiI_V6JQ6AhFxJYt89BmeaiPVjwZE7HP90ujfQGLYtBWriK-6qTtfBNv5cQ&usqp=CAU',
                             'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://static.himelo.vn/May-bien-ap-dau-ABB/May-bien-ap-dau-co-binh-dau-phu-ABB-35kV-1.jpg',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA-IQQfJMvSfMt0TReC45dAHhJ_dqp7v6QUA&s',
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_aAZh29nCrDJVG6zgA_UnnUtnxHKqO7hcEA&s',
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOMeqRwB4RozEn4jeP_LrJtyBaqnfFtCCZVA&s',
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzDT_gJzbNwPNQLcTn5Y9XFG1s_SYebIxQQA&s',
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFvNiBEHPbUcWdH3FhW9oE3_XgiS1u8w7aoA&s',
                         ],
                     },
                 };
@@ -122,11 +115,19 @@ const ProductDetail = () => {
     };
 
     const handleThumbnailPrevClick = () => {
-        setThumbnailStartIndex((prevIndex) => Math.max(0, prevIndex - 4));
+        setThumbnailStartIndex((prevIndex) => Math.max(0, prevIndex - 1));
     };
 
     const handleThumbnailNextClick = () => {
-        setThumbnailStartIndex((prevIndex) => Math.min(prevIndex + 4, productDetail.details.images.length - 4));
+        const totalImages = productDetail.details.images.length;
+        const remainingImages = totalImages - (thumbnailStartIndex + 1);
+        console.log(remainingImages);
+
+        if (remainingImages > 0) {
+            setThumbnailStartIndex((prevIndex) => prevIndex + 1);
+        } else {
+            setThumbnailStartIndex((prevIndex) => prevIndex + remainingImages);
+        }
     };
 
     if (error) {
@@ -152,18 +153,20 @@ const ProductDetail = () => {
                     )}
                     <div
                         className={cx('thumbnail-list')}
-                        style={{ transform: `translateY(-${thumbnailStartIndex * 160}px)` }}
+                        style={{ transform: `translateY(-${thumbnailStartIndex * 150}px)` }}
                     >
                         {productDetail.details.images
                             .slice(thumbnailStartIndex, thumbnailStartIndex + 4)
                             .map((image, index) => (
-                                <img
-                                    key={thumbnailStartIndex + index}
-                                    className={cx('thumbnail-image')}
-                                    src={image}
-                                    alt={`${productDetail.name} thumbnail ${thumbnailStartIndex + index + 1}`}
-                                    onClick={() => handleThumbnailClick(thumbnailStartIndex + index)}
-                                />
+                                <div className={cx('thumbnail-item')}>
+                                    <img
+                                        key={thumbnailStartIndex + index}
+                                        className={cx('thumbnail-image')}
+                                        src={image}
+                                        alt={`${productDetail.name} thumbnail ${thumbnailStartIndex + index + 1}`}
+                                        onClick={() => handleThumbnailClick(thumbnailStartIndex + index)}
+                                    />
+                                </div>
                             ))}
                     </div>
                     {thumbnailStartIndex + 4 < productDetail.details.images.length && (
@@ -180,11 +183,19 @@ const ProductDetail = () => {
                     <button className={cx('prev-button')} onClick={handlePrevClick}>
                         <FontAwesomeIcon icon={faChevronLeft} />
                     </button>
-                    <img
-                        className={cx('main-image')}
-                        src={productDetail.details.images[currentImageIndex]}
-                        alt={`${productDetail.name} main`}
-                    />
+                    <div
+                        className={cx('main-image-wrapper')}
+                        style={{ transform: `translateX(-${currentImageIndex * 600}px)` }}
+                    >
+                        {productDetail.details.images.map((image, index) => (
+                            <img
+                                key={index}
+                                className={cx('main-image')}
+                                src={image}
+                                alt={`${productDetail.name} main ${index + 1}`}
+                            />
+                        ))}
+                    </div>
                     <button className={cx('next-button')} onClick={handleNextClick}>
                         <FontAwesomeIcon icon={faChevronRight} />
                     </button>

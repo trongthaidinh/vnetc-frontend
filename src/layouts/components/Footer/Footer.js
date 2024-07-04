@@ -45,52 +45,52 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className={cx('socialIcons')}>
-                        <a href="https://facebook.com">
+                        <Link to="https://facebook.com">
                             <FontAwesomeIcon icon={faFacebookF} />
-                        </a>
-                        <a href="https://twitter.com">
+                        </Link>
+                        <Link to="https://twitter.com">
                             <FontAwesomeIcon icon={faTwitter} />
-                        </a>
-                        <a href="https://instagram.com">
+                        </Link>
+                        <Link to="https://instagram.com">
                             <FontAwesomeIcon icon={faInstagram} />
-                        </a>
-                        <a href="https://linkedin.com">
+                        </Link>
+                        <Link to="https://linkedin.com">
                             <FontAwesomeIcon icon={faLinkedinIn} />
-                        </a>
+                        </Link>
                     </div>
                 </div>
                 <div className={cx('footerColumn')}>
                     <h4>Thông tin doanh nghiệp</h4>
                     <ul>
                         <li>
-                            <a href="/about">
+                            <Link to="/about">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Tổng quan về VNETC
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/vision-mission-values">
+                            <Link to="/about/vision-mission-values">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Tầm nhìn - Sứ mệnh - Giá trị
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/organizational">
+                            <Link to="/about/organizational">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Sơ đồ tổ chức
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/quality-goals">
+                            <Link to="/about/quality-goals">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Mục tiêu chất lượng
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/profile">
+                            <Link to="/about/capacity-profile">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Hồ sơ năng lực
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -98,28 +98,28 @@ const Footer = () => {
                     <h4>Lĩnh vực hoạt động</h4>
                     <ul>
                         <li>
-                            <a href="/products">
+                            <Link to="/products">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Sản phẩm
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/services">
+                            <Link to="/services">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Dịch vụ
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/projects">
+                            <Link to="/projects">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Dự án
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/co-operate">
+                            <Link to="/contact">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Hợp tác
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -127,22 +127,22 @@ const Footer = () => {
                     <h4>Các thông tin khác</h4>
                     <ul>
                         <li>
-                            <a href="/privacy">
+                            <Link to="/privacy">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Điều khoản và chính sách
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/">
+                            <Link to="/">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Tri ân khách hàng
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/contact">
+                            <Link to="/contact">
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Liên hệ với chúng tôi
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>

@@ -9,7 +9,7 @@ import Button from '~/components/Button';
 const cx = classNames.bind(styles);
 
 const ContactPage = () => {
-    const [map, setMap] = useState(null);
+    const [, setMap] = useState(null);
 
     useEffect(() => {
         const script = document.createElement('script');
