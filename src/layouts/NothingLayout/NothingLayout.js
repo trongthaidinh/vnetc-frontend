@@ -3,7 +3,7 @@ import styles from './NothingLayout.module.scss';
 
 const cx = classNames.bind(styles);
 
-function OnlyHeaderLayout({ children }) {
+function NothingLayout({ children }) {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -13,4 +13,4 @@ function OnlyHeaderLayout({ children }) {
     );
 }
 
-export default OnlyHeaderLayout;
+export default NothingLayout;

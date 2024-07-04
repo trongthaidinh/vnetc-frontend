@@ -1,7 +1,7 @@
 import config from '~/config';
 
 //Layout
-import { OnlyHeaderLayout } from '~/layouts';
+import { OnlyHeaderLayout, NothingLayout } from '~/layouts';
 
 // Page
 import Home from '~/pages/Home';
@@ -16,13 +16,13 @@ import Quality from '~/pages/Quality';
 import Search from '~/pages/Search';
 import Products from '~/pages/Products';
 import Error404 from '~/pages/Error404';
-import NothingLayout from '~/layouts/NothingLayout';
 import Projects from '~/pages/Projects';
 import Contact from '~/pages/Contact';
 import Teams from '~/pages/Teams';
 import SocialEconomicNews from '~/pages/SocialEconomicNews';
 import IndustryNews from '~/pages/IndustryNews';
 import NewsDetail from '~/pages/NewsDetail';
+import ProductDetail from '~/pages/ProductDetail';
 
 // Public Routes
 const publicRoutes = [
@@ -31,6 +31,7 @@ const publicRoutes = [
     { path: config.routes.history, component: History },
     { path: config.routes.vision, component: Vision },
     { path: config.routes.products, component: Products },
+    { path: config.routes.productDetail, component: ProductDetail, layout: OnlyHeaderLayout },
     { path: config.routes.projects, component: Projects },
     { path: config.routes.ongoingProjects, component: Projects },
     { path: config.routes.introduction, component: About },

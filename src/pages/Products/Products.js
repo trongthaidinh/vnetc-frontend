@@ -41,7 +41,7 @@ function Products() {
 
     const renderProducts = () => {
         return currentProducts.map((product) => (
-            <Product key={product._id} image={product.image} name={product.name} link={`/product/${product.slug}`} />
+            <Product key={product._id} image={product.image} name={product.name} productId={product._id} />
         ));
     };
 

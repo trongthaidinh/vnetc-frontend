@@ -8,6 +8,7 @@ const routes = {
     capacityProfile: '/about/capacity-profile',
     qualityGoals: '/about/quality-goals',
     products: '/products',
+    productDetail: '/products/:id',
     news: '/news',
     newsDetail: `/news/:id`,
     socialEconomicNews: '/news/social-economic-news',
