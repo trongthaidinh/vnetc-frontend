@@ -25,7 +25,7 @@ const formatDate = (timestamp) => {
     return { date: formattedDate, time: formattedTime };
 };
 
-function DateTime({ timestamp, readers = 0, showDate = true, showTime = true, showReaders = true }) {
+function DateTime({ timestamp, views = 0, showDate = true, showTime = true, showViews = true }) {
     const date = timestamp ? formatDate(timestamp).date : null;
     const time = timestamp ? formatDate(timestamp).time : null;
 
@@ -35,10 +35,10 @@ function DateTime({ timestamp, readers = 0, showDate = true, showTime = true, sh
             <span>
                 {showTime && time && `${time} `}
                 {showDate && date && `| ${date} `}
-                {showReaders && `| `}
-                {showReaders && (
-                    <span className={cx('readers')}>
-                        <span className={cx('readers-number')}>{readers}</span>
+                {showViews && `| `}
+                {showViews && (
+                    <span className={cx('views')}>
+                        <span className={cx('views-number')}>{views}</span>
                         <span> người đã đọc</span>
                     </span>
                 )}
@@ -49,10 +49,10 @@ function DateTime({ timestamp, readers = 0, showDate = true, showTime = true, sh
 
 DateTime.propTypes = {
     timestamp: PropTypes.number,
-    readers: PropTypes.number,
+    views: PropTypes.number,
     showDate: PropTypes.bool,
     showTime: PropTypes.bool,
-    showReaders: PropTypes.bool,
+    showViews: PropTypes.bool,
 };
 
 export default DateTime;

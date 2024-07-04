@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Card from '~/components/CardContent';
 import SuggestCard from '~/components/SuggestCard';
@@ -54,15 +55,15 @@ const News = () => {
                         <Title text="Tin ngành" showSeeAll={true} onSeeAllClick={handleSeeAllClick} />
                         <div className={cx('news-items')}>
                             {newsItems.map((item, index) => (
-                                <Card
-                                    key={index}
-                                    title={item.title}
-                                    image={item.image}
-                                    description={item.description}
-                                    link={item.link}
-                                    createdAt={item.createdAt}
-                                    readers={item.readers}
-                                />
+                                <Link to={`/news/${item._id}`} key={index}>
+                                    <Card
+                                        title={item.title}
+                                        image={item.image}
+                                        summary={item.summary}
+                                        createdAt={item.createdAt}
+                                        views={item.views}
+                                    />
+                                </Link>
                             ))}
                         </div>
                     </div>
@@ -70,15 +71,15 @@ const News = () => {
                         <Title text="Tin kinh tế - xã hội" showSeeAll={true} onSeeAllClick={handleSeeAllClick} />
                         <div className={cx('news-items')}>
                             {newsItems.map((item, index) => (
-                                <Card
-                                    key={index}
-                                    title={item.title}
-                                    image={item.image}
-                                    description={item.description}
-                                    link={item.link}
-                                    createdAt={item.createdAt}
-                                    readers={item.readers}
-                                />
+                                <Link to={`/news/${item._id}`} key={index}>
+                                    <Card
+                                        title={item.title}
+                                        image={item.image}
+                                        description={item.description}
+                                        createdAt={item.createdAt}
+                                        views={item.views}
+                                    />
+                                </Link>
                             ))}
                         </div>
                     </div>
@@ -88,14 +89,15 @@ const News = () => {
                     <div className={cx('suggest-items')}>
                         <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} />
                         {newsItems.map((item, index) => (
-                            <SuggestCard
-                                key={index}
-                                title={item.title}
-                                image={item.image}
-                                description={item.description}
-                                link={item.link}
-                                createdAt={item.createdAt}
-                            />
+                            <Link to={`/news/${item._id}`} key={index}>
+                                <SuggestCard
+                                    key={index}
+                                    title={item.title}
+                                    image={item.image}
+                                    summary={item.summary}
+                                    createdAt={item.createdAt}
+                                />
+                            </Link>
                         ))}
                     </div>
                 </div>

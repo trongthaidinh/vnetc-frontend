@@ -42,7 +42,7 @@ function Projects() {
     const renderProjects = () => {
         return currentProjects.map((project) => (
             <CardContent
-                key={project.id}
+                key={project._id}
                 image={project.image}
                 title={project.title}
                 description={project.description}

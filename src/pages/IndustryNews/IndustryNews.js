@@ -2,21 +2,21 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import CardContent from '~/components/CardContent';
 import { getNews } from '~/services/newsService';
 import Title from '~/components/Title';
-import styles from './SocialEconomicNews.module.scss';
+import styles from './IndustryNews.module.scss';
 import { Link } from 'react-router-dom';
+import Card from '~/components/CardContent/CardContent';
 
 const cx = classNames.bind(styles);
 
-function SocialEconomicNews() {
+function IndustryNews() {
     const [news, setNews] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const newsPerPage = 12;
 
     useEffect(() => {
-        async function fetchSocialEconomicNews() {
+        async function fetchIndustryNews() {
             try {
                 const data = await getNews();
                 setNews(data);
@@ -25,12 +25,12 @@ function SocialEconomicNews() {
             }
         }
 
-        fetchSocialEconomicNews();
+        fetchIndustryNews();
     }, []);
 
     const indexOfLastNews = currentPage * newsPerPage;
     const indexOfFirstNews = indexOfLastNews - newsPerPage;
-    const currentSocialEconomicNews = news.slice(indexOfFirstNews, indexOfLastNews);
+    const currentIndustryNews = news.slice(indexOfFirstNews, indexOfLastNews);
 
     const totalPages = Math.ceil(news.length / newsPerPage);
 
@@ -40,10 +40,10 @@ function SocialEconomicNews() {
         }
     };
 
-    const renderSocialEconomicNews = () => {
-        return currentSocialEconomicNews.map((news, index) => (
+    const renderIndustryNews = () => {
+        return currentIndustryNews.map((news, index) => (
             <Link to={`/news/${news.id}`} key={index}>
-                <CardContent
+                <Card
                     title={news.title}
                     image={news.image}
                     summary={news.summary}
@@ -76,15 +76,15 @@ function SocialEconomicNews() {
         );
     };
 
-    const category = 'Tin Kinh Tế - Xã Hội' || 'Danh mục';
+    const category = news[0]?.category || 'Danh mục';
 
     return (
         <div className={cx('container')}>
             <Title text={`${category}`} />
-            <div className={cx('newsGrid')}>{renderSocialEconomicNews()}</div>
+            <div className={cx('newsGrid')}>{renderIndustryNews()}</div>
             {renderPagination()}
         </div>
     );
 }
 
-export default SocialEconomicNews;
+export default IndustryNews;

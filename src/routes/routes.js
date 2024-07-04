@@ -21,6 +21,8 @@ import Projects from '~/pages/Projects';
 import Contact from '~/pages/Contact';
 import Teams from '~/pages/Teams';
 import SocialEconomicNews from '~/pages/SocialEconomicNews';
+import IndustryNews from '~/pages/IndustryNews';
+import NewsDetail from '~/pages/NewsDetail';
 
 // Public Routes
 const publicRoutes = [
@@ -36,6 +38,8 @@ const publicRoutes = [
     { path: config.routes.organizational, component: Organizational },
     { path: config.routes.qualityGoals, component: Quality },
     { path: config.routes.socialEconomicNews, component: SocialEconomicNews },
+    { path: config.routes.industryNews, component: IndustryNews },
+    { path: config.routes.newsDetail, component: NewsDetail },
     { path: config.routes.news, component: News, layout: OnlyHeaderLayout },
     { path: config.routes.services, component: Service, layout: OnlyHeaderLayout },
     { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },

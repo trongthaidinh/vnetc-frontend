@@ -45,12 +45,12 @@ function Products() {
                 <div className={cx('product-list')}>
                     {products.map((product) => (
                         <Product
-                            key={product.id}
+                            key={product._id}
                             image={product.image}
                             name={product.name}
                             description={product.description}
                             price={product.price}
-                            link={`/products/${product.id}`}
+                            link={`/products/${product._id}`}
                         />
                     ))}
                 </div>
