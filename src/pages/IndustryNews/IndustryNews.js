@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { getNews } from '~/services/newsService';
+import { getNewsByCategory } from '~/services/newsService';
+import { getCategoryName } from '~/services/categoryService';
 import Title from '~/components/Title';
 import styles from './IndustryNews.module.scss';
 import { Link } from 'react-router-dom';
@@ -10,27 +12,39 @@ import Card from '~/components/CardContent/CardContent';
 
 const cx = classNames.bind(styles);
 
-function IndustryNews() {
+function NewsCategory() {
+    const { categoryId } = useParams();
     const [news, setNews] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const newsPerPage = 12;
 
+    const getCategoryName = (categoryId) => {
+        switch (categoryId) {
+            case 1:
+                return { name: 'Tin ngành', slug: 'industry-news' };
+            case 2:
+                return { name: 'Tin kinh tế - xã hội', slug: 'socio-economic-news' };
+            default:
+                return { name: 'Tin tức', slug: 'general-news' };
+        }
+    };
+
     useEffect(() => {
-        async function fetchIndustryNews() {
+        async function fetchNewsCategory() {
             try {
-                const data = await getNews();
+                const data = await getNewsByCategory(categoryId);
                 setNews(data);
             } catch (error) {
                 console.error('Error fetching news:', error);
             }
         }
 
-        fetchIndustryNews();
-    }, []);
+        fetchNewsCategory();
+    }, [categoryId]);
 
     const indexOfLastNews = currentPage * newsPerPage;
     const indexOfFirstNews = indexOfLastNews - newsPerPage;
-    const currentIndustryNews = news.slice(indexOfFirstNews, indexOfLastNews);
+    const currentNewsCategory = news.slice(indexOfFirstNews, indexOfLastNews);
 
     const totalPages = Math.ceil(news.length / newsPerPage);
 
@@ -40,8 +54,8 @@ function IndustryNews() {
         }
     };
 
-    const renderIndustryNews = () => {
-        return currentIndustryNews.map((news, index) => (
+    const renderNewsCategory = () => {
+        return currentNewsCategory.map((news, index) => (
             <Link to={`/news/${news.id}`} key={index}>
                 <Card
                     title={news.title}
@@ -76,15 +90,15 @@ function IndustryNews() {
         );
     };
 
-    const category = news[0]?.category || 'Danh mục';
+    const { name: categoryName } = getCategoryName(parseInt(categoryId, 10));
 
     return (
         <div className={cx('container')}>
-            <Title text={`${category}`} />
-            <div className={cx('newsGrid')}>{renderIndustryNews()}</div>
+            <Title text={`${categoryName}`} />
+            <div className={cx('newsGrid')}>{renderNewsCategory()}</div>
             {renderPagination()}
         </div>
     );
 }
 
-export default IndustryNews;
+export default NewsCategory;

@@ -10,9 +10,9 @@ export const getNews = async () => {
     }
 };
 
-export const getNewsById = async (id) => {
+export const getNewsById = async (id, categoryId) => {
     try {
-        const response = await httpRequest.get(`/news/${id}`);
+        const response = await httpRequest.get(`/news/${categoryId}/${id}`);
         return response.data.data;
     } catch (error) {
         console.error(`Error fetching news detail with id ${id}`, error);

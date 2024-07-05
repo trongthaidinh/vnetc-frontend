@@ -13,8 +13,7 @@
 .news-column {
     flex: 3;
 
-    .news-specialized,
-    .news-socio-economic {
+    .news-category {
         display: flex;
         flex-direction: column;
         gap: 10px;

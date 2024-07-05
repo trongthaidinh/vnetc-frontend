@@ -94,7 +94,7 @@ const News = () => {
                             />
                             <div className={cx('news-items')}>
                                 {groupedNews[categoryId].map((item, index) => (
-                                    <Link to={`/news/${item._id}`} key={index}>
+                                    <Link to={`/news/${categorySlugs[categoryId]}/${item._id}`} key={index}>
                                         <Card {...item} />
                                     </Link>
                                 ))}

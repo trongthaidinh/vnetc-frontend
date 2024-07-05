@@ -23,6 +23,7 @@ import SocialEconomicNews from '~/pages/SocialEconomicNews';
 import IndustryNews from '~/pages/IndustryNews';
 import NewsDetail from '~/pages/NewsDetail';
 import ProductDetail from '~/pages/ProductDetail';
+import Introduction from '~/pages/Introduction';
 
 // Public Routes
 const publicRoutes = [
@@ -34,12 +35,12 @@ const publicRoutes = [
     { path: config.routes.productDetail, component: ProductDetail, layout: OnlyHeaderLayout },
     { path: config.routes.projects, component: Projects },
     { path: config.routes.ongoingProjects, component: Projects },
-    { path: config.routes.introduction, component: About },
+    { path: config.routes.introduction, component: Introduction },
     { path: config.routes.capacityProfile, component: Capacity },
     { path: config.routes.organizational, component: Organizational },
     { path: config.routes.qualityGoals, component: Quality },
     { path: config.routes.socialEconomicNews, component: SocialEconomicNews },
-    { path: config.routes.industryNews, component: IndustryNews },
+    { path: config.routes.newsCategory, component: IndustryNews },
     { path: config.routes.newsDetail, component: NewsDetail },
     { path: config.routes.news, component: News, layout: OnlyHeaderLayout },
     { path: config.routes.services, component: Service, layout: OnlyHeaderLayout },
