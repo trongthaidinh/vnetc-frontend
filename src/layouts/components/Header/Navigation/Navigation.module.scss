@@ -8,8 +8,8 @@
     background-color: var(--primary);
     height: var(--nav-height);
     width: 100%;
-    transition: transform 0.3s ease, opacity 0.3s ease; /* Add transition for smooth effect */
-    transform: translateY(0); /* Initial position */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateY(0);
 
     &.fixed {
         position: fixed;
@@ -34,6 +34,18 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: 0 15px;
+
+        .mobile-menu-icon {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+
+            @include respond-to(md) {
+                display: block;
+            }
+        }
 
         .navigation-links {
             display: flex;
@@ -47,11 +59,24 @@
                 height: var(--nav-height);
                 display: flex;
                 align-items: center;
-                z-index: 999;
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
 
                 &.has-children {
+                    cursor: pointer;
+
+                    .dropdown {
+                        display: none;
+                    }
+
                     &:hover .dropdown {
-                        display: block;
+                        display: flex;
+                        flex-direction: column;
+                        background-color: var(--primary);
+                        transform: translateY(-12px);
+                        opacity: 0;
+                        animation: slideDown 0.3s forwards ease-in-out;
                     }
                 }
 
@@ -72,7 +97,6 @@
                 }
 
                 .dropdown {
-                    display: none;
                     position: absolute;
                     top: 100%;
                     left: 0;
@@ -97,8 +121,8 @@
                             transition: all ease-in-out 0.3s;
 
                             &:hover {
-                                color: white;
-                                background-color: var(--primary-color);
+                                color: var(--white);
+                                background-color: var(--primary);
                             }
                         }
                     }
@@ -123,19 +147,54 @@
 
     @include respond-to(md) {
         .inner {
-            flex-direction: column;
-            align-items: flex-start;
-
             .navigation-links {
+                display: none;
+                height: 100vh;
+                position: absolute;
+                top: var(--nav-height);
+                left: 0;
+                width: 100%;
+                background-color: var(--primary);
                 flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                z-index: 999;
+                padding: 0 15px;
 
                 li {
-                    margin-right: 0;
+                    margin: 0 20px;
+                    height: auto;
+                    align-items: flex-start;
+
+                    a {
+                        height: auto;
+                        font-size: 18px;
+                    }
+
+                    .dropdown {
+                        position: static;
+                        box-shadow: none;
+                        background-color: none;
+                        li {
+                            height: auto;
+
+                            a {
+                                color: var(--white);
+                                background-color: transparent;
+                                font-size: 14px;
+                                margin-left: 20px;
+                            }
+                        }
+                    }
+                }
+
+                &.open {
+                    display: flex;
                 }
             }
 
             .search-button {
-                align-self: flex-end;
+                margin-right: 15px;
             }
         }
     }

@@ -6,6 +6,8 @@ import styles from './Navigation.module.scss';
 import Search from '~/layouts/components/Search';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -13,6 +15,7 @@ function Navigation({ isFixed }) {
     const [navigationLinks, setNavigationLinks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         const fetchNavigationLinks = async () => {
@@ -31,6 +34,10 @@ function Navigation({ isFixed }) {
         fetchNavigationLinks();
     }, []);
 
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
     if (error) {
         const errorMessage = error.response ? error.response.data.message : 'Network Error';
         return <PushNotification message={errorMessage} />;
@@ -43,7 +50,10 @@ function Navigation({ isFixed }) {
     return (
         <div className={cx('wrapper', { fixed: isFixed })}>
             <div className={cx('inner')}>
-                <ul className={cx('navigation-links')}>
+                <div className={cx('mobile-menu-icon')} onClick={toggleMenu}>
+                    <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
+                </div>
+                <ul className={cx('navigation-links', { open: isMenuOpen })}>
                     <li>
                         <NavLink end to="/" className={({ isActive }) => cx({ 'active-link': isActive })}>
                             Trang Chủ

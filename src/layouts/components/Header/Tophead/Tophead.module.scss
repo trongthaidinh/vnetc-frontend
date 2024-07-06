@@ -178,4 +178,7 @@
             color: #333;
         }
     }
+    @include respond-to(md) {
+        display: none;
+    }
 }

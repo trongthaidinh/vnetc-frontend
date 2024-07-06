@@ -1,7 +1,11 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
 .wrapper {
-    height: var(--default-layout-header-height);
     width: 100%;
+    height: auto;
     box-shadow: 0px 1px 1px rgb(0 0 0/ 12%);
+    z-index: 1000;
 
     .banner {
         background-image: url('../../../assets/images/banner_cen.jpg');
@@ -9,5 +13,8 @@
         background-position: center;
         background-repeat: no-repeat;
         height: var(--banner-height);
+        @include respond-to(md) {
+            display: none;
+        }
     }
 }
