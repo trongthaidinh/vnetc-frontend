@@ -9,7 +9,7 @@ import LoadingScreen from '~/components/LoadingScreen';
 
 const cx = classNames.bind(styles);
 
-function Navigation() {
+function Navigation({ isFixed }) {
     const [navigationLinks, setNavigationLinks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -41,7 +41,7 @@ function Navigation() {
     }
 
     return (
-        <div className={cx('wrapper')}>
+        <div className={cx('wrapper', { fixed: isFixed })}>
             <div className={cx('inner')}>
                 <ul className={cx('navigation-links')}>
                     <li>

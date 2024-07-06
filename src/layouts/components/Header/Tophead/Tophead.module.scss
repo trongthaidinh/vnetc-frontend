@@ -1,3 +1,6 @@
+@import '../../../../styles/mixins';
+@import '../../../../styles/variables';
+
 .wrapper {
     height: var(--tophead-height);
     width: 100%;
@@ -17,6 +20,11 @@
         align-items: center;
         position: relative;
 
+        @include respond-to(md) {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
         .hotline-container {
             flex-grow: 1;
             overflow: hidden;
@@ -27,6 +35,12 @@
                 align-items: center;
                 animation: slideRightToLeft 10s linear infinite;
 
+                @include respond-to(md) {
+                    animation: none; // Disable animation on medium screens
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
                 .hotline-label {
                     display: flex;
                     align-items: center;
@@ -36,6 +50,10 @@
                     .phone-icon {
                         margin-right: 5px;
                     }
+
+                    @include respond-to(md) {
+                        margin-right: 0;
+                    }
                 }
 
                 .hotline-numbers {
@@ -43,16 +61,29 @@
                     align-items: center;
                     white-space: nowrap;
 
+                    @include respond-to(md) {
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+
                     .hotline-number {
                         color: var(--white);
                         margin-right: 5px;
                         text-decoration: none;
                         font-weight: bold;
+
+                        @include respond-to(md) {
+                            margin-right: 0;
+                        }
                     }
 
                     .separator {
                         color: var(--white);
                         margin: 0 10px;
+
+                        @include respond-to(md) {
+                            margin: 5px 0;
+                        }
                     }
                 }
             }
@@ -68,6 +99,12 @@
             color: var(--white);
             border: none;
             cursor: pointer;
+
+            @include respond-to(md) {
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
         }
 
         .flag-icon {
@@ -96,6 +133,12 @@
             opacity: 0;
             transform: translateY(-10px);
             transition: opacity 0.3s ease, transform 0.3s ease;
+
+            @include respond-to(md) {
+                position: static;
+                transform: none;
+                opacity: 1;
+            }
         }
 
         .language-menu.open {
@@ -110,6 +153,10 @@
             font-size: 20px;
             cursor: pointer;
             align-self: flex-end;
+
+            @include respond-to(md) {
+                align-self: center;
+            }
         }
 
         ul {
