@@ -2,22 +2,33 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from './Banner.module.scss';
-import images from '~/assets/images/slider';
+import { getConfiguration } from '~/services/configurationService';
 
 const Banner = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [slides, setSlides] = useState([]);
     const [slideTrigger, setSlideTrigger] = useState(false);
     const slideIntervalRef = useRef(null);
 
-    const nextSlide = useCallback(() => {
-        setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length);
-        setSlideTrigger(true);
+    const fetchSlides = useCallback(async () => {
+        try {
+            const configData = await getConfiguration();
+            const sliderData = JSON.parse(configData[0].homepage_slider);
+            setSlides(sliderData);
+        } catch (error) {
+            console.error('Error fetching slides:', error);
+        }
     }, []);
 
-    const prevSlide = useCallback(() => {
-        setCurrentSlide((prevSlide) => (prevSlide - 1 + images.length) % images.length);
+    const nextSlide = useCallback(() => {
+        setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
         setSlideTrigger(true);
-    }, []);
+    }, [slides.length]);
+
+    const prevSlide = useCallback(() => {
+        setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
+        setSlideTrigger(true);
+    }, [slides.length]);
 
     const startSlideInterval = useCallback(() => {
         slideIntervalRef.current = setInterval(() => {
@@ -38,11 +49,17 @@ const Banner = () => {
     };
 
     useEffect(() => {
-        startSlideInterval();
-        return () => {
-            stopSlideInterval();
-        };
-    }, [startSlideInterval, stopSlideInterval]);
+        fetchSlides();
+    }, [fetchSlides]);
+
+    useEffect(() => {
+        if (slides.length > 0) {
+            startSlideInterval();
+            return () => {
+                stopSlideInterval();
+            };
+        }
+    }, [slides, startSlideInterval, stopSlideInterval]);
 
     useEffect(() => {
         if (slideTrigger) {
@@ -51,15 +68,19 @@ const Banner = () => {
         }
     }, [slideTrigger, startSlideInterval]);
 
+    if (slides.length === 0) {
+        return null;
+    }
+
     return (
         <div className={styles.banner}>
             <div className={styles.slidesContainer} style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-                {images.map((image, index) => (
-                    <div key={index} className={styles.slide}>
-                        <img src={image.imgURL} alt={image.imgAlt} className={styles.image} />
-                        <div className={`${styles.contentContainer} ${styles[image.position]}`}>
+                {slides.map((slide, index) => (
+                    <div key={slide.Id} className={styles.slide}>
+                        <img src={slide.image_url} alt={slide.title} className={styles.image} />
+                        <div className={`${styles.contentContainer} ${styles[slide.position]}`}>
                             <div className={styles.textWrapper}>
-                                <span className={styles.text}>{image.content}</span>
+                                <span className={styles.text}>{slide.title}</span>
                             </div>
                         </div>
                     </div>
@@ -72,7 +93,7 @@ const Banner = () => {
                 <FontAwesomeIcon icon={faChevronRight} />
             </div>
             <div className={styles.pagination}>
-                {images.map((_, index) => (
+                {slides.map((_, index) => (
                     <span
                         key={index}
                         className={`${styles.dot} ${currentSlide === index ? styles.active : ''}`}
