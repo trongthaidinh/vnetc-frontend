@@ -7,7 +7,6 @@ import { getConfiguration } from '~/services/configurationService';
 const Banner = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [slides, setSlides] = useState([]);
-    const [slideTrigger, setSlideTrigger] = useState(false);
     const slideIntervalRef = useRef(null);
 
     const fetchSlides = useCallback(async () => {
@@ -22,18 +21,15 @@ const Banner = () => {
 
     const nextSlide = useCallback(() => {
         setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-        setSlideTrigger(true);
     }, [slides.length]);
 
     const prevSlide = useCallback(() => {
         setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
-        setSlideTrigger(true);
     }, [slides.length]);
 
     const startSlideInterval = useCallback(() => {
         slideIntervalRef.current = setInterval(() => {
             nextSlide();
-            setSlideTrigger(false);
         }, 5000);
     }, [nextSlide]);
 
@@ -45,7 +41,6 @@ const Banner = () => {
 
     const goToSlide = (index) => {
         setCurrentSlide(index);
-        setSlideTrigger(true);
     };
 
     useEffect(() => {
@@ -61,13 +56,6 @@ const Banner = () => {
         }
     }, [slides, startSlideInterval, stopSlideInterval]);
 
-    useEffect(() => {
-        if (slideTrigger) {
-            clearInterval(slideIntervalRef.current);
-            startSlideInterval();
-        }
-    }, [slideTrigger, startSlideInterval]);
-
     if (slides.length === 0) {
         return null;
     }
@@ -76,7 +64,7 @@ const Banner = () => {
         <div className={styles.banner}>
             <div className={styles.slidesContainer} style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
                 {slides.map((slide, index) => (
-                    <div key={slide.Id} className={styles.slide}>
+                    <div key={slide.id} className={styles.slide}>
                         <img src={slide.image_url} alt={slide.title} className={styles.image} />
                         <div className={`${styles.contentContainer} ${styles[slide.position]}`}>
                             <div className={styles.textWrapper}>

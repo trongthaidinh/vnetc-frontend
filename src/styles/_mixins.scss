@@ -1,5 +1,3 @@
-// src/styles/_mixins.scss
-
 @mixin respond-to($breakpoint) {
     @if $breakpoint == xs {
         @media (max-width: $breakpoint-xs) {
@@ -21,8 +19,12 @@
         @media (max-width: $breakpoint-xl) {
             @content;
         }
-    } @else if $breakpoint == xxl {
-        @media (max-width: $breakpoint-xxl) {
+    } @else if $breakpoint == 2xl {
+        @media (max-width: $breakpoint-2xl) {
+            @content;
+        }
+    } @else if $breakpoint == 3xl {
+        @media (max-width: $breakpoint-3xl) {
             @content;
         }
     }

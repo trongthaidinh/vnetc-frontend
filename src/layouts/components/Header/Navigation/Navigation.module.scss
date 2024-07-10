@@ -10,7 +10,7 @@
     width: 100%;
     transition: transform 0.3s ease, opacity 0.3s ease;
     transform: translateY(0);
-    @include respond-to(md) {
+    @include respond-to(lg) {
         padding: 0 20px;
     }
 
@@ -44,7 +44,7 @@
             font-size: 24px;
             color: white;
 
-            @include respond-to(md) {
+            @include respond-to(lg) {
                 display: block;
             }
         }
@@ -79,7 +79,7 @@
                         margin-left: 10px;
                         cursor: pointer;
 
-                        @include respond-to(md) {
+                        @include respond-to(lg) {
                             display: inline-block;
                         }
                     }
@@ -167,7 +167,7 @@
         }
     }
 
-    @include respond-to(md) {
+    @include respond-to(lg) {
         .inner {
             .navigation-links {
                 display: none;

@@ -67,7 +67,6 @@ function Products() {
         );
     };
 
-    // Lấy category từ sản phẩm đầu tiên
     const category = products[0]?.category || 'Danh mục';
 
     return (

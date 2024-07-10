@@ -1,15 +1,30 @@
-// Products.module.scss
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
 .wrapper {
     display: flex;
     justify-content: center;
     gap: 20px;
     margin-top: 60px;
+    padding: 0 20px;
+
+    @include respond-to(sm) {
+        padding: 0 10px;
+    }
 }
 
 .inner {
     width: var(--default-layout-width);
     display: flex;
     flex-direction: column;
+
+    @include respond-to(lg) {
+        width: 100%;
+    }
+
+    @include respond-to(sm) {
+        width: 100%;
+    }
 }
 
 .product-list {
@@ -18,6 +33,18 @@
     justify-content: space-between;
     gap: 20px;
     margin-top: 40px;
+
+    @include respond-to(lg) {
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: center;
+        gap: 20px;
+    }
+
+    @include respond-to(sm) {
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: center;
+        gap: 20px;
+    }
 }
 
 .product-item {
@@ -27,6 +54,14 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
     flex: 1 1 calc(25% - 20px);
+
+    @include respond-to(lg) {
+        flex: 1 1 calc(50% - 20px);
+    }
+
+    @include respond-to(sm) {
+        flex: 1 1 100%;
+    }
 
     img {
         max-width: 100%;

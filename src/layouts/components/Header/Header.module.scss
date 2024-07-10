@@ -13,7 +13,7 @@
         background-position: center;
         background-repeat: no-repeat;
         height: var(--banner-height);
-        @include respond-to(md) {
+        @include respond-to(lg) {
             display: none;
         }
     }

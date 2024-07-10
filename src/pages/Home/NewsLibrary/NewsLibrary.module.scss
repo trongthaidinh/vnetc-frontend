@@ -1,12 +1,22 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
 .wrapper {
     display: flex;
     justify-content: center;
     margin-top: 60px;
+    padding: 0 20px;
+    @include respond-to(lg) {
+        justify-content: left;
+    }
 }
 
 .inner {
-    display: grid;
-    grid-template-columns: calc(66.66% - 10px) calc(33.33% - 10px);
+    display: flex;
     gap: 22px;
     width: var(--default-layout-width);
+
+    @include respond-to(lg) {
+        flex-direction: column;
+    }
 }

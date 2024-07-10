@@ -1,8 +1,16 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
 .wrapper {
     display: flex;
     justify-content: center;
     gap: 20px;
     margin-top: 60px;
+
+    @include respond-to(lg) {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 .inner {
@@ -10,7 +18,13 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    @include respond-to(lg) {
+        width: 500px;
+        padding: 0 20px;
+    }
 }
+
 .slider-container {
     width: 100%;
 }
@@ -26,6 +40,10 @@
     overflow: hidden;
     text-align: center;
     width: 100%;
+
+    @include respond-to(lg) {
+        width: 100%;
+    }
 }
 
 .partner-image {
@@ -35,7 +53,7 @@
     object-fit: contain;
 }
 
-.partner-infor {
+.partner-info {
     padding: 12px;
 }
 

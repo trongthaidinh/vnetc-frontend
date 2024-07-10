@@ -8,6 +8,7 @@ import Title from '~/components/Title';
 import Button from '~/components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faChevronDown, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { getProductById } from '~/services/productService';
 
 const cx = classNames.bind(styles);
 
@@ -20,72 +21,10 @@ const ProductDetail = () => {
     const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
 
     useEffect(() => {
-        const fetchProductDetail = async () => {
+        const fetchProductDetail = async (productId) => {
             try {
-                // Simulated API call to fetch product detail by ID
-                // Replace with actual API call once available
-                const data = {
-                    _id: '612f3b3c21e3e13e5f85ae04',
-                    name: 'Máy biến áp',
-                    image: 'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                    description: 'Product description goes here...',
-                    category: 'Category Name',
-                    status: true,
-                    code: '#123456',
-                    warranty: '1 năm',
-                    createdAt: '2023-01-01T12:00:00Z',
-                    updatedAt: '2023-01-01T13:00:00Z',
-                    content: `
-                    <p>
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        <br />
-                            <h3>Tính năng nổi bật:</h3>
-                            <ul>
-                                <li>Feature 1</li>
-                                <li>Feature 2</li>
-                                <li>Feature 3</li>
-                            </ul>
-                        <br />
-                        <img src="https://www.vnetc.com.vn/assets/img/post/z4982216183705_fa134df795ac46d96e14c6bdf6d8ec2b.jpg" alt="Image 1" style="max-width: 100%;" />
-                        <br />
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        <br />
-                        <img src="https://www.vnetc.com.vn/assets/img/post/z4982216183705_fa134df795ac46d96e14c6bdf6d8ec2b.jpg" alt="Image 2" style="max-width: 100%;" />
-                        <br />
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        <br />
-                        <br />
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </p>
-                `,
-                    details: {
-                        dimensions: '10 x 5 x 3 inches',
-                        weight: '1.5 lbs',
-                        color: 'Black',
-                        material: 'Plastic',
-                        features: ['Feature 1', 'Feature 2', 'Feature 3'],
-                        videos: [
-                            {
-                                url: 'https://www.youtube.com/watch?v=KKk_0lQmxVs',
-                                title: 'Product Video 1',
-                            },
-                            {
-                                url: 'https://www.youtube.com/watch?v=KKk_0lQmxVs',
-                                title: 'Product Video 2',
-                            },
-                        ],
-                        images: [
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx3RY5TpOamiI_V6JQ6AhFxJYt89BmeaiPVjwZE7HP90ujfQGLYtBWriK-6qTtfBNv5cQ&usqp=CAU',
-                            'https://blog.mecsu.vn/wp-content/uploads/2022/06/cong-dung-may-bien-ap.jpg',
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA-IQQfJMvSfMt0TReC45dAHhJ_dqp7v6QUA&s',
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_aAZh29nCrDJVG6zgA_UnnUtnxHKqO7hcEA&s',
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOMeqRwB4RozEn4jeP_LrJtyBaqnfFtCCZVA&s',
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzDT_gJzbNwPNQLcTn5Y9XFG1s_SYebIxQQA&s',
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFvNiBEHPbUcWdH3FhW9oE3_XgiS1u8w7aoA&s',
-                        ],
-                    },
-                };
+                const data = await getProductById(productId);
+                console.log(data);
                 setProductDetail(data);
             } catch (error) {
                 setError(error);
@@ -95,7 +34,7 @@ const ProductDetail = () => {
             }
         };
 
-        fetchProductDetail();
+        fetchProductDetail(id);
     }, [id]);
 
     const handleThumbnailClick = (index) => {

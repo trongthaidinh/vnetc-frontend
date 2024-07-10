@@ -43,6 +43,25 @@ function Partners() {
         return <LoadingScreen />;
     }
 
+    // Số lượng slide hiển thị trên mỗi viewport
+    const slidesPerView = {
+        desktop: 5,
+        tablet: 3,
+        mobile: 1,
+    };
+
+    // Breakpoints cho việc điều chỉnh số lượng slide hiển thị
+    const breakpoints = {
+        // khi kích thước màn hình lớn hơn 768px (máy tính bảng)
+        768: {
+            slidesPerView: slidesPerView.tablet,
+        },
+        // khi kích thước màn hình lớn hơn 480px (điện thoại)
+        480: {
+            slidesPerView: slidesPerView.mobile,
+        },
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -50,7 +69,7 @@ function Partners() {
                 <div className={cx('slide-container')}>
                     <Swiper
                         spaceBetween={20}
-                        slidesPerView={5}
+                        slidesPerView={slidesPerView.desktop} // Số lượng slide hiển thị mặc định
                         autoplay={{
                             delay: 3000,
                             disableOnInteraction: false,
@@ -58,11 +77,16 @@ function Partners() {
                         loop={true}
                         modules={[Autoplay]}
                         className={styles.swiper}
+                        breakpoints={breakpoints} // Điều chỉnh số lượng slide hiển thị theo kích thước màn hình
                     >
                         {partnersArr.map((partner, index) => (
                             <SwiperSlide key={index} className={cx('slide')}>
                                 <div className={cx('partner-card')}>
                                     <img src={partner.imageUrl} alt={partner.name} className={cx('partner-image')} />
+                                    <div className={cx('partner-info')}>
+                                        <p className={cx('partner-name')}>{partner.name}</p>
+                                        <p className={cx('partner-position')}>{partner.position}</p>
+                                    </div>
                                 </div>
                             </SwiperSlide>
                         ))}

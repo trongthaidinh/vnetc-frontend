@@ -13,7 +13,7 @@ function Product({ image, name, productId }) {
             <img className={cx('product-item-image')} src={image} alt={name} />
             <div className={cx('product-item-details')}>
                 <h2 className={cx('product-item-name')}>{name}</h2>
-                <Link to={`/products/${productId}`}>
+                <Link to={productId}>
                     <Button outline className={cx('product-item-button')}>
                         Xem chi tiết
                     </Button>
