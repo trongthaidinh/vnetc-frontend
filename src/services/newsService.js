@@ -22,10 +22,10 @@ export const getNewsById = async (id, categoryId) => {
 
 export const getNewsByCategory = async (categoryId) => {
     try {
-        const response = await httpRequest.get(`/news?slug=${categoryId}`);
+        const response = await httpRequest.get(`/news?categoryId=${categoryId}`);
         return response.data.data;
     } catch (error) {
-        console.error(`Error fetching news for categoryId=${categoryId}:`, error);
+        console.error(`Error fetching news for id=${categoryId}:`, error);
         throw error;
     }
 };

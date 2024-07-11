@@ -3,59 +3,50 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Card from '~/components/CardContent';
 import SuggestCard from '~/components/SuggestCard';
-import { getNews } from '~/services/newsService';
-import { getCategoryById } from '~/services/categoryService';
+import { getNewsByCategory } from '~/services/newsService';
 import styles from './News.module.scss';
 import Title from '~/components/Title';
 import ButtonGroup from '~/components/ButtonGroup';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
 import routes from '~/config/routes';
+import { getCategoriesByType } from '~/services/categoryService';
 
 const cx = classNames.bind(styles);
 
 const News = () => {
     const [newsItems, setNewsItems] = useState([]);
-    const [categoryNames, setCategoryNames] = useState({});
-    const [categorySlugs, setCategorySlugs] = useState({});
+    const [categories, setCategories] = useState([]);
     const [groupedNews, setGroupedNews] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedSuggestion, setSelectedSuggestion] = useState('Nổi bật');
 
     useEffect(() => {
-        const fetchNews = async () => {
+        const fetchCategoriesAndNews = async () => {
             try {
-                const data = await getNews();
-                const newsItemsWithTimestampCreatedAt = data.map((item) => ({
-                    ...item,
-                    image: item.images,
-                    createdAt: new Date(item.createdAt).getTime(),
-                }));
-                setNewsItems(newsItemsWithTimestampCreatedAt);
+                // Fetch all categories
+                const categoriesData = await getCategoriesByType(2);
+                setCategories(categoriesData);
+                console.log(categoriesData);
 
-                const categoryNamesMap = {};
-                const categorySlugsMap = {};
                 const groupedNewsMap = {};
 
+                // Fetch news for each category
                 await Promise.all(
-                    data.map(async (item) => {
-                        if (!categoryNamesMap[item.categoryId]) {
-                            const category = await getCategoryById(item.categoryId);
-                            categoryNamesMap[item.categoryId] = category.name;
-                            categorySlugsMap[item.categoryId] = category.slug;
-                        }
-
-                        if (!groupedNewsMap[item.categoryId]) {
-                            groupedNewsMap[item.categoryId] = [];
-                        }
-                        groupedNewsMap[item.categoryId].push(item);
+                    categoriesData.map(async (category) => {
+                        const newsData = await getNewsByCategory(category._id);
+                        console.log(newsData);
+                        groupedNewsMap[category._id] = newsData.map((item) => ({
+                            ...item,
+                            image: item.images,
+                            createdAt: new Date(item.createdAt).getTime(),
+                        }));
                     }),
                 );
 
-                setCategoryNames(categoryNamesMap);
-                setCategorySlugs(categorySlugsMap);
                 setGroupedNews(groupedNewsMap);
+                setNewsItems(Object.values(groupedNewsMap).flat());
             } catch (error) {
                 setError(error);
                 console.error('Error fetching news:', error);
@@ -64,7 +55,7 @@ const News = () => {
             }
         };
 
-        fetchNews();
+        fetchCategoriesAndNews();
     }, []);
 
     const handleButtonClick = (type) => {
@@ -97,16 +88,16 @@ const News = () => {
             <div className={cx('news-section')}>
                 <div className={cx('news-column')}>
                     <h2 className={cx('news-title')}>Tin Tức</h2>
-                    {Object.keys(groupedNews).map((categoryId) => (
-                        <div key={categoryId} className={cx('news-category')}>
+                    {categories.map((category) => (
+                        <div key={category._id} className={cx('news-category')}>
                             <Title
-                                text={categoryNames[categoryId] || 'Loading...'}
+                                text={category.name || 'Loading...'}
                                 showSeeAll={true}
-                                slug={`${routes.news}/${categorySlugs[categoryId]}`}
+                                slug={`${routes.news}/${category.slug}`}
                             />
                             <div className={cx('news-items')}>
-                                {groupedNews[categoryId].slice(0, 6).map((item, index) => (
-                                    <Link key={index} to={`${routes.news}/${categorySlugs[categoryId]}/${item._id}`}>
+                                {groupedNews[category._id]?.slice(0, 6).map((item, index) => (
+                                    <Link key={index} to={`${routes.news}/${category.slug}/${item._id}`}>
                                         <Card
                                             title={item.title}
                                             summary={item.summary}

@@ -38,3 +38,14 @@ export const getCategoryById = async (id) => {
         throw error;
     }
 };
+
+export const getCategoriesByType = async (type) => {
+    try {
+        const response = await httpRequest.get(`/category/type/${type}`);
+        const categories = response.data.data;
+        return categories;
+    } catch (error) {
+        console.error(`Error fetching category name for type ${type}`, error);
+        throw error;
+    }
+};
