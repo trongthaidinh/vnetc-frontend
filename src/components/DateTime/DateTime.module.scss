@@ -1,9 +1,16 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
 .info {
     display: flex;
     align-items: center;
     font-weight: 400;
     font-size: 1.2rem;
     color: #a9a9a9;
+
+    @include respond-to(sm) {
+        font-size: 1rem;
+    }
 
     .icon {
         color: var(--primary);

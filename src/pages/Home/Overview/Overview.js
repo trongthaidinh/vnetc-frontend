@@ -6,7 +6,7 @@ import CardItem from './CardItem';
 import Button from '~/components/Button';
 import images from '~/assets/images/overview-card';
 import { Link } from 'react-router-dom';
-
+import routes from '~/config/routes';
 const cx = classNames.bind(styles);
 
 function Overview() {
@@ -26,7 +26,7 @@ function Overview() {
                         được tiếp cận công nghệ trình độ để hoàn thiện bản thân và nâng cao đời sống gia đình góp phần
                         cho cuộc sống tốt đẹp hơn.
                     </p>
-                    <Link to={'/about'}>
+                    <Link to={routes.about}>
                         <Button className={cx('button')} primary rightIcon={<FontAwesomeIcon icon={faArrowRight} />}>
                             Tìm hiểu thêm
                         </Button>

@@ -25,6 +25,7 @@ const ProductDetail = () => {
             try {
                 const data = await getProductById(productId);
                 setProductDetail(data);
+                console.log(data);
             } catch (error) {
                 setError(error);
                 console.error('Error fetching product detail:', error);
@@ -37,34 +38,30 @@ const ProductDetail = () => {
     }, [id]);
 
     const handleThumbnailClick = (index) => {
-        // setCurrentImageIndex(index);
+        setCurrentImageIndex(index);
     };
 
     const handlePrevClick = () => {
-        // setCurrentImageIndex((prevIndex) =>
-        //     prevIndex === 0 ? productDetail.details.images.length - 1 : prevIndex - 1,
-        // );
+        setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? productDetail.image.length - 1 : prevIndex - 1));
     };
 
     const handleNextClick = () => {
-        // setCurrentImageIndex((prevIndex) =>
-        //     prevIndex === productDetail.details.images.length - 1 ? 0 : prevIndex + 1,
-        // );
+        setCurrentImageIndex((prevIndex) => (prevIndex === productDetail.image.length - 1 ? 0 : prevIndex + 1));
     };
 
     const handleThumbnailPrevClick = () => {
-        // setThumbnailStartIndex((prevIndex) => Math.max(0, prevIndex - 1));
+        setThumbnailStartIndex((prevIndex) => Math.max(0, prevIndex - 1));
     };
 
     const handleThumbnailNextClick = () => {
-        // const totalImages = productDetail.details.images.length;
-        // const remainingImages = totalImages - (thumbnailStartIndex + 1);
-        // console.log(remainingImages);
-        // if (remainingImages > 0) {
-        //     setThumbnailStartIndex((prevIndex) => prevIndex + 1);
-        // } else {
-        //     setThumbnailStartIndex((prevIndex) => prevIndex + remainingImages);
-        // }
+        const totalImages = productDetail.image.length;
+        const remainingImages = totalImages - (thumbnailStartIndex + 1);
+        console.log(remainingImages);
+        if (remainingImages > 0) {
+            setThumbnailStartIndex((prevIndex) => prevIndex + 1);
+        } else {
+            setThumbnailStartIndex((prevIndex) => prevIndex + remainingImages);
+        }
     };
 
     if (error) {
@@ -90,37 +87,28 @@ const ProductDetail = () => {
                     )}
                     <div
                         className={cx('thumbnail-list')}
-                        style={{ transform: `translateY(-${thumbnailStartIndex * 150}px)` }}
+                        style={{ transform: `translateY(-${thumbnailStartIndex * 155}px)` }}
                     >
-                        <div className={cx('thumbnail-item')}>
-                            <img
-                                className={cx('thumbnail-image')}
-                                src={productDetail.image}
-                                alt={`${productDetail.name} thumbnail`}
-                            />
-                        </div>
-                        {/* {productDetail.details.images
-                            .slice(thumbnailStartIndex, thumbnailStartIndex + 4)
-                            .map((image, index) => (
-                                <div className={cx('thumbnail-item')}>
-                                    <img
-                                        key={thumbnailStartIndex + index}
-                                        className={cx('thumbnail-image')}
-                                        src={image}
-                                        alt={`${productDetail.name} thumbnail ${thumbnailStartIndex + index + 1}`}
-                                        onClick={() => handleThumbnailClick(thumbnailStartIndex + index)}
-                                    />
-                                </div>
-                            ))} */}
+                        {productDetail.image.slice(thumbnailStartIndex, thumbnailStartIndex + 4).map((image, index) => (
+                            <div className={cx('thumbnail-item')}>
+                                <img
+                                    key={thumbnailStartIndex + index}
+                                    className={cx('thumbnail-image')}
+                                    src={image}
+                                    alt={`${productDetail.name} thumbnail ${thumbnailStartIndex + index + 1}`}
+                                    onClick={() => handleThumbnailClick(thumbnailStartIndex + index)}
+                                />
+                            </div>
+                        ))}
                     </div>
-                    {/* {thumbnailStartIndex + 4 < productDetail.details.images.length && (
+                    {thumbnailStartIndex + 4 < productDetail.image.length && (
                         <button
                             className={cx('thumbnail-button', 'thumbnail-next-button')}
                             onClick={handleThumbnailNextClick}
                         >
                             <FontAwesomeIcon icon={faChevronDown} />
                         </button>
-                    )} */}
+                    )}
                 </div>
 
                 <div className={cx('product-image')}>
@@ -131,15 +119,14 @@ const ProductDetail = () => {
                         className={cx('main-image-wrapper')}
                         style={{ transform: `translateX(-${currentImageIndex * 600}px)` }}
                     >
-                        <img src={productDetail.image} alt={productDetail.name} />
-                        {/* {productDetail.details.images.map((image, index) => (
+                        {productDetail.image.map((image, index) => (
                             <img
                                 key={index}
                                 className={cx('main-image')}
                                 src={image}
                                 alt={`${productDetail.name} main ${index + 1}`}
                             />
-                        ))} */}
+                        ))}
                     </div>
                     <button className={cx('next-button')} onClick={handleNextClick}>
                         <FontAwesomeIcon icon={faChevronRight} />
@@ -155,7 +142,7 @@ const ProductDetail = () => {
                     <p className={cx('product-info')}>
                         <span className={cx('label')}>Kích cỡ:</span>
                         <span>:</span>
-                        <span>{productDetail.detail[0].size == 'large' ? 'Lớn' : 'Nhỏ'}</span>
+                        <span>{productDetail.detail[0].size === 'large' ? 'Lớn' : 'Nhỏ'}</span>
                     </p>
                     <p className={cx('product-info')}>
                         <span className={cx('label')}>Trọng lượng:</span>

@@ -20,6 +20,18 @@
     --slider-height-md: 300px;
     --slider-height-sm: 200px;
     --nav-height: 60px;
+    --slides-per-view: 4;
+    @include respond-to(lg) {
+        --slides-per-view: 3;
+    }
+
+    @include respond-to(md) {
+        --slides-per-view: 2;
+    }
+
+    @include respond-to(sm) {
+        --slides-per-view: 1;
+    }
 }
 
 * {

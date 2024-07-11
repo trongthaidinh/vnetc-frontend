@@ -7,8 +7,13 @@
     gap: 20px;
     margin-top: 60px;
     padding: 0 20px;
+
     @include respond-to(lg) {
-        width: 500px;
+        width: 100%;
+    }
+
+    @include respond-to(sm) {
+        width: 75%;
     }
 }
 
@@ -17,15 +22,38 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    @include respond-to(lg) {
+        width: 100%;
+    }
 }
-.slider-container {
+
+.slide-container {
     width: 100%;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide-wrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
 }
 
 .slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    flex: 0 0 calc(100% / var(--slides-per-view));
+
+    @include respond-to(lg) {
+        flex: 0 0 calc(100% / var(--slides-per-view-lg));
+    }
+
+    @include respond-to(md) {
+        flex: 0 0 calc(100% / var(--slides-per-view-md));
+    }
+
+    @include respond-to(sm) {
+        flex: 0 0 calc(100% / var(--slides-per-view-sm));
+    }
 }
 
 .team-card {
@@ -43,7 +71,7 @@
     object-fit: cover;
 }
 
-.team-infor {
+.team-info {
     padding: 12px;
 }
 

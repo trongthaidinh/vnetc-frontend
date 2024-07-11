@@ -6,9 +6,6 @@
     justify-content: center;
     margin-top: 60px;
     padding: 0 20px;
-    @include respond-to(lg) {
-        justify-content: left;
-    }
 }
 
 .inner {
@@ -17,6 +14,7 @@
     width: var(--default-layout-width);
 
     @include respond-to(lg) {
+        width: 100%;
         flex-direction: column;
     }
 }

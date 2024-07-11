@@ -19,7 +19,7 @@
 .thumbnail-list {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 20px;
     transition: transform 0.3s ease-in-out;
     height: 600px;
 }

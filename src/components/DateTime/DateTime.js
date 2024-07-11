@@ -26,8 +26,9 @@ const formatDate = (timestamp) => {
 };
 
 function DateTime({ timestamp, views = 0, showDate = true, showTime = true, showViews = true }) {
-    const date = timestamp ? formatDate(timestamp).date : null;
-    const time = timestamp ? formatDate(timestamp).time : null;
+    let timestampNumber = typeof timestamp === 'string' ? Date.parse(timestamp) : timestamp;
+    const date = timestampNumber ? formatDate(timestampNumber).date : null;
+    const time = timestampNumber ? formatDate(timestampNumber).time : null;
 
     return (
         <div className={cx('info')}>
@@ -48,7 +49,7 @@ function DateTime({ timestamp, views = 0, showDate = true, showTime = true, show
 }
 
 DateTime.propTypes = {
-    timestamp: PropTypes.number,
+    timestamp: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     views: PropTypes.number,
     showDate: PropTypes.bool,
     showTime: PropTypes.bool,

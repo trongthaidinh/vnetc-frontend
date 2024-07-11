@@ -5,11 +5,12 @@ import styles from './ButtonGroup.module.scss';
 
 const cx = classNames.bind(styles);
 
-const ButtonGroup = ({ buttons }) => {
+const ButtonGroup = ({ buttons, onButtonClick }) => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     const handleClick = (index) => {
         setActiveIndex(index);
+        onButtonClick(buttons[index]);
     };
 
     return (
@@ -29,6 +30,7 @@ const ButtonGroup = ({ buttons }) => {
 
 ButtonGroup.propTypes = {
     buttons: PropTypes.arrayOf(PropTypes.string).isRequired,
+    onButtonClick: PropTypes.func.isRequired,
 };
 
 export default ButtonGroup;

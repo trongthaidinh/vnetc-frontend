@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 function Card({
     title = 'Default Title',
     summary = 'Default Sumary',
-    image = 'default.jpg',
+    image = 'https://res.cloudinary.com/ddmzboxzu/image/upload/v1720603061/znya9vwto7kxw8blwqwu.png',
     createdAt = Date.now(),
     views = 0,
 }) {

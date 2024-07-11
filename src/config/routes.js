@@ -3,7 +3,7 @@ const routes = {
     about: '/gioi-thieu',
     introduction: '/gioi-thieu/tong-quan',
     history: '/gioi-thieu/lich-su',
-    organizational: '/gioi-thieu/co-cau-to-chuc',
+    organizational: '/gioi-thieu/so-do-to-chuc',
     vision: '/gioi-thieu/tam-nhin-su-menh-gia-tri',
     capacityProfile: '/gioi-thieu/ho-so-nang-luc',
     qualityGoals: '/gioi-thieu/muc-tieu-chat-luong',

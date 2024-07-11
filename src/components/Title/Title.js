@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-function Title({ text, showSeeAll, slug }) {
+function Title({ text, showSeeAll = false, slug }) {
     return (
         <div className={cx('header')}>
             <span className={cx('title')}>{text}</span>
@@ -23,10 +23,7 @@ function Title({ text, showSeeAll, slug }) {
 Title.propTypes = {
     text: PropTypes.string.isRequired,
     showSeeAll: PropTypes.bool,
-};
-
-Title.defaultProps = {
-    showSeeAll: false,
+    slug: PropTypes.string,
 };
 
 export default Title;

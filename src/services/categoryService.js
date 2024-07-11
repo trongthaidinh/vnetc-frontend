@@ -12,18 +12,29 @@ export const getCategories = async () => {
     }
 };
 
-export const getCategoryName = async (categoryId) => {
-    if (categoryNamesCache[categoryId]) {
-        return categoryNamesCache[categoryId];
+export const getCategoryName = async (id) => {
+    if (categoryNamesCache[id]) {
+        return categoryNamesCache[id];
     }
 
     try {
-        const response = await httpRequest.get(`/category/${categoryId}`);
+        const response = await httpRequest.get(`/category/${id}`);
         const categoryName = response.data.data.name;
-        categoryNamesCache[categoryId] = categoryName;
+        categoryNamesCache[categoryName] = categoryName;
         return categoryName;
     } catch (error) {
-        console.error(`Error fetching category name for ID ${categoryId}`, error);
+        console.error(`Error fetching category name for ID ${id}`, error);
+        throw error;
+    }
+};
+
+export const getCategoryById = async (id) => {
+    try {
+        const response = await httpRequest.get(`/category/${id}`);
+        const category = response.data.data;
+        return category;
+    } catch (error) {
+        console.error(`Error fetching category name for ID ${id}`, error);
         throw error;
     }
 };

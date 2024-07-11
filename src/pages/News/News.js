@@ -4,12 +4,13 @@ import classNames from 'classnames/bind';
 import Card from '~/components/CardContent';
 import SuggestCard from '~/components/SuggestCard';
 import { getNews } from '~/services/newsService';
-// import { getCategoryName } from '~/services/categoryService';
+import { getCategoryById } from '~/services/categoryService';
 import styles from './News.module.scss';
 import Title from '~/components/Title';
 import ButtonGroup from '~/components/ButtonGroup';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
+import routes from '~/config/routes';
 
 const cx = classNames.bind(styles);
 
@@ -20,23 +21,18 @@ const News = () => {
     const [groupedNews, setGroupedNews] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    const getCategoryName = (categoryId) => {
-        switch (categoryId) {
-            case 1:
-                return { name: 'Tin ngành', slug: 'industry-news' };
-            case 2:
-                return { name: 'Tin kinh tế - xã hội', slug: 'social-economic-news' };
-            default:
-                return { name: 'Tin tức', slug: 'general-news' };
-        }
-    };
+    const [selectedSuggestion, setSelectedSuggestion] = useState('Nổi bật');
 
     useEffect(() => {
         const fetchNews = async () => {
             try {
                 const data = await getNews();
-                setNewsItems(data);
+                const newsItemsWithTimestampCreatedAt = data.map((item) => ({
+                    ...item,
+                    image: item.images,
+                    createdAt: new Date(item.createdAt).getTime(),
+                }));
+                setNewsItems(newsItemsWithTimestampCreatedAt);
 
                 const categoryNamesMap = {};
                 const categorySlugsMap = {};
@@ -45,7 +41,7 @@ const News = () => {
                 await Promise.all(
                     data.map(async (item) => {
                         if (!categoryNamesMap[item.categoryId]) {
-                            const category = await getCategoryName(item.categoryId);
+                            const category = await getCategoryById(item.categoryId);
                             categoryNamesMap[item.categoryId] = category.name;
                             categorySlugsMap[item.categoryId] = category.slug;
                         }
@@ -71,6 +67,10 @@ const News = () => {
         fetchNews();
     }, []);
 
+    const handleButtonClick = (type) => {
+        setSelectedSuggestion(type);
+    };
+
     if (error) {
         const errorMessage = error.response ? error.response.data.message : 'Network Error';
         return <PushNotification message={errorMessage} />;
@@ -79,6 +79,18 @@ const News = () => {
     if (loading) {
         return <LoadingScreen />;
     }
+
+    const filteredNewsItems = newsItems
+        .filter((item) => {
+            if (selectedSuggestion === 'Nổi bật') {
+                return item.isFeatured;
+            }
+            if (selectedSuggestion === 'Xem nhiều') {
+                return item.views > 10;
+            }
+            return true;
+        })
+        .slice(0, 5);
 
     return (
         <article className={cx('wrapper')}>
@@ -90,12 +102,18 @@ const News = () => {
                             <Title
                                 text={categoryNames[categoryId] || 'Loading...'}
                                 showSeeAll={true}
-                                slug={`/news/${categorySlugs[categoryId]}`}
+                                slug={`${routes.news}/${categorySlugs[categoryId]}`}
                             />
                             <div className={cx('news-items')}>
-                                {groupedNews[categoryId].map((item, index) => (
-                                    <Link to={`/news/${categorySlugs[categoryId]}/${item._id}`} key={index}>
-                                        <Card {...item} />
+                                {groupedNews[categoryId].slice(0, 6).map((item, index) => (
+                                    <Link key={index} to={`${routes.news}/${categorySlugs[categoryId]}/${item._id}`}>
+                                        <Card
+                                            title={item.title}
+                                            summary={item.summary}
+                                            image={item.images}
+                                            createdAt={item.createdAt}
+                                            views={item.views}
+                                        />
                                     </Link>
                                 ))}
                             </div>
@@ -104,11 +122,17 @@ const News = () => {
                 </div>
                 <div className={cx('suggest')}>
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
+                    <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-items')}>
-                        <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} />
-                        {newsItems.map((item, index) => (
-                            <Link to={`/news/${item._id}`} key={index}>
-                                <SuggestCard {...item} />
+                        {filteredNewsItems.map((item, index) => (
+                            <Link key={index} to={`/news/${item._id}`}>
+                                <SuggestCard
+                                    title={item.title}
+                                    summary={item.summary}
+                                    image={item.images}
+                                    createdAt={item.createdAt}
+                                    views={item.views}
+                                />
                             </Link>
                         ))}
                     </div>

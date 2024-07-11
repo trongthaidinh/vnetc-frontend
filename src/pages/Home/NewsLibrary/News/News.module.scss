@@ -1,5 +1,12 @@
+@import '../../../../styles/mixins';
+@import '../../../../styles/variables';
+
 .wrapper {
-    width: 100%;
+    width: 66.66666%;
+
+    @include respond-to(lg) {
+        width: 100%;
+    }
 }
 
 .inner {
@@ -13,6 +20,10 @@
     grid-template-columns: repeat(2, 1fr);
     justify-content: space-between;
     gap: 22px;
+
+    @include respond-to(sm) {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
 
 .card {

@@ -4,24 +4,37 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { getNewsByCategory } from '~/services/newsService';
+import { getCategoryName } from '~/services/categoryService';
 import Title from '~/components/Title';
 import styles from './IndustryNews.module.scss';
 import { Link } from 'react-router-dom';
 import Card from '~/components/CardContent/CardContent';
-import { getCategoryName } from '~/services/categoryService';
 
 const cx = classNames.bind(styles);
 
 function NewsCategory() {
-    const { categoryId } = useParams();
+    const { slug } = useParams();
     const [news, setNews] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const newsPerPage = 12;
 
+    console.log(slug);
+
+    // const getCategoryName = (categoryId) => {
+    //     switch (categoryId) {
+    //         case 1:
+    //             return { name: 'Tin ngành', slug: 'industry-news' };
+    //         case 2:
+    //             return { name: 'Tin kinh tế - xã hội', slug: 'socio-economic-news' };
+    //         default:
+    //             return { name: 'Tin tức', slug: 'general-news' };
+    //     }
+    // };
+
     useEffect(() => {
         async function fetchNewsCategory() {
             try {
-                const data = await getNewsByCategory(categoryId);
+                const data = await getNewsByCategory(slug);
                 setNews(data);
             } catch (error) {
                 console.error('Error fetching news:', error);
@@ -29,7 +42,7 @@ function NewsCategory() {
         }
 
         fetchNewsCategory();
-    }, [categoryId]);
+    }, [slug]);
 
     const indexOfLastNews = currentPage * newsPerPage;
     const indexOfFirstNews = indexOfLastNews - newsPerPage;
@@ -79,7 +92,7 @@ function NewsCategory() {
         );
     };
 
-    const { name: categoryName } = getCategoryName(parseInt(categoryId, 10));
+    const { name: categoryName } = getCategoryName(slug);
 
     return (
         <div className={cx('container')}>

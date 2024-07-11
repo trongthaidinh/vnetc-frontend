@@ -1,11 +1,11 @@
 import httpRequest from '~/utils/httpRequest';
 
-export const getNews = async () => {
+export const getNews = async (page = 1, limit = 8) => {
     try {
-        const response = await httpRequest.get('/news');
+        const response = await httpRequest.get(`/news?page=${page}&limit=${limit}`);
         return response.data.data;
     } catch (error) {
-        console.error('Error fetching products', error);
+        console.error('Error fetching news', error);
         throw error;
     }
 };
@@ -22,7 +22,7 @@ export const getNewsById = async (id, categoryId) => {
 
 export const getNewsByCategory = async (categoryId) => {
     try {
-        const response = await httpRequest.get(`/news?categoryId=${categoryId}`);
+        const response = await httpRequest.get(`/news?slug=${categoryId}`);
         return response.data.data;
     } catch (error) {
         console.error(`Error fetching news for categoryId=${categoryId}:`, error);

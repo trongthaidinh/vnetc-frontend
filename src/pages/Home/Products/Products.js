@@ -46,11 +46,9 @@ function Products() {
                     {products.map((product) => (
                         <Product
                             key={product._id}
-                            image={product.image}
+                            image={product.image[0]}
                             name={product.name}
-                            description={product.description}
-                            price={product.price}
-                            link={`/products/${product._id}`}
+                            productId={product._id}
                         />
                     ))}
                 </div>
