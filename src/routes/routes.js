@@ -1,11 +1,10 @@
 import config from '~/config';
 
 //Layout
-import { OnlyHeaderLayout, NothingLayout } from '~/layouts';
+import { OnlyHeaderLayout, NothingLayout, AdminLayout } from '~/layouts';
 
 // Page
 import Home from '~/pages/Home';
-import Admin from '~/pages/Admin/Admin';
 import About from '~/pages/About';
 import News from '~/pages/News';
 import Service from '~/pages/Service';
@@ -25,12 +24,14 @@ import IndustryNews from '~/pages/IndustryNews';
 import NewsDetail from '~/pages/NewsDetail';
 import ProductDetail from '~/pages/ProductDetail';
 import Introduction from '~/pages/Introduction';
-import AdminLayout from '~/layouts/AdminLayout';
+import Admin from '~/pages/Admin';
+import MainMenu from '~/pages/Admin/MainMenu';
 
 // Public Routes
 const publicRoutes = [
     { path: config.routes.home, component: Home, layout: OnlyHeaderLayout },
     { path: config.routes.admin, component: Admin, layout: AdminLayout },
+    { path: config.routes.menu, component: MainMenu, layout: AdminLayout },
     { path: config.routes.about, component: About },
     { path: config.routes.history, component: History },
     { path: config.routes.vision, component: Vision },
