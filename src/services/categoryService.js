@@ -39,13 +39,13 @@ export const getCategoryById = async (id) => {
     }
 };
 
-export const getCategoriesByType = async (type) => {
+export const getCategoriesByType = async (value) => {
     try {
-        const response = await httpRequest.get(`/category/type/${type}`);
+        const response = await httpRequest.get(`/category/type?value=${value}`);
         const categories = response.data.data;
         return categories;
     } catch (error) {
-        console.error(`Error fetching category name for type ${type}`, error);
+        console.error(`Error fetching category name for type ${value}`, error);
         throw error;
     }
 };

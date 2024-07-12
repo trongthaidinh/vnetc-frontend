@@ -1,5 +1,6 @@
 const routes = {
     home: '/',
+    admin: '/admin',
     about: '/gioi-thieu',
     introduction: '/gioi-thieu/tong-quan',
     history: '/gioi-thieu/lich-su',

@@ -1,0 +1,113 @@
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    height: 100vh;
+    transition: width 0.3s;
+    position: relative;
+
+    &.collapsed {
+        width: 80px;
+
+        .logo {
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .toggleIcon {
+            margin-left: 10px;
+        }
+
+        .menuItem {
+            display: flex;
+            align-items: center;
+            width: 100%; /* Đảm bảo menu item chiếm toàn bộ chiều rộng */
+        }
+
+        .menuText {
+            opacity: 0; /* Ẩn chữ menu khi sidebar bị thu nhỏ */
+            transition: opacity 0.3s; /* Thêm transition để chuyển đổi mượt mà */
+        }
+    }
+
+    &.expanded {
+        .menuText {
+            opacity: 1; /* Hiển thị chữ menu khi sidebar mở rộng */
+            transition: opacity 0.3s 0.3s; /* Thêm độ trễ để đảm bảo chữ menu chỉ hiển thị sau khi sidebar đã mở rộng */
+        }
+    }
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #1a252f;
+    font-size: 1.2em;
+
+    span {
+        flex-grow: 1;
+    }
+}
+
+.toggleIcon {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+        display: flex;
+        flex-direction: column;
+
+        > div {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: #34495e;
+            }
+        }
+
+        .menuIcon {
+            margin-right: 10px;
+            min-width: 20px;
+        }
+
+        .chevronIcon {
+            transition: transform 0.3s;
+            margin-left: 20px;
+        }
+
+        .subMenu {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 0 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+
+            li {
+                padding: 10px 0;
+                cursor: pointer;
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: #34495e;
+                }
+            }
+
+            &.open {
+                max-height: 200px;
+            }
+        }
+    }
+}
