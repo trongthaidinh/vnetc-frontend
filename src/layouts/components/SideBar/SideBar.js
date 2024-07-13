@@ -1,23 +1,27 @@
+// src/components/SideBar.js
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleDot } from '@fortawesome/free-solid-svg-icons';
 import styles from './SideBar.module.scss';
 import Menu, { MenuItem } from './Menu';
-import { getCategories } from '~/services/categoryService';
+import { getCategoriesByType } from '~/services/categoryService';
+import { useBaseRoute } from '~/context/BaseRouteContext';
+import LoadingScreen from '~/components/LoadingScreen';
 
 const cx = classNames.bind(styles);
 
-function SideBar() {
-    const [categoryData, setCategoryData] = useState([]);
+function SideBar({ categoryType }) {
+    const [categoriesData, setCategoriesData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const baseRoute = useBaseRoute();
 
     useEffect(() => {
         async function fetchCategoryData() {
             try {
-                const data = await getCategories();
-                setCategoryData(data);
+                const data = await getCategoriesByType(categoryType);
+                setCategoriesData(data);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching category data:', error);
@@ -27,32 +31,26 @@ function SideBar() {
         }
 
         fetchCategoryData();
-    }, []);
+    }, [categoryType]);
 
     const renderMenuItems = () => {
         if (loading) {
-            return <MenuItem title="Loading..." />;
+            return <LoadingScreen />;
         }
 
-        if (error || !categoryData) {
-            return <MenuItem title="Error loading categories" />;
+        if (error || !categoriesData) {
+            return <LoadingScreen />;
         }
 
-        const currentSlug = window.location.pathname.split('/')[2];
-        const currentCategory = categoryData.find((category) => category.slug === currentSlug);
-
-        if (!currentCategory) {
-            return <MenuItem title="Default Title" to="/default" icon={<FontAwesomeIcon icon={faCircleDot} />} />;
-        }
-
-        return (
+        return categoriesData.map((category) => (
             <MenuItem
-                key={currentCategory.id}
-                title={currentCategory.title}
-                to={`/${currentSlug}/${currentCategory.slug}`}
+                key={category._id}
+                title={category.name}
+                to={`${baseRoute}/${category.slug}`}
                 icon={<FontAwesomeIcon icon={faCircleDot} />}
+                activeIcon={<FontAwesomeIcon icon={faCircleDot} />}
             />
-        );
+        ));
     };
 
     return (

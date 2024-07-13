@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -8,23 +8,47 @@ import Title from '~/components/Title';
 import styles from './IndustryNews.module.scss';
 import { Link } from 'react-router-dom';
 import Card from '~/components/CardContent/CardContent';
-import { getCategoryName } from '~/services/categoryService';
+import { getCategoriesByType } from '~/services/categoryService';
 
 const cx = classNames.bind(styles);
 
 function NewsCategory() {
-    const { categoryId } = useParams();
+    const location = useLocation();
     const [news, setNews] = useState([]);
+    const [categoryId, setCategoryId] = useState(location.state?.categoryId || null);
+    const [categoryName, setCategoryName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const newsPerPage = 12;
 
     useEffect(() => {
-        async function fetchNewsCategory() {
+        async function fetchCategory() {
             try {
-                const data = await getNewsByCategory(categoryId);
-                setNews(data);
+                const categories = await getCategoriesByType(2);
+                const category = categories.find((cat) => cat._id === categoryId);
+                if (category) {
+                    setCategoryId(category._id);
+                    setCategoryName(category.name);
+                }
             } catch (error) {
-                console.error('Error fetching news:', error);
+                console.error('Error fetching categories:', error);
+            }
+        }
+
+        if (!categoryId) {
+            fetchCategory();
+        }
+    }, [categoryId]);
+
+    useEffect(() => {
+        async function fetchNewsCategory() {
+            if (categoryId) {
+                try {
+                    const data = await getNewsByCategory(categoryId);
+                    console.log(data);
+                    setNews(data);
+                } catch (error) {
+                    console.error('Error fetching news:', error);
+                }
             }
         }
 
@@ -44,14 +68,14 @@ function NewsCategory() {
     };
 
     const renderNewsCategory = () => {
-        return currentNewsCategory.map((news, index) => (
-            <Link to={`/news/${news.id}`} key={index}>
+        return currentNewsCategory.map((newsItem, index) => (
+            <Link to={`/news/${newsItem._id}`} key={index}>
                 <Card
-                    title={news.title}
-                    image={news.image}
-                    summary={news.summary}
-                    createdAt={news.createdAt}
-                    views={news.views}
+                    title={newsItem.title}
+                    image={newsItem.image}
+                    summary={newsItem.summary}
+                    createdAt={newsItem.createdAt}
+                    views={newsItem.views}
                 />
             </Link>
         ));
@@ -79,11 +103,9 @@ function NewsCategory() {
         );
     };
 
-    const { name: categoryName } = getCategoryName(parseInt(categoryId, 10));
-
     return (
         <div className={cx('container')}>
-            <Title text={`${categoryName}`} />
+            <Title text={categoryName} />
             <div className={cx('newsGrid')}>{renderNewsCategory()}</div>
             {renderPagination()}
         </div>

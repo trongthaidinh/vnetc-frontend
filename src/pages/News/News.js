@@ -28,7 +28,6 @@ const News = () => {
                 // Fetch all categories
                 const categoriesData = await getCategoriesByType(2);
                 setCategories(categoriesData);
-                console.log(categoriesData);
 
                 const groupedNewsMap = {};
 
@@ -94,6 +93,7 @@ const News = () => {
                                 text={category.name || 'Loading...'}
                                 showSeeAll={true}
                                 slug={`${routes.news}/${category.slug}`}
+                                categoryId={category._id}
                             />
                             <div className={cx('news-items')}>
                                 {groupedNews[category._id]?.slice(0, 6).map((item, index) => (

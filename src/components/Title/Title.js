@@ -6,12 +6,17 @@ import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-function Title({ text, showSeeAll = false, slug }) {
+function Title({ text, showSeeAll = false, slug, categoryId }) {
     return (
         <div className={cx('header')}>
             <span className={cx('title')}>{text}</span>
             {showSeeAll && (
-                <Link to={slug}>
+                <Link
+                    to={{
+                        pathname: slug,
+                        state: { categoryId },
+                    }}
+                >
                     <button className={cx('see-all')}>Xem tất cả</button>
                 </Link>
             )}
@@ -24,6 +29,7 @@ Title.propTypes = {
     text: PropTypes.string.isRequired,
     showSeeAll: PropTypes.bool,
     slug: PropTypes.string,
+    categoryId: PropTypes.string,
 };
 
 export default Title;

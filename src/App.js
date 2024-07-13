@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from '~/routes';
-import { DefaultLayout } from '~/layouts';
+import DefaultLayout from '~/layouts/DefaultLayout';
 import LoadingScreen from '~/components/LoadingScreen';
 import { AuthProvider, useAuth } from '~/hooks/useAuth';
 import Login from '~/pages/Admin/Login';
@@ -41,7 +41,7 @@ function App() {
                                     key={index}
                                     path={route.path}
                                     element={
-                                        <Layout>
+                                        <Layout baseRoute={route.baseRoute} categoryType={route.categoryType}>
                                             <Page />
                                         </Layout>
                                     }
@@ -59,7 +59,7 @@ function App() {
                                     path={route.path}
                                     element={
                                         <PrivateRoute>
-                                            <Layout>
+                                            <Layout baseRoute={route.baseRoute} categoryType={route.categoryType}>
                                                 <Page />
                                             </Layout>
                                         </PrivateRoute>
@@ -75,6 +75,7 @@ function App() {
         </Router>
     );
 }
+
 function PrivateRoute({ children }) {
     const { user, loading } = useAuth();
 

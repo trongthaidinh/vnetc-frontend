@@ -1,7 +1,9 @@
+// src/routes/routes.js
 import config from '~/config';
 
 // Layouts
 import { OnlyHeaderLayout, NothingLayout, AdminLayout } from '~/layouts';
+import DefaultLayout from '~/layouts/DefaultLayout';
 
 // Pages
 import Home from '~/pages/Home';
@@ -32,27 +34,82 @@ import Dashboard from '~/pages/Admin/Dashboard';
 
 // Public Routes
 const publicRoutes = [
-    { path: config.routes.home, component: Home, layout: OnlyHeaderLayout },
-    { path: config.routes.about, component: About },
-    { path: config.routes.history, component: History },
-    { path: config.routes.vision, component: Vision },
-    { path: config.routes.products, component: Products },
+    {
+        path: config.routes.home,
+        component: Home,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: config.routes.about,
+        component: About,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: config.routes.history,
+        component: History,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: config.routes.vision,
+        component: Vision,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: config.routes.products,
+        component: Products,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.products} categoryType={1} />,
+    },
     { path: config.routes.productDetail, component: ProductDetail, layout: OnlyHeaderLayout },
-    { path: config.routes.projects, component: Projects },
-    { path: config.routes.ongoingProjects, component: Projects },
-    { path: config.routes.introduction, component: Introduction },
-    { path: config.routes.capacityProfile, component: Capacity },
-    { path: config.routes.organizational, component: Organizational },
-    { path: config.routes.qualityGoals, component: Quality },
-    { path: config.routes.socialEconomicNews, component: SocialEconomicNews },
-    { path: config.routes.newsCategory, component: IndustryNews },
-    { path: config.routes.newsDetail, component: NewsDetail },
+    {
+        path: config.routes.projects,
+        component: Projects,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.projects} categoryType={4} />,
+    },
+    {
+        path: config.routes.ongoingProjects,
+        component: Projects,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.ongoingProjects} categoryType={4} />,
+    },
+    {
+        path: config.routes.introduction,
+        component: Introduction,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: config.routes.capacityProfile,
+        component: Capacity,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: config.routes.organizational,
+        component: Organizational,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: config.routes.qualityGoals,
+        component: Quality,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: config.routes.newsCategory,
+        component: IndustryNews,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.news} categoryType={2} />,
+    },
+    {
+        path: config.routes.newsDetail,
+        component: NewsDetail,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.news} categoryType={2} />,
+    },
     { path: config.routes.news, component: News, layout: OnlyHeaderLayout },
     { path: config.routes.services, component: Service, layout: OnlyHeaderLayout },
     { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },
     { path: config.routes.error404, component: Error404, layout: NothingLayout },
     { path: config.routes.contact, component: Contact, layout: OnlyHeaderLayout },
-    { path: config.routes.teams, component: Teams },
+    {
+        path: config.routes.teams,
+        component: Teams,
+        layout: OnlyHeaderLayout,
+    },
 ];
 
 // Private Routes

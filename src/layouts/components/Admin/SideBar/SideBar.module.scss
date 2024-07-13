@@ -2,7 +2,8 @@
     width: 300px;
     background-color: white;
     color: var(--text-color);
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     transition: width 0.3s;
     position: relative;
     box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);

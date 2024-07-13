@@ -6,6 +6,7 @@ import LoadingScreen from '~/components/LoadingScreen';
 import PushNotification from '~/components/PushNotification';
 import DateTime from '~/components/DateTime';
 import Title from '~/components/Title';
+import { getNewsById } from '~/services/newsService';
 
 const cx = classNames.bind(styles);
 
@@ -18,33 +19,7 @@ const NewsDetail = () => {
     useEffect(() => {
         const fetchNewsDetail = async () => {
             try {
-                // const data = await getNewsById(id);
-                // Điều chỉnh sau khi có API hoặc dữ liệu thực
-                const data = {
-                    id: 1,
-                    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod',
-                    image: 'https://www.vnetc.com.vn/assets/img/post/z4982216183705_fa134df795ac46d96e14c6bdf6d8ec2b.jpg',
-                    views: 55,
-                    createdAt: 1642498745000,
-                    updatedAt: 1642528745000,
-                    content: `
-                        <p>
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            <br />
-                            <img src="https://www.vnetc.com.vn/assets/img/post/z4982216183705_fa134df795ac46d96e14c6bdf6d8ec2b.jpg" alt="Image 1" style="max-width: 100%;" />
-                            <br />
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            <br />
-                            <img src="https://www.vnetc.com.vn/assets/img/post/z4982216183705_fa134df795ac46d96e14c6bdf6d8ec2b.jpg" alt="Image 2" style="max-width: 100%;" />
-                            <br />
-                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            <br />
-                            <br />
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        </p>
-                    `,
-                };
+                const data = await getNewsById(id);
                 setNewsDetail(data);
             } catch (error) {
                 setError(error);
