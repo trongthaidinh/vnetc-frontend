@@ -65,14 +65,26 @@
     li {
         display: flex;
         flex-direction: column;
+        padding: 15px 20px;
+
+        a {
+            color: var(--text-color);
+            &:hover {
+                background-color: var(--primary-bg-hover);
+                color: var(--primary);
+
+                .menuIcon,
+                .chevronIcon {
+                    color: var(--primary);
+                }
+            }
+        }
 
         > div {
             display: flex;
             align-items: center;
-            padding: 15px 20px;
             cursor: pointer;
             transition: background-color 0.3s, color 0.3s;
-
             &:hover {
                 background-color: var(--primary-bg-hover);
                 color: var(--primary);
@@ -97,7 +109,7 @@
         .subMenu {
             list-style: none;
             padding: 0;
-            margin: 0 0 0 56px;
+            margin: 8px 0 0 40px;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;

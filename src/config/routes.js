@@ -1,7 +1,10 @@
 const routes = {
     home: '/',
     admin: '/admin',
-    menu: '/admin/menu',
+    dashboard: '/admin/dashboard',
+    mainMenu: '/admin/main-menu',
+    subMenu: '/admin/sub-menu',
+    addMenu: '/admin/add-menu',
     about: '/gioi-thieu',
     introduction: '/gioi-thieu/tong-quan',
     history: '/gioi-thieu/lich-su',

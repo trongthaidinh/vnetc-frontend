@@ -21,6 +21,7 @@
     --slider-height-sm: 200px;
     --nav-height: 60px;
     --slides-per-view: 4;
+    --admin--background: #eff3f9;
     @include respond-to(lg) {
         --slides-per-view: 3;
     }

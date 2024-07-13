@@ -13,7 +13,6 @@ function AdminLayout({ children }) {
                 <Header />
                 <div className={cx('content')}>{children}</div>
             </div>
-            {/* <Footer /> */}
         </div>
     );
 }

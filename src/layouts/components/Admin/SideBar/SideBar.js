@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import styles from './SideBar.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -16,6 +17,7 @@ import {
     faDiagramProject,
     faLayerGroup,
 } from '@fortawesome/free-solid-svg-icons';
+import routes from '~/config/routes';
 
 const SideBar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -56,10 +58,10 @@ const SideBar = () => {
             </div>
             <ul className={styles.menu}>
                 <li>
-                    <div className={styles.menuItem}>
+                    <NavLink to="/" className={styles.menuItem}>
                         <FontAwesomeIcon icon={faTachometerAlt} className={styles.menuIcon} />
                         <span className={styles.menuText}>{!isCollapsed && 'Bảng điều khiển'}</span>
-                    </div>
+                    </NavLink>
                 </li>
                 <li>
                     <div className={styles.menuItem} onClick={() => toggleMenu('menuManagement')}>
@@ -77,15 +79,22 @@ const SideBar = () => {
                         </span>
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.menuManagement ? styles.open : ''}`}>
-                        <li>Menu chính</li>
-                        <li>Menu phụ</li>
+                        <li>
+                            <NavLink to={routes.mainMenu}>Menu chính</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.subMenu}>Menu phụ</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.addMenu}>Thêm Menu</NavLink>
+                        </li>
                     </ul>
                 </li>
                 <li>
-                    <div className={styles.menuItem}>
+                    <NavLink to="/messages" className={styles.menuItem}>
                         <FontAwesomeIcon icon={faEnvelope} className={styles.menuIcon} />
                         <span className={styles.menuText}>{!isCollapsed && 'Quản lí tin nhắn'}</span>
-                    </div>
+                    </NavLink>
                 </li>
                 <li>
                     <div className={styles.menuItem} onClick={() => toggleMenu('userManagement')}>
@@ -103,8 +112,12 @@ const SideBar = () => {
                         </span>
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.userManagement ? styles.open : ''}`}>
-                        <li>Danh sách người dùng</li>
-                        <li>Thêm người dùng</li>
+                        <li>
+                            <NavLink to="/users">Danh sách người dùng</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/add-user">Thêm người dùng</NavLink>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -123,8 +136,12 @@ const SideBar = () => {
                         </span>
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.productManagement ? styles.open : ''}`}>
-                        <li>Danh sách sản phẩm</li>
-                        <li>Thêm sản phẩm</li>
+                        <li>
+                            <NavLink to="/products">Danh sách sản phẩm</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/add-product">Thêm sản phẩm</NavLink>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -143,8 +160,12 @@ const SideBar = () => {
                         </span>
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.newsManagement ? styles.open : ''}`}>
-                        <li>Danh sách tin tức</li>
-                        <li>Thêm tin tức</li>
+                        <li>
+                            <NavLink to="/news">Danh sách tin tức</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/add-news">Thêm tin tức</NavLink>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -163,8 +184,12 @@ const SideBar = () => {
                         </span>
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.projectManagement ? styles.open : ''}`}>
-                        <li>Danh sách dự án</li>
-                        <li>Thêm dự án</li>
+                        <li>
+                            <NavLink to="/projects">Danh sách dự án</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/add-project">Thêm dự án</NavLink>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -183,15 +208,19 @@ const SideBar = () => {
                         </span>
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.serviceManagement ? styles.open : ''}`}>
-                        <li>Danh sách dịch vụ</li>
-                        <li>Thêm dịch vụ</li>
+                        <li>
+                            <NavLink to="/services">Danh sách dịch vụ</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/add-service">Thêm dịch vụ</NavLink>
+                        </li>
                     </ul>
                 </li>
                 <li>
-                    <div className={styles.menuItem}>
+                    <NavLink to="/settings" className={styles.menuItem}>
                         <FontAwesomeIcon icon={faCogs} className={styles.menuIcon} />
                         <span className={styles.menuText}>{!isCollapsed && 'Cài đặt chung'}</span>
-                    </div>
+                    </NavLink>
                 </li>
             </ul>
         </div>

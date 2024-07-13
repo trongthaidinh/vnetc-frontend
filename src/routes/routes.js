@@ -1,9 +1,9 @@
 import config from '~/config';
 
-//Layout
+// Layouts
 import { OnlyHeaderLayout, NothingLayout, AdminLayout } from '~/layouts';
 
-// Page
+// Pages
 import Home from '~/pages/Home';
 import About from '~/pages/About';
 import News from '~/pages/News';
@@ -24,14 +24,15 @@ import IndustryNews from '~/pages/IndustryNews';
 import NewsDetail from '~/pages/NewsDetail';
 import ProductDetail from '~/pages/ProductDetail';
 import Introduction from '~/pages/Introduction';
-import Admin from '~/pages/Admin';
-import MainMenu from '~/pages/Admin/MainMenu';
+import MainMenu from '~/pages/Admin/Menu/MainMenu';
+import SubMenu from '~/pages/Admin/Menu/SubMenu';
+import AddMenu from '~/pages/Admin/Menu/AddMenu';
+import Login from '~/pages/Admin/Login';
+import Dashboard from '~/pages/Admin/Dashboard';
 
 // Public Routes
 const publicRoutes = [
     { path: config.routes.home, component: Home, layout: OnlyHeaderLayout },
-    { path: config.routes.admin, component: Admin, layout: AdminLayout },
-    { path: config.routes.menu, component: MainMenu, layout: AdminLayout },
     { path: config.routes.about, component: About },
     { path: config.routes.history, component: History },
     { path: config.routes.vision, component: Vision },
@@ -55,6 +56,13 @@ const publicRoutes = [
 ];
 
 // Private Routes
-const privateRoutes = [];
+const privateRoutes = [
+    { path: config.routes.admin, component: Dashboard, layout: AdminLayout },
+    { path: config.routes.dashboard, component: Dashboard, layout: AdminLayout },
+    { path: config.routes.login, component: Login, layout: NothingLayout },
+    { path: config.routes.mainMenu, component: MainMenu, layout: AdminLayout },
+    { path: config.routes.subMenu, component: SubMenu, layout: AdminLayout },
+    { path: config.routes.addMenu, component: AddMenu, layout: AdminLayout },
+];
 
 export { publicRoutes, privateRoutes };
