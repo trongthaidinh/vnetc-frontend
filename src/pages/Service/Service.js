@@ -1,103 +1,134 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Card from '~/components/CardContent';
 import SuggestCard from '~/components/SuggestCard';
 import { getServices } from '~/services/serviceService';
+import { getCategoriesByType } from '~/services/categoryService';
 import styles from './Service.module.scss';
 import Title from '~/components/Title';
 import ButtonGroup from '~/components/ButtonGroup';
+import PushNotification from '~/components/PushNotification';
+import LoadingScreen from '~/components/LoadingScreen';
+import routes from '~/config/routes';
 
 const cx = classNames.bind(styles);
 
 const Service = () => {
     const [serviceItems, setServiceItems] = useState([]);
+    const [groupedService, setGroupedService] = useState({});
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedSuggestion, setSelectedSuggestion] = useState('Nổi bật');
 
     useEffect(() => {
-        const fetchService = async () => {
+        const fetchCategoriesAndServices = async () => {
             try {
-                const data = await getServices();
-                setServiceItems(data);
+                const categoriesData = await getCategoriesByType(3);
+                setCategories(categoriesData);
+
+                const serviceData = await getServices();
+                const groupedServiceMap = {};
+
+                serviceData?.forEach((item) => {
+                    const serviceType = item.serviceType;
+                    if (!groupedServiceMap[serviceType]) {
+                        groupedServiceMap[serviceType] = [];
+                    }
+                    groupedServiceMap[serviceType].push({
+                        ...item,
+                        image: item.images,
+                        createdAt: new Date(item.createdAt).getTime(),
+                    });
+                });
+
+                setGroupedService(groupedServiceMap);
+                setServiceItems(serviceData);
             } catch (error) {
-                setError('Lỗi khi tải dữ liệu');
-                console.error('Error fetching service:', error);
+                setError(error);
+                console.error('Error fetching categories or services:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
-        fetchService();
+        fetchCategoriesAndServices();
     }, []);
 
+    const handleButtonClick = (type) => {
+        setSelectedSuggestion(type);
+    };
+
     if (error) {
-        return <div>{error}</div>;
+        const errorMessage = error.response ? error.response.data.message : 'Network Error';
+        return <PushNotification message={errorMessage} />;
     }
+
+    if (loading) {
+        return <LoadingScreen />;
+    }
+
+    const filteredServiceItems = serviceItems
+        .filter((item) => {
+            if (selectedSuggestion === 'Nổi bật') {
+                return item.isFeatured;
+            }
+            if (selectedSuggestion === 'Xem nhiều') {
+                return item.views > 10;
+            }
+            return true;
+        })
+        .slice(0, 5);
 
     return (
         <article className={cx('wrapper')}>
             <div className={cx('service-section')}>
                 <div className={cx('service-column')}>
-                    <h2 className={cx('service-title')}>Dịch Vụ</h2>
-                    <div className={cx('service-accreditation')}>
-                        <Title text="Kiểm Định" />
-                        <div className={cx('service-items')}>
-                            {serviceItems.map((item, index) => (
-                                <Card
-                                    key={index}
-                                    title={item.title}
-                                    image={item.image}
-                                    summary={item.summary}
-                                    link={item.link}
-                                    createdAt={item.createdAt}
-                                    views={item.views}
+                    <h2 className={cx('service-title')}>Tin Tức</h2>
+                    {Object.keys(groupedService).map((serviceType) => {
+                        const category = categories[serviceType];
+                        if (!category) return null;
+
+                        return (
+                            <div key={serviceType} className={cx('service-category')}>
+                                <Title
+                                    text={category.name}
+                                    showSeeAll={true}
+                                    slug={`${routes.services}/${category.slug}`}
+                                    categoryId={category._id}
                                 />
-                            ))}
-                        </div>
-                    </div>
-                    <div className={cx('service-test')}>
-                        <Title text="Kiểm thử" />
-                        <div className={cx('service-items')}>
-                            {serviceItems.map((item, index) => (
-                                <Card
-                                    key={index}
-                                    title={item.title}
-                                    image={item.image}
-                                    summary={item.summary}
-                                    link={item.link}
-                                    createdAt={item.createdAt}
-                                    views={item.views}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                    <div className={cx('service-calibration')}>
-                        <Title text="Hiệu chuẩn" />
-                        <div className={cx('service-items')}>
-                            {serviceItems.map((item, index) => (
-                                <Card
-                                    key={index}
-                                    title={item.title}
-                                    image={item.image}
-                                    summary={item.summary}
-                                    link={item.link}
-                                    createdAt={item.createdAt}
-                                    views={item.views}
-                                />
-                            ))}
-                        </div>
-                    </div>
+                                <div className={cx('service-items')}>
+                                    {groupedService[serviceType]?.slice(0, 6).map((item, index) => (
+                                        <Link key={index} to={`${routes.services}/${category.slug}/${item._id}`}>
+                                            <Card
+                                                title={item.name}
+                                                summary={item.summary}
+                                                image={item.image}
+                                                createdAt={item.createdAt}
+                                                views={item.views}
+                                            />
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
                 <div className={cx('suggest')}>
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
+                    <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-items')}>
-                        <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} />
-                        {serviceItems.map((item, index) => (
-                            <SuggestCard
-                                key={index}
-                                title={item.title}
-                                image={item.image}
-                                summary={item.summary}
-                                link={item.link}
-                                createdAt={item.createdAt}
-                            />
+                        {filteredServiceItems.map((item, index) => (
+                            <Link key={index} to={`/service/${item._id}`}>
+                                <SuggestCard
+                                    title={item.name}
+                                    summary={item.summary}
+                                    image={item.image}
+                                    createdAt={item.createdAt}
+                                    views={item.views}
+                                />
+                            </Link>
                         ))}
                     </div>
                 </div>

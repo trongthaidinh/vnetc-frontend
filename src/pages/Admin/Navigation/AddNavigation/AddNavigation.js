@@ -1,11 +1,11 @@
+// AddNavigation.js
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import styles from './AddMenu.module.scss';
-import Title from '../../components/Title';
-import Breadcrumb from '~/components/Breadcrumb';
+import styles from './AddNavigation.module.scss';
+import Title from '~/components/Title';
 
-const AddMenu = () => {
+const AddNavigation = () => {
     const initialValues = {
         title: '',
         type: '',
@@ -24,9 +24,8 @@ const AddMenu = () => {
     };
 
     return (
-        <div className={styles.addMenuContainer}>
-            <Title>Thêm mới Menu</Title>
-            <Breadcrumb items={['Trang chủ', 'Quản lý Menu', 'Thêm mới Menu']} />
+        <div className={styles.navigationContainer}>
+            <Title className={styles.pageTitle} text="Thêm mới Navigation"></Title>
             <div className={styles.formContainer}>
                 <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                     {({ isSubmitting }) => (
@@ -38,24 +37,24 @@ const AddMenu = () => {
                             </div>
 
                             <div className={styles.formItem}>
-                                <label htmlFor="type">Loại Menu</label>
+                                <label htmlFor="type">Loại Navigation</label>
                                 <Field as="select" name="type">
                                     <option value="">Chọn loại</option>
-                                    <option value="1">Menu chính</option>
-                                    <option value="2">Menu phụ</option>
+                                    <option value="1">Navigation chính</option>
+                                    <option value="2">Navigation phụ</option>
                                 </Field>
                                 <ErrorMessage name="type" component="div" className={styles.errorMessage} />
                             </div>
 
                             <div className={styles.formItem}>
-                                <label htmlFor="parentNavId">ID Menu Cha</label>
+                                <label htmlFor="parentNavId">ID Navigation Cha</label>
                                 <Field name="parentNavId" type="text" />
                                 <ErrorMessage name="parentNavId" component="div" className={styles.errorMessage} />
                             </div>
 
                             <div className={styles.buttonContainer}>
                                 <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                                    {isSubmitting ? 'Đang gửi...' : 'Thêm Menu'}
+                                    {isSubmitting ? 'Đang gửi...' : 'Thêm Navigation'}
                                 </button>
                                 <button
                                     type="button"
@@ -75,4 +74,4 @@ const AddMenu = () => {
     );
 };
 
-export default AddMenu;
+export default AddNavigation;

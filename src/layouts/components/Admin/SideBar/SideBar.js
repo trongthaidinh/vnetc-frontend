@@ -86,7 +86,7 @@ const SideBar = () => {
                             <NavLink to={routes.subMenu}>Menu phụ</NavLink>
                         </li>
                         <li>
-                            <NavLink to={routes.addMenu}>Thêm Menu</NavLink>
+                            <NavLink to={routes.addNavigation}>Thêm Menu</NavLink>
                         </li>
                     </ul>
                 </li>

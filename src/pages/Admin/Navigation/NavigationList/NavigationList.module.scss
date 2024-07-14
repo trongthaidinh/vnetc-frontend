@@ -1,0 +1,40 @@
+.menuListContainer {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.tableContainer {
+    margin-top: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+    th {
+        background-color: #f4f4f4;
+    }
+}
+
+.editButton {
+    color: #007bff;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.deleteButton {
+    color: #dc3545;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.deleteButton:hover {
+    text-decoration: underline;
+}

@@ -25,17 +25,14 @@ const News = () => {
     useEffect(() => {
         const fetchCategoriesAndNews = async () => {
             try {
-                // Fetch all categories
                 const categoriesData = await getCategoriesByType(2);
                 setCategories(categoriesData);
 
                 const groupedNewsMap = {};
 
-                // Fetch news for each category
                 await Promise.all(
                     categoriesData.map(async (category) => {
                         const newsData = await getNewsByCategory(category._id);
-                        console.log(newsData);
                         groupedNewsMap[category._id] = newsData.map((item) => ({
                             ...item,
                             image: item.images,
@@ -87,29 +84,31 @@ const News = () => {
             <div className={cx('news-section')}>
                 <div className={cx('news-column')}>
                     <h2 className={cx('news-title')}>Tin Tức</h2>
-                    {categories.map((category) => (
-                        <div key={category._id} className={cx('news-category')}>
-                            <Title
-                                text={category.name || 'Loading...'}
-                                showSeeAll={true}
-                                slug={`${routes.news}/${category.slug}`}
-                                categoryId={category._id}
-                            />
-                            <div className={cx('news-items')}>
-                                {groupedNews[category._id]?.slice(0, 6).map((item, index) => (
-                                    <Link key={index} to={`${routes.news}/${category.slug}/${item._id}`}>
-                                        <Card
-                                            title={item.title}
-                                            summary={item.summary}
-                                            image={item.images}
-                                            createdAt={item.createdAt}
-                                            views={item.views}
-                                        />
-                                    </Link>
-                                ))}
+                    {categories.map((category) => {
+                        return (
+                            <div key={category._id} className={cx('news-category')}>
+                                <Title
+                                    text={category.name || 'Loading...'}
+                                    showSeeAll={true}
+                                    slug={`${routes.news}/${category.slug}`}
+                                    categoryId={category._id}
+                                />
+                                <div className={cx('news-items')}>
+                                    {groupedNews[category._id]?.slice(0, 6).map((item, index) => (
+                                        <Link key={index} to={`${routes.news}/${category.slug}/${item._id}`}>
+                                            <Card
+                                                title={item.title}
+                                                summary={item.summary}
+                                                image={item.images}
+                                                createdAt={item.createdAt}
+                                                views={item.views}
+                                            />
+                                        </Link>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
                 <div className={cx('suggest')}>
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>

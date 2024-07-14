@@ -21,16 +21,14 @@ import Error404 from '~/pages/Error404';
 import Projects from '~/pages/Projects';
 import Contact from '~/pages/Contact';
 import Teams from '~/pages/Teams';
-import SocialEconomicNews from '~/pages/SocialEconomicNews';
 import IndustryNews from '~/pages/IndustryNews';
 import NewsDetail from '~/pages/NewsDetail';
 import ProductDetail from '~/pages/ProductDetail';
 import Introduction from '~/pages/Introduction';
-import MainMenu from '~/pages/Admin/Menu/MainMenu';
-import SubMenu from '~/pages/Admin/Menu/SubMenu';
-import AddMenu from '~/pages/Admin/Menu/AddMenu';
 import Login from '~/pages/Admin/Login';
 import Dashboard from '~/pages/Admin/Dashboard';
+import AddNavigation from '~/pages/Admin/Navigation/AddNavigation';
+import NavigationList from '~/pages/Admin/Navigation/NavigationList';
 
 // Public Routes
 const publicRoutes = [
@@ -102,6 +100,11 @@ const publicRoutes = [
     },
     { path: config.routes.news, component: News, layout: OnlyHeaderLayout },
     { path: config.routes.services, component: Service, layout: OnlyHeaderLayout },
+    // {
+    //     path: config.routes.servicesCategory,
+    //     component: ServicesCategory,
+    //     layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.services} categoryType={3} />,
+    // },
     { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },
     { path: config.routes.error404, component: Error404, layout: NothingLayout },
     { path: config.routes.contact, component: Contact, layout: OnlyHeaderLayout },
@@ -117,9 +120,8 @@ const privateRoutes = [
     { path: config.routes.admin, component: Dashboard, layout: AdminLayout },
     { path: config.routes.dashboard, component: Dashboard, layout: AdminLayout },
     { path: config.routes.login, component: Login, layout: NothingLayout },
-    { path: config.routes.mainMenu, component: MainMenu, layout: AdminLayout },
-    { path: config.routes.subMenu, component: SubMenu, layout: AdminLayout },
-    { path: config.routes.addMenu, component: AddMenu, layout: AdminLayout },
+    { path: config.routes.navigationList, component: NavigationList, layout: AdminLayout },
+    { path: config.routes.addNavigation, component: AddNavigation, layout: AdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };
