@@ -23,6 +23,7 @@ const routes = {
     projects: '/du-an-va-nang-luc',
     ongoingProjects: '/du-an-va-nang-luc/du-an-dang-thuc-hien',
     services: '/dich-vu',
+    serviceDetail: '/dich-vu/:category/:id',
     servicesCategory: `/dich-vu/:slug`,
     teams: '/doi-ngu',
     error404: '/404',

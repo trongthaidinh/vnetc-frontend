@@ -22,7 +22,7 @@ export const getServicesPagiation = async (page = 1, limit = 8) => {
 
 export const getServiceById = async (id) => {
     try {
-        const response = await httpRequest.get(`/service/${id}`);
+        const response = await httpRequest.get(`/services/${id}`);
         return response.data.data;
     } catch (error) {
         console.error(`Error fetching service detail with id ${id}`, error);

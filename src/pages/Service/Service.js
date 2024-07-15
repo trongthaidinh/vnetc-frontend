@@ -38,7 +38,7 @@ const Service = () => {
                     }
                     groupedServiceMap[serviceType].push({
                         ...item,
-                        image: item.images,
+                        image: item.image,
                         createdAt: new Date(item.createdAt).getTime(),
                     });
                 });
@@ -89,7 +89,6 @@ const Service = () => {
                     {Object.keys(groupedService).map((serviceType) => {
                         const category = categories[serviceType];
                         if (!category) return null;
-
                         return (
                             <div key={serviceType} className={cx('service-category')}>
                                 <Title

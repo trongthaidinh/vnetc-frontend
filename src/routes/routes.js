@@ -29,6 +29,8 @@ import Login from '~/pages/Admin/Login';
 import Dashboard from '~/pages/Admin/Dashboard';
 import AddNavigation from '~/pages/Admin/Navigation/AddNavigation';
 import NavigationList from '~/pages/Admin/Navigation/NavigationList';
+import ServiceDetail from '~/pages/ServiceDetail';
+import ServiceCategory from '~/pages/ServiceCategory';
 
 // Public Routes
 const publicRoutes = [
@@ -105,6 +107,16 @@ const publicRoutes = [
     //     component: ServicesCategory,
     //     layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.services} categoryType={3} />,
     // },
+    {
+        path: config.routes.serviceDetail,
+        component: ServiceDetail,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.services} categoryType={3} />,
+    },
+    {
+        path: config.routes.servicesCategory,
+        component: ServiceCategory,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.services} categoryType={3} />,
+    },
     { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },
     { path: config.routes.error404, component: Error404, layout: NothingLayout },
     { path: config.routes.contact, component: Contact, layout: OnlyHeaderLayout },
