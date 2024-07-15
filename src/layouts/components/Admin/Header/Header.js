@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faChevronDown, faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from './Dropdown';
 import styles from './Header.module.scss';
+import httpRequest from '~/utils/httpRequest'; // Adjust the import based on your structure
 
 const Header = () => {
     const [isEmailDropdownVisible, setIsEmailDropdownVisible] = useState(false);
@@ -22,6 +23,16 @@ const Header = () => {
         }
     };
 
+    const handleLogout = async () => {
+        try {
+            await httpRequest.post('/logout'); // Update with your actual logout endpoint
+            localStorage.removeItem('token'); // Clear the token
+            window.location.href = '/login'; // Redirect to the login page
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+    };
+
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -36,7 +47,7 @@ const Header = () => {
 
     const userDropdownItems = [
         { icon: faUser, text: 'Profile' },
-        { icon: faSignOutAlt, text: 'Logout' },
+        { icon: faSignOutAlt, text: 'Logout', action: handleLogout },
     ];
 
     return (

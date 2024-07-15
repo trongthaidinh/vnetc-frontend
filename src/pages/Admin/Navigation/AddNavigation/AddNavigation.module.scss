@@ -52,7 +52,7 @@
 
             .buttonContainer {
                 display: flex;
-                justify-content: space-between;
+                gap: 20px;
 
                 .submitButton,
                 .cancelButton {
@@ -68,12 +68,12 @@
                 }
 
                 .submitButton {
-                    background-color: #4caf50;
+                    background-color: var(--primary);
                     color: white;
                 }
 
                 .cancelButton {
-                    background-color: #f44336;
+                    background-color: var(--secondary);
                     color: white;
                 }
             }

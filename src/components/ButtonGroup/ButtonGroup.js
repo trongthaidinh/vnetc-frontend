@@ -10,7 +10,7 @@ const ButtonGroup = ({ buttons, onButtonClick }) => {
 
     const handleClick = (index) => {
         setActiveIndex(index);
-        onButtonClick(buttons[index]);
+        onButtonClick(index);
     };
 
     return (

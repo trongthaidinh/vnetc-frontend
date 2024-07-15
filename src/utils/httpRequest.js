@@ -6,9 +6,11 @@ const httpRequest = axios.create({
 
 httpRequest.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
-        if (token && config.url.includes('/admin')) {
-            config.headers.Authorization = `Bearer ${token}`;
+        const accessToken = localStorage.getItem('user');
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+            config.headers.Accept = `charset=UTF-8`;
+            console.log(config);
         }
         return config;
     },

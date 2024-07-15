@@ -21,7 +21,7 @@ const useProvideAuth = () => {
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
-            const decoded = JSON.parse(storedUser);
+            const decoded = storedUser;
             const isExpired = decoded.exp < Date.now() / 1000;
             if (!isExpired) {
                 setUser(decoded);
@@ -37,7 +37,7 @@ const useProvideAuth = () => {
         if (response.status) {
             const { data } = response;
             setUser(data);
-            localStorage.setItem('user', JSON.stringify(data));
+            localStorage.setItem('user', data);
             navigate('/admin/dashboard');
         } else {
             throw new Error(response.message);

@@ -1,45 +1,62 @@
 import React, { useEffect, useState } from 'react';
 import TeamItem from './TeamItem';
 import Title from '~/components/Title';
-import { getTeams } from '~/services/teamService';
+import { getDepartments, getDepartmentMembers } from '~/services/teamService';
 import classNames from 'classnames/bind';
 import styles from './Teams.module.scss';
+import positionTitles from '~/constants/PositionTitle';
+import LoadingScreen from '~/components/LoadingScreen'; // Import your LoadingScreen component
 
 const cx = classNames.bind(styles);
 
 const TeamPage = () => {
-    const [teams, setTeams] = useState([]);
+    const [departments, setDepartments] = useState([]);
+    const [members, setMembers] = useState({});
+    const [loading, setLoading] = useState(true); // Loading state
 
     useEffect(() => {
-        const fetchTeams = async () => {
+        const fetchDepartments = async () => {
             try {
-                const data = await getTeams();
-                setTeams(data);
+                const data = await getDepartments();
+                setDepartments(data);
+
+                const membersData = {};
+                await Promise.all(
+                    data.map(async (department) => {
+                        const departmentMembers = await getDepartmentMembers(department._id);
+                        membersData[department._id] = departmentMembers;
+                    }),
+                );
+                setMembers(membersData);
             } catch (error) {
-                console.error('Error fetching teams:', error);
+                console.error('Error fetching departments or members:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
-        fetchTeams();
+        fetchDepartments();
     }, []);
 
-    const teamTypes = [...new Set(teams.map((team) => team.type))];
+    if (loading) {
+        return <LoadingScreen />; // Display loading screen while loading
+    }
 
     return (
         <div className={cx('teamPage')}>
-            {teamTypes.map((type) => (
-                <React.Fragment key={type}>
-                    <Title text={type} />
+            {departments.map((department) => (
+                <React.Fragment key={department._id}>
+                    <Title text={department.name} />
                     <div className={cx('teamGrid')}>
-                        {teams
-                            .filter((team) => team.type === type)
-                            .map((team) => (
+                        {members[department._id]
+                            ?.sort((a, b) => a.position - b.position)
+                            .map((member) => (
                                 <TeamItem
-                                    key={team.id}
-                                    imageUrl={team.image}
-                                    gender={team.gender}
-                                    name={team.name}
-                                    position={team.position}
+                                    key={member._id}
+                                    imageUrl={member.image}
+                                    gender={member.gender}
+                                    name={member.name}
+                                    position={positionTitles[member.position]}
                                 />
                             ))}
                     </div>
