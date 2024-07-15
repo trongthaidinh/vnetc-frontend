@@ -52,7 +52,6 @@ function ServiceCategory() {
         async function fetchServiceCategory() {
             try {
                 const data = await getServiceByType(serviceType);
-                console.log(data);
                 setService(data);
             } catch (error) {
                 console.error('Error fetching service:', error);

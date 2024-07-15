@@ -1,8 +1,9 @@
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Services.module.scss';
-import React, { useState, useEffect } from 'react';
-import Service from './ServiceItem';
+import ServiceItem from './ServiceItem';
 import { getServices } from '~/services/serviceService';
+import { getCategoriesByType } from '~/services/categoryService';
 import Title from '~/components/Title';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
@@ -11,23 +12,28 @@ const cx = classNames.bind(styles);
 
 const Services = () => {
     const [services, setServices] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchServices = async () => {
+        const fetchServicesAndCategories = async () => {
             try {
-                const data = await getServices();
-                setServices(data);
+                const [serviceData, categoriesData] = await Promise.all([
+                    getServices(),
+                    getCategoriesByType(3), // Adjust the type as needed
+                ]);
+
+                setServices(serviceData);
+                setCategories(categoriesData);
                 setLoading(false);
             } catch (err) {
                 setError(err);
-            } finally {
                 setLoading(false);
             }
         };
 
-        fetchServices();
+        fetchServicesAndCategories();
     }, []);
 
     if (error) {
@@ -39,17 +45,29 @@ const Services = () => {
         return <LoadingScreen />;
     }
 
+    // Map each category to its respective services
+    const categoryToServiceMap = categories.reduce((acc, category, indexCategory) => {
+        const categoryServices = services.filter((service) => service.serviceType === indexCategory);
+        if (categoryServices.length > 0) {
+            acc.push({
+                ...category,
+                services: categoryServices,
+            });
+        }
+        return acc;
+    }, []);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Title text="Dịch vụ" />
                 <div className={cx('service-list')}>
-                    {services.map((service) => (
-                        <Service
-                            key={service.id}
-                            image={service.image}
-                            title={service.title}
-                            link={`/services/${service.id}`}
+                    {categoryToServiceMap.map((category) => (
+                        <ServiceItem
+                            key={category.serviceType}
+                            image={category.services[0].image}
+                            name={category.name}
+                            slug={category.slug}
                         />
                     ))}
                 </div>
