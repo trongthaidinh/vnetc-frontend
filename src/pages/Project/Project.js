@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Card from '~/components/CardContent';
 import SuggestCard from '~/components/SuggestCard';
-import { getServices } from '~/services/serviceService';
+import { getProjects } from '~/services/projectService';
 import { getCategoriesByType } from '~/services/categoryService';
-import styles from './Service.module.scss';
+import styles from './Project.module.scss';
 import Title from '~/components/Title';
 import ButtonGroup from '~/components/ButtonGroup';
 import PushNotification from '~/components/PushNotification';
@@ -14,46 +14,46 @@ import routes from '~/config/routes';
 
 const cx = classNames.bind(styles);
 
-const Service = () => {
-    const [serviceItems, setServiceItems] = useState([]);
-    const [groupedService, setGroupedService] = useState({});
+function Project() {
+    const [projectItems, setProjectItems] = useState([]);
+    const [groupedProject, setGroupedProject] = useState({});
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedSuggestion, setSelectedSuggestion] = useState('Ngẫu nhiên');
 
     useEffect(() => {
-        const fetchCategoriesAndServices = async () => {
+        const fetchCategoriesAndProjects = async () => {
             try {
-                const categoriesData = await getCategoriesByType(3);
+                const categoriesData = await getCategoriesByType(4);
                 setCategories(categoriesData);
 
-                const serviceData = await getServices();
-                const groupedServiceMap = {};
+                const projectData = await getProjects();
+                const groupedProjectMap = {};
 
-                serviceData?.forEach((item) => {
-                    const serviceType = item.serviceType;
-                    if (!groupedServiceMap[serviceType]) {
-                        groupedServiceMap[serviceType] = [];
+                projectData?.forEach((item) => {
+                    const projectType = item.projectType;
+                    if (!groupedProjectMap[projectType]) {
+                        groupedProjectMap[projectType] = [];
                     }
-                    groupedServiceMap[serviceType].push({
+                    groupedProjectMap[projectType].push({
                         ...item,
                         image: item.image,
                         createdAt: new Date(item.createdAt).getTime(),
                     });
                 });
 
-                setGroupedService(groupedServiceMap);
-                setServiceItems(serviceData);
+                setGroupedProject(groupedProjectMap);
+                setProjectItems(projectData);
             } catch (error) {
                 setError(error);
-                console.error('Error fetching categories or services:', error);
+                console.error('Error fetching categories or projects:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchCategoriesAndServices();
+        fetchCategoriesAndProjects();
     }, []);
 
     const handleButtonClick = (type) => {
@@ -68,8 +68,8 @@ const Service = () => {
         return array;
     };
 
-    const getCategorySlug = (serviceType) => {
-        const category = categories.find((cat, index) => index === serviceType);
+    const getCategorySlug = (projectType) => {
+        const category = categories.find((cat, index) => index === projectType);
         return category ? category.slug : '';
     };
 
@@ -82,33 +82,33 @@ const Service = () => {
         return <LoadingScreen />;
     }
 
-    let filteredServiceItems = serviceItems;
+    let filteredProjectItems = projectItems;
     if (selectedSuggestion === 'Ngẫu nhiên') {
-        filteredServiceItems = shuffleArray([...serviceItems]);
+        filteredProjectItems = shuffleArray([...projectItems]);
     } else if (selectedSuggestion === 'Xem nhiều') {
-        filteredServiceItems = serviceItems.filter((item) => item.views > 10);
+        filteredProjectItems = projectItems.filter((item) => item.views > 10);
     }
-    filteredServiceItems = filteredServiceItems.slice(0, 5);
+    filteredProjectItems = filteredProjectItems.slice(0, 5);
 
     return (
         <article className={cx('wrapper')}>
-            <div className={cx('service-section')}>
-                <div className={cx('service-column')}>
-                    <h2 className={cx('service-title')}>Dịch vụ</h2>
-                    {Object.keys(groupedService).map((serviceType) => {
-                        const category = categories[serviceType];
+            <div className={cx('project-section')}>
+                <div className={cx('project-column')}>
+                    <h2 className={cx('project-title')}>Dự án và năng lực</h2>
+                    {Object.keys(groupedProject).map((projectType) => {
+                        const category = categories[projectType];
                         if (!category) return null;
                         return (
-                            <div key={serviceType} className={cx('service-category')}>
+                            <div key={projectType} className={cx('project-category')}>
                                 <Title
                                     text={category.name}
                                     showSeeAll={true}
-                                    slug={`${routes.services}/${category.slug}`}
+                                    slug={`${routes.projects}/${category.slug}`}
                                     categoryId={category._id}
                                 />
-                                <div className={cx('service-items')}>
-                                    {groupedService[serviceType]?.slice(0, 6).map((item, index) => (
-                                        <Link key={index} to={`${routes.services}/${category.slug}/${item._id}`}>
+                                <div className={cx('project-items')}>
+                                    {groupedProject[projectType]?.slice(0, 6).map((item, index) => (
+                                        <Link key={index} to={`${routes.projects}/${category.slug}/${item._id}`}>
                                             <Card
                                                 title={item.name}
                                                 summary={item.summary}
@@ -127,10 +127,10 @@ const Service = () => {
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
                     <ButtonGroup buttons={['Ngẫu nhiên', 'Xem nhiều']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-items')}>
-                        {filteredServiceItems.map((item, index) => (
+                        {filteredProjectItems.map((item, index) => (
                             <Link
                                 key={index}
-                                to={`${routes.services}/${getCategorySlug(item.serviceType)}/${item._id}`}
+                                to={`${routes.projects}/${getCategorySlug(item.projectType)}/${item._id}`}
                             >
                                 <SuggestCard
                                     title={item.name}
@@ -146,6 +146,6 @@ const Service = () => {
             </div>
         </article>
     );
-};
+}
 
-export default Service;
+export default Project;

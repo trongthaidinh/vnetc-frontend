@@ -18,7 +18,7 @@ import Quality from '~/pages/Quality';
 import Search from '~/pages/Search';
 import Products from '~/pages/Products';
 import Error404 from '~/pages/Error404';
-import Projects from '~/pages/Projects';
+import ProjectCategory from '~/pages/ProjectCategory';
 import Contact from '~/pages/Contact';
 import Teams from '~/pages/Teams';
 import IndustryNews from '~/pages/IndustryNews';
@@ -31,6 +31,8 @@ import AddNavigation from '~/pages/Admin/Navigation/AddNavigation';
 import NavigationList from '~/pages/Admin/Navigation/NavigationList';
 import ServiceDetail from '~/pages/ServiceDetail';
 import ServiceCategory from '~/pages/ServiceCategory';
+import Project from '~/pages/Project';
+import ProjectDetail from '~/pages/ProjectDetail';
 
 // Public Routes
 const publicRoutes = [
@@ -60,15 +62,16 @@ const publicRoutes = [
         layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.products} categoryType={1} />,
     },
     { path: config.routes.productDetail, component: ProductDetail, layout: OnlyHeaderLayout },
+    { path: config.routes.projects, component: Project, layout: OnlyHeaderLayout },
     {
-        path: config.routes.projects,
-        component: Projects,
+        path: config.routes.projectCategory,
+        component: ProjectCategory,
         layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.projects} categoryType={4} />,
     },
     {
-        path: config.routes.ongoingProjects,
-        component: Projects,
-        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.ongoingProjects} categoryType={4} />,
+        path: config.routes.projectDetail,
+        component: ProjectDetail,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.projects} categoryType={4} />,
     },
     {
         path: config.routes.introduction,
@@ -102,11 +105,6 @@ const publicRoutes = [
     },
     { path: config.routes.news, component: News, layout: OnlyHeaderLayout },
     { path: config.routes.services, component: Service, layout: OnlyHeaderLayout },
-    // {
-    //     path: config.routes.servicesCategory,
-    //     component: ServicesCategory,
-    //     layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.services} categoryType={3} />,
-    // },
     {
         path: config.routes.serviceDetail,
         component: ServiceDetail,

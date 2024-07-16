@@ -21,7 +21,7 @@ const About = () => (
                 <li>Người đại diện: Trần Quang Bình</li>
                 <li>Địa chỉ: Số 22 Trần Hữu Dực, tổ 5, Phường Tân Lợi, TP.Buôn Ma Thuột, Tỉnh Đắk Lắk, Việt Nam</li>
                 <li>Điện thoại: 02623977171</li>
-                <li>Email: ngovanlam@gmail.com</li>
+                <li>Email: vietnam.etc.ltd@gmail.com</li>
                 <li>Loại hình doanh nghiệp: Công ty trách nhiệm hữu hạn 2 thành viên trở lên ngoài NN</li>
                 <li>Số ÐKKD: abc123 222</li>
                 <li>Quản lý bởi: Chi cục Thuế Thành phố Buôn Ma Thuột</li>
