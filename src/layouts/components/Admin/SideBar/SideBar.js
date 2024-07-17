@@ -161,7 +161,7 @@ const SideBar = () => {
                             <NavLink to={routes.newsList}>Danh sách tin tức</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/add-news">Thêm tin tức</NavLink>
+                            <NavLink to={routes.addNews}>Thêm tin tức</NavLink>
                         </li>
                     </ul>
                 </li>
@@ -182,10 +182,10 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.projectManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to="/projects">Danh sách dự án</NavLink>
+                            <NavLink to="/admin/project-list">Danh sách dự án</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/add-project">Thêm dự án</NavLink>
+                            <NavLink to="/admin/add-project">Thêm dự án</NavLink>
                         </li>
                     </ul>
                 </li>
