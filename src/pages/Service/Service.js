@@ -20,7 +20,7 @@ const Service = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [selectedSuggestion, setSelectedSuggestion] = useState('Ngẫu nhiên');
+    const [selectedSuggestion, setSelectedSuggestion] = useState(0);
 
     useEffect(() => {
         const fetchCategoriesAndServices = async () => {
@@ -56,8 +56,8 @@ const Service = () => {
         fetchCategoriesAndServices();
     }, []);
 
-    const handleButtonClick = (type) => {
-        setSelectedSuggestion(type);
+    const handleButtonClick = (index) => {
+        setSelectedSuggestion(index); // Set index
     };
 
     const shuffleArray = (array) => {
@@ -69,7 +69,7 @@ const Service = () => {
     };
 
     const getCategorySlug = (serviceType) => {
-        const category = categories.find((cat, index) => index === serviceType);
+        const category = categories[serviceType];
         return category ? category.slug : '';
     };
 
@@ -83,9 +83,9 @@ const Service = () => {
     }
 
     let filteredServiceItems = serviceItems;
-    if (selectedSuggestion === 'Ngẫu nhiên') {
+    if (selectedSuggestion === 0) {
         filteredServiceItems = shuffleArray([...serviceItems]);
-    } else if (selectedSuggestion === 'Xem nhiều') {
+    } else if (selectedSuggestion === 1) {
         filteredServiceItems = serviceItems.filter((item) => item.views > 10);
     }
     filteredServiceItems = filteredServiceItems.slice(0, 5);

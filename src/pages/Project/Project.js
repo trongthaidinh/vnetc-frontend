@@ -20,7 +20,7 @@ function Project() {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [selectedSuggestion, setSelectedSuggestion] = useState('Ngẫu nhiên');
+    const [selectedSuggestion, setSelectedSuggestion] = useState(0);
 
     useEffect(() => {
         const fetchCategoriesAndProjects = async () => {
@@ -56,8 +56,8 @@ function Project() {
         fetchCategoriesAndProjects();
     }, []);
 
-    const handleButtonClick = (type) => {
-        setSelectedSuggestion(type);
+    const handleButtonClick = (index) => {
+        setSelectedSuggestion(index);
     };
 
     const shuffleArray = (array) => {
@@ -83,9 +83,9 @@ function Project() {
     }
 
     let filteredProjectItems = projectItems;
-    if (selectedSuggestion === 'Ngẫu nhiên') {
+    if (selectedSuggestion === 0) {
         filteredProjectItems = shuffleArray([...projectItems]);
-    } else if (selectedSuggestion === 'Xem nhiều') {
+    } else if (selectedSuggestion === 1) {
         filteredProjectItems = projectItems.filter((item) => item.views > 10);
     }
     filteredProjectItems = filteredProjectItems.slice(0, 5);

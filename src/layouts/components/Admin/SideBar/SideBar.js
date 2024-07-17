@@ -69,7 +69,7 @@ const SideBar = () => {
                         <span className={styles.menuText}>
                             {!isCollapsed && (
                                 <>
-                                    Quản lí Menu
+                                    Quản lý Menu
                                     <FontAwesomeIcon
                                         icon={openMenus.menuManagement ? faChevronDown : faChevronRight}
                                         className={styles.chevronIcon}
@@ -80,10 +80,7 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.menuManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to={routes.mainMenu}>Menu chính</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={routes.subMenu}>Menu phụ</NavLink>
+                            <NavLink to={routes.navigationList}>Danh sách Menu</NavLink>
                         </li>
                         <li>
                             <NavLink to={routes.addNavigation}>Thêm Menu</NavLink>
@@ -93,7 +90,7 @@ const SideBar = () => {
                 <li>
                     <NavLink to="/messages" className={styles.menuItem}>
                         <FontAwesomeIcon icon={faEnvelope} className={styles.menuIcon} />
-                        <span className={styles.menuText}>{!isCollapsed && 'Quản lí tin nhắn'}</span>
+                        <span className={styles.menuText}>{!isCollapsed && 'Quản lý tin nhắn'}</span>
                     </NavLink>
                 </li>
                 <li>
@@ -102,7 +99,7 @@ const SideBar = () => {
                         <span className={styles.menuText}>
                             {!isCollapsed && (
                                 <>
-                                    Quản lí người dùng
+                                    Quản lý người dùng
                                     <FontAwesomeIcon
                                         icon={openMenus.userManagement ? faChevronDown : faChevronRight}
                                         className={styles.chevronIcon}
@@ -126,7 +123,7 @@ const SideBar = () => {
                         <span className={styles.menuText}>
                             {!isCollapsed && (
                                 <>
-                                    Quản lí sản phẩm
+                                    Quản lý sản phẩm
                                     <FontAwesomeIcon
                                         icon={openMenus.productManagement ? faChevronDown : faChevronRight}
                                         className={styles.chevronIcon}
@@ -137,7 +134,7 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.productManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to="/products">Danh sách sản phẩm</NavLink>
+                            <NavLink to={routes.productList}>Danh sách sản phẩm</NavLink>
                         </li>
                         <li>
                             <NavLink to="/add-product">Thêm sản phẩm</NavLink>
@@ -150,7 +147,7 @@ const SideBar = () => {
                         <span className={styles.menuText}>
                             {!isCollapsed && (
                                 <>
-                                    Quản lí tin tức
+                                    Quản lý tin tức
                                     <FontAwesomeIcon
                                         icon={openMenus.newsManagement ? faChevronDown : faChevronRight}
                                         className={styles.chevronIcon}
@@ -161,7 +158,7 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.newsManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to="/news">Danh sách tin tức</NavLink>
+                            <NavLink to={routes.newsList}>Danh sách tin tức</NavLink>
                         </li>
                         <li>
                             <NavLink to="/add-news">Thêm tin tức</NavLink>
@@ -174,7 +171,7 @@ const SideBar = () => {
                         <span className={styles.menuText}>
                             {!isCollapsed && (
                                 <>
-                                    Quản lí dự án
+                                    Quản lý dự án
                                     <FontAwesomeIcon
                                         icon={openMenus.projectManagement ? faChevronDown : faChevronRight}
                                         className={styles.chevronIcon}
@@ -198,7 +195,7 @@ const SideBar = () => {
                         <span className={styles.menuText}>
                             {!isCollapsed && (
                                 <>
-                                    Quản lí dịch vụ
+                                    Quản lý dịch vụ
                                     <FontAwesomeIcon
                                         icon={openMenus.serviceManagement ? faChevronDown : faChevronRight}
                                         className={styles.chevronIcon}

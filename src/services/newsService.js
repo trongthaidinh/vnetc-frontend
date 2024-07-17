@@ -1,8 +1,18 @@
 import httpRequest from '~/utils/httpRequest';
 
-export const getNews = async (page = 1, limit = 8) => {
+export const getNews = async (page = 1, limit = 6) => {
     try {
         const response = await httpRequest.get(`/news?page=${page}&limit=${limit}`);
+        return response.data.data;
+    } catch (error) {
+        console.error('Error fetching news', error);
+        throw error;
+    }
+};
+
+export const getNewsAll = async () => {
+    try {
+        const response = await httpRequest.get('/news');
         return response.data.data;
     } catch (error) {
         console.error('Error fetching news', error);
@@ -26,6 +36,35 @@ export const getNewsByCategory = async (categoryId) => {
         return response.data.data;
     } catch (error) {
         console.error(`Error fetching news for id=${categoryId}:`, error);
+        throw error;
+    }
+};
+
+export const createNews = async (newsData) => {
+    try {
+        const response = await httpRequest.post('/news', newsData);
+        return response.data.data;
+    } catch (error) {
+        console.error('Error adding news', error);
+        throw error;
+    }
+};
+
+export const updateNews = async (id, newsData) => {
+    try {
+        const response = await httpRequest.patch(`/news/${id}`, newsData);
+        return response.data.data;
+    } catch (error) {
+        console.error(`Error updating news with id ${id}`, error);
+        throw error;
+    }
+};
+
+export const deleteNews = async (id) => {
+    try {
+        await httpRequest.delete(`/news/${id}`);
+    } catch (error) {
+        console.error(`Error deleting news with id ${id}`, error);
         throw error;
     }
 };

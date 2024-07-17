@@ -1,7 +1,6 @@
 .wrapper {
     margin: 40px auto;
-    max-width: 1200px;
-    padding: 20px;
+    width: var(--default-layout-width);
 }
 
 .product-section {

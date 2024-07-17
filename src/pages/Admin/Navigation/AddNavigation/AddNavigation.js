@@ -4,6 +4,8 @@ import * as Yup from 'yup';
 import styles from './AddNavigation.module.scss';
 import Title from '~/components/Title';
 import { getNavigationLinks, createNavigationLink } from '~/services/navigationService';
+import routes from '~/config/routes';
+import { Link } from 'react-router-dom';
 
 const AddNavigation = () => {
     const [navigations, setNavigations] = useState([]);
@@ -24,9 +26,9 @@ const AddNavigation = () => {
     };
 
     const validationSchema = Yup.object({
-        title: Yup.string().required('Title is required'),
-        type: Yup.string().required('Type is required'),
-        parentNavId: Yup.string(), // Remove conditional validation for now
+        title: Yup.string().required('Vui lòng nhập tiêu đề!'),
+        type: Yup.string().required('Vui lòng chọn loại Navigation!'),
+        parentNavId: Yup.string(),
     });
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -95,15 +97,11 @@ const AddNavigation = () => {
                                 <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
                                     {isSubmitting ? 'Đang gửi...' : 'Thêm Navigation'}
                                 </button>
-                                <button
-                                    type="button"
-                                    className={styles.cancelButton}
-                                    onClick={() => {
-                                        /* Handle cancel */
-                                    }}
-                                >
-                                    Hủy
-                                </button>
+                                <Link to={routes.navigationList} className={styles.backButton}>
+                                    <button type="button" className={styles.cancelButton}>
+                                        Hủy
+                                    </button>
+                                </Link>
                             </div>
                         </Form>
                     )}

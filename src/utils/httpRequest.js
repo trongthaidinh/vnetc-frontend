@@ -10,7 +10,6 @@ httpRequest.interceptors.request.use(
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
             config.headers.Accept = `charset=UTF-8`;
-            console.log(config);
         }
         return config;
     },

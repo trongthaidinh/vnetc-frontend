@@ -20,7 +20,7 @@ const News = () => {
     const [groupedNews, setGroupedNews] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [selectedSuggestion, setSelectedSuggestion] = useState('Nổi bật');
+    const [selectedSuggestion, setSelectedSuggestion] = useState(0);
 
     useEffect(() => {
         const fetchCategoriesAndNews = async () => {
@@ -54,8 +54,8 @@ const News = () => {
         fetchCategoriesAndNews();
     }, []);
 
-    const handleButtonClick = (type) => {
-        setSelectedSuggestion(type);
+    const handleButtonClick = (index) => {
+        setSelectedSuggestion(index);
     };
 
     if (error) {
@@ -69,10 +69,10 @@ const News = () => {
 
     const filteredNewsItems = newsItems
         .filter((item) => {
-            if (selectedSuggestion === 'Nổi bật') {
+            if (selectedSuggestion === 0) {
                 return item.isFeatured;
             }
-            if (selectedSuggestion === 'Xem nhiều') {
+            if (selectedSuggestion === 1) {
                 return item.views > 10;
             }
             return true;

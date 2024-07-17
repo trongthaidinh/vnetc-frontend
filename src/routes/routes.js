@@ -28,11 +28,19 @@ import Introduction from '~/pages/Introduction';
 import Login from '~/pages/Admin/Login';
 import Dashboard from '~/pages/Admin/Dashboard';
 import AddNavigation from '~/pages/Admin/Navigation/AddNavigation';
-import NavigationList from '~/pages/Admin/Navigation/NavigationList';
 import ServiceDetail from '~/pages/ServiceDetail';
 import ServiceCategory from '~/pages/ServiceCategory';
 import Project from '~/pages/Project';
 import ProjectDetail from '~/pages/ProjectDetail';
+import Product from '~/pages/Product';
+import NavigationList from '~/pages/Admin/Navigation/NavigationList';
+import EditNavigation from '~/pages/Admin/Navigation/EditNavigation';
+import ProductList from '~/pages/Admin/Products/ProductList';
+import EditProduct from '~/pages/Admin/Products/EditProduct';
+import AddProduct from '~/pages/Admin/Products/AddProduct';
+import NewsList from '~/pages/Admin/News/NewsList';
+import AddNews from '~/pages/Admin/News/AddNews';
+import UpdateNews from '~/pages/Admin/News/UpdateNews';
 
 // Public Routes
 const publicRoutes = [
@@ -57,10 +65,11 @@ const publicRoutes = [
         layout: OnlyHeaderLayout,
     },
     {
-        path: config.routes.products,
+        path: config.routes.productCategory,
         component: Products,
         layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.products} categoryType={1} />,
     },
+    { path: config.routes.products, component: Product, layout: OnlyHeaderLayout },
     { path: config.routes.productDetail, component: ProductDetail, layout: OnlyHeaderLayout },
     { path: config.routes.projects, component: Project, layout: OnlyHeaderLayout },
     {
@@ -132,6 +141,13 @@ const privateRoutes = [
     { path: config.routes.login, component: Login, layout: NothingLayout },
     { path: config.routes.navigationList, component: NavigationList, layout: AdminLayout },
     { path: config.routes.addNavigation, component: AddNavigation, layout: AdminLayout },
+    { path: config.routes.editNavigation, component: EditNavigation, layout: AdminLayout },
+    { path: config.routes.productList, component: ProductList, layout: AdminLayout },
+    { path: config.routes.editProduct, component: EditProduct, layout: AdminLayout },
+    { path: config.routes.addProduct, component: AddProduct, layout: AdminLayout },
+    { path: config.routes.newsList, component: NewsList, layout: AdminLayout },
+    { path: config.routes.addNews, component: AddNews, layout: AdminLayout },
+    { path: config.routes.updateNews, component: UpdateNews, layout: AdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };

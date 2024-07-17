@@ -4,7 +4,7 @@ import styles from './PushNotification.module.scss';
 
 const cx = classNames.bind(styles);
 
-const PushNotification = ({ message }) => {
+const PushNotification = ({ message, type }) => {
     const [isVisible, setIsVisible] = useState(false);
     const progressRef = useRef(null);
     const animationRef = useRef(null);
@@ -12,11 +12,11 @@ const PushNotification = ({ message }) => {
     useEffect(() => {
         if (message) {
             setIsVisible(true);
-
             const startTime = performance.now();
+
             const animate = (currentTime) => {
                 const elapsedTime = currentTime - startTime;
-                const progress = 1 - elapsedTime / 3000; // Thời gian hiển thị là 3 giây
+                const progress = 1 - elapsedTime / 3000;
 
                 progressRef.current.style.width = `${progress * 100}%`;
 
@@ -47,7 +47,13 @@ const PushNotification = ({ message }) => {
     };
 
     return (
-        <div className={cx('pushNotification', { visible: isVisible })}>
+        <div
+            className={cx(
+                'pushNotification',
+                { visible: isVisible },
+                { success: type === 'success', error: type === 'error' },
+            )}
+        >
             <span className={styles.message}>{message}</span>
             <div className={styles.progress}>
                 <div className={styles['progress-bar']} ref={progressRef}></div>
