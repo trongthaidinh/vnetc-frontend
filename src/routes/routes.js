@@ -41,6 +41,9 @@ import AddProduct from '~/pages/Admin/Products/AddProduct';
 import NewsList from '~/pages/Admin/News/NewsList';
 import AddNews from '~/pages/Admin/News/AddNews';
 import UpdateNews from '~/pages/Admin/News/UpdateNews';
+import ServiceList from '~/pages/Admin/Services/ServiceList';
+import AddService from '~/pages/Admin/Services/AddService';
+import UpdateService from '~/pages/Admin/Services/UpdateService';
 
 // Public Routes
 const publicRoutes = [
@@ -148,6 +151,9 @@ const privateRoutes = [
     { path: config.routes.newsList, component: NewsList, layout: AdminLayout },
     { path: config.routes.addNews, component: AddNews, layout: AdminLayout },
     { path: config.routes.updateNews, component: UpdateNews, layout: AdminLayout },
+    { path: config.routes.serviceList, component: ServiceList, layout: AdminLayout },
+    { path: config.routes.addService, component: AddService, layout: AdminLayout },
+    { path: config.routes.updateService, component: UpdateService, layout: AdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };

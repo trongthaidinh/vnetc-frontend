@@ -39,3 +39,33 @@ export const getServiceByType = async (type) => {
         throw error;
     }
 };
+
+export const addService = async (serviceData) => {
+    try {
+        const response = await httpRequest.post('/services', serviceData);
+        return response.data;
+    } catch (error) {
+        console.error('Error adding service:', error);
+        throw error;
+    }
+};
+
+export const updateService = async (id, serviceData) => {
+    try {
+        const response = await httpRequest.patch(`/services/${id}`, serviceData);
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating service with ID ${id}:`, error);
+        throw error;
+    }
+};
+
+export const deleteService = async (id) => {
+    try {
+        const response = await httpRequest.delete(`/services/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error deleting service with ID ${id}:`, error);
+        throw error;
+    }
+};

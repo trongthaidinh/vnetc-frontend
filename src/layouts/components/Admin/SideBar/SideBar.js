@@ -206,10 +206,10 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.serviceManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to="/services">Danh sách dịch vụ</NavLink>
+                            <NavLink to={routes.serviceList}>Danh sách dịch vụ</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/add-service">Thêm dịch vụ</NavLink>
+                            <NavLink to="/admin/add-service">Thêm dịch vụ</NavLink>
                         </li>
                     </ul>
                 </li>

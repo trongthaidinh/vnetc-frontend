@@ -11,6 +11,9 @@ const routes = {
     newsList: '/admin/news-list',
     addNews: '/admin/add-news',
     updateNews: '/admin/update-news/:id',
+    serviceList: '/admin/service-list',
+    addService: '/admin/add-service',
+    updateService: '/admin/update-service/:id',
     //User
     home: '/',
     about: '/gioi-thieu',
