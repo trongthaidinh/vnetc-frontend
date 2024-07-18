@@ -20,7 +20,6 @@ const AddService = () => {
         image: [],
         serviceType: '',
         content: '',
-        isFeatured: false,
     };
 
     const validationSchema = Yup.object({
@@ -29,7 +28,6 @@ const AddService = () => {
         image: Yup.array().required('Hình ảnh là bắt buộc'),
         serviceType: Yup.string().required('Loại dịch vụ là bắt buộc'),
         content: Yup.string().required('Nội dung là bắt buộc'),
-        isFeatured: Yup.boolean(),
     });
 
     useEffect(() => {
@@ -60,7 +58,6 @@ const AddService = () => {
         formData.append('serviceType', values.serviceType);
         formData.append('content', values.content);
         formData.append('createdBy', 'admin');
-        formData.append('isFeatured', values.isFeatured);
 
         try {
             await addService(formData);
@@ -129,12 +126,6 @@ const AddService = () => {
                                 initialValue={values.content}
                             />
                             <ErrorMessage name="content" component="div" className={styles.error} />
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label>
-                                <Field type="checkbox" name="isFeatured" className={styles.checkbox} />
-                                Đánh dấu nổi bật
-                            </label>
                         </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
                             Thêm Dịch vụ

@@ -20,10 +20,9 @@ const UpdateService = () => {
     const validationSchema = Yup.object({
         name: Yup.string().required('Tên dịch vụ là bắt buộc'),
         summary: Yup.string().required('Tóm tắt là bắt buộc'),
-        image: Yup.array(),
+        image: Yup.string().required('Hình ảnh là bắt buộc'),
         serviceType: Yup.string().required('Loại dịch vụ là bắt buộc'),
         content: Yup.string().required('Nội dung là bắt buộc'),
-        isFeatured: Yup.boolean(),
     });
 
     useEffect(() => {
@@ -45,7 +44,6 @@ const UpdateService = () => {
                     image: service.image || '',
                     serviceType: service.serviceType,
                     content: service.content,
-                    isFeatured: service.isFeatured,
                 });
             } catch (error) {
                 console.error('Lỗi khi tải dịch vụ:', error);
@@ -70,7 +68,6 @@ const UpdateService = () => {
         formData.append('serviceType', values.serviceType);
         formData.append('content', values.content);
         formData.append('createdBy', 'admin');
-        formData.append('isFeatured', values.isFeatured);
 
         try {
             await updateService(id, formData);
@@ -122,7 +119,7 @@ const UpdateService = () => {
                                             : ''
                                     }
                                     alt="News"
-                                    className={styles.productImage}
+                                    className={styles.serviceImage}
                                 />
                             </div>
                         )}
@@ -145,12 +142,6 @@ const UpdateService = () => {
                                 initialValue={values.content}
                             />
                             <ErrorMessage name="content" component="div" className={styles.error} />
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label>
-                                <Field type="checkbox" name="isFeatured" className={styles.checkbox} />
-                                Đánh dấu nổi bật
-                            </label>
                         </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
                             Cập Nhật Dịch vụ

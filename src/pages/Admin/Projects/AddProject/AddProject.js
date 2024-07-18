@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getProjectById, updateProject } from '~/services/projectService';
+import { useNavigate } from 'react-router-dom';
+import { addProject } from '~/services/projectService';
 import { getCategoriesByType } from '~/services/categoryService';
 import CustomEditor from '~/components/CustomEditor';
 import PushNotification from '~/components/PushNotification';
-import styles from './UpdateProject.module.scss';
+import styles from './AddProject.module.scss';
 import routes from '~/config/routes';
-import LoadingScreen from '~/components/LoadingScreen';
 
-const UpdateProject = () => {
+const AddProject = () => {
     const navigate = useNavigate();
-    const { id } = useParams();
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: '', type: '' });
-    const [initialValues, setInitialValues] = useState(null);
+
+    const initialValues = {
+        name: '',
+        summary: '',
+        image: [],
+        projectType: '',
+        content: '',
+    };
 
     const validationSchema = Yup.object({
         name: Yup.string().required('Tên dự án là bắt buộc'),
         summary: Yup.string().required('Tóm tắt là bắt buộc'),
-        image: Yup.string().required('Hình ảnh là bắt buộc'),
+        image: Yup.array().required('Hình ảnh là bắt buộc'),
         projectType: Yup.string().required('Loại dự án là bắt buộc'),
         content: Yup.string().required('Nội dung là bắt buộc'),
     });
@@ -28,35 +33,18 @@ const UpdateProject = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const fetchedCategories = await getCategoriesByType(4);
+                const fetchedCategories = await getCategoriesByType(3);
                 setCategories(fetchedCategories);
             } catch (error) {
                 console.error('Lỗi khi tải danh mục:', error);
             }
         };
-
-        const fetchProject = async () => {
-            try {
-                const project = await getProjectById(id);
-                setInitialValues({
-                    name: project.name,
-                    summary: project.summary,
-                    image: project.image || '',
-                    projectType: project.projectType,
-                    content: project.content,
-                });
-            } catch (error) {
-                console.error('Lỗi khi tải dự án:', error);
-            }
-        };
-
         fetchCategories();
-        fetchProject();
-    }, [id]);
+    }, []);
 
     const handleImageUpload = (event, setFieldValue) => {
-        const file = event.target.files[0];
-        setFieldValue('image', file);
+        const files = Array.from(event.target.files);
+        setFieldValue('image', files);
     };
 
     const handleSubmit = async (values, { resetForm }) => {
@@ -64,27 +52,27 @@ const UpdateProject = () => {
 
         formData.append('name', values.name);
         formData.append('summary', values.summary);
-        formData.append('image', values.image);
-        formData.append('serviceType', values.serviceType);
+        values.image.forEach((image) => {
+            formData.append('image', image);
+        });
+        formData.append('projectType', values.projectType);
         formData.append('content', values.content);
         formData.append('createdBy', 'admin');
 
         try {
-            await updateProject(id, formData);
-            setNotification({ message: 'Cập nhật dự án thành công!', type: 'success' });
+            await addProject(formData);
+            setNotification({ message: 'Thêm dự án thành công!', type: 'success' });
             resetForm();
             navigate(routes.projectList);
         } catch (error) {
-            setNotification({ message: 'Lỗi khi cập nhật dự án.', type: 'error' });
-            console.error('Lỗi khi cập nhật dự án:', error);
+            setNotification({ message: 'Lỗi khi thêm dự án.', type: 'error' });
+            console.error('Lỗi khi tạo dự án:', error);
         }
     };
 
-    if (!initialValues) return <LoadingScreen />;
-
     return (
-        <div className={styles.updateProject}>
-            <h2>Cập Nhật Dịch Vụ</h2>
+        <div className={styles.addProject}>
+            <h2>Thêm Dự án</h2>
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
@@ -103,32 +91,28 @@ const UpdateProject = () => {
                             <label>Chọn Hình Ảnh</label>
                             <input
                                 type="file"
+                                multiple
                                 accept="image/*"
                                 onChange={(event) => handleImageUpload(event, setFieldValue)}
                             />
                             <ErrorMessage name="image" component="div" className={styles.error} />
                         </div>
-                        {values.image && (
-                            <div className={styles.imagePreview}>
+                        <div className={styles.imagePreview}>
+                            {values.image.map((img, index) => (
                                 <img
-                                    src={
-                                        typeof values.image === 'string'
-                                            ? values.image
-                                            : values.image instanceof File
-                                            ? URL.createObjectURL(values.image)
-                                            : ''
-                                    }
-                                    alt="Projects"
+                                    key={index}
+                                    src={URL.createObjectURL(img)}
+                                    alt={`Project ${index}`}
                                     className={styles.projectImage}
                                 />
-                            </div>
-                        )}
+                            ))}
+                        </div>
                         <div className={styles.formGroup}>
-                            <label htmlFor="projectType">Loại dự án</label>
+                            <label htmlFor="projectType">Loại Dự án</label>
                             <Field as="select" name="projectType" className={styles.input}>
-                                <option value="">Chọn loại dịch vụ</option>
-                                {categories.map((category) => (
-                                    <option key={category._id} value={category._id}>
+                                <option value="">Chọn loại dự án</option>
+                                {categories.map((category, index) => (
+                                    <option key={category._id} value={index}>
                                         {category.name}
                                     </option>
                                 ))}
@@ -144,7 +128,7 @@ const UpdateProject = () => {
                             <ErrorMessage name="content" component="div" className={styles.error} />
                         </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                            Cập Nhật Dự án
+                            Thêm Dự án
                         </button>
                     </Form>
                 )}
@@ -153,4 +137,4 @@ const UpdateProject = () => {
     );
 };
 
-export default UpdateProject;
+export default AddProject;

@@ -71,7 +71,6 @@ const ServiceList = () => {
                             <th>Tên dịch vụ</th>
                             <th>Tóm tắt</th>
                             <th>Số lượt xem</th>
-                            <th>Nổi bật</th>
                             <th>Hình ảnh</th>
                             <th>Hành động</th>
                         </tr>
@@ -83,7 +82,6 @@ const ServiceList = () => {
                                     <td>{service.name}</td>
                                     <td>{service.summary}</td>
                                     <td>{service.views}</td>
-                                    <td>{service.isFeatured ? 'Có' : 'Không'}</td>
                                     <td>
                                         <img src={service.image} alt={service.name} className={styles.serviceImage} />
                                     </td>
