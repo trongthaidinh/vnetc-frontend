@@ -4,86 +4,80 @@ import * as Yup from 'yup';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserById, updateUser } from '~/services/userService';
 import styles from './UpdateUser.module.scss';
+import routes from '~/config/routes';
+import LoadingScreen from '~/components/LoadingScreen';
 
 const UpdateUser = () => {
     const navigate = useNavigate();
     const { id } = useParams();
-    const [user, setUser] = useState(null);
-
-    const initialValues = {
-        username: '',
-        email: '',
-        fullName: '',
-        password: '',
-    };
+    const [notification, setNotification] = useState({ message: '', type: '' });
+    const [initialValues, setInitialValues] = useState(null);
 
     const validationSchema = Yup.object({
-        username: Yup.string().required('Tên đăng nhập là bắt buộc'),
-        email: Yup.string().email('Email không hợp lệ').required('Email là bắt buộc'),
-        fullName: Yup.string().required('Họ và tên là bắt buộc'),
-        password: Yup.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
+        accountId: Yup.string().required('Account ID is required'),
+        username: Yup.string().required('Username is required'),
+        fullName: Yup.string().required('Full name is required'),
     });
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const userData = await getUserById(id);
-                setUser(userData);
+                const user = await getUserById(id);
+                setInitialValues({
+                    accountId: user._id,
+                    username: user.username,
+                    fullName: user.fullName,
+                });
             } catch (error) {
-                console.error('Lỗi khi lấy thông tin người dùng:', error);
+                console.error('Error fetching user:', error);
             }
         };
+
         fetchUser();
     }, [id]);
 
     const handleSubmit = async (values, { resetForm }) => {
         try {
-            await updateUser(id, values);
-            alert('Cập nhật người dùng thành công!');
+            await updateUser(values);
+            setNotification({ message: 'User updated successfully!', type: 'success' });
             resetForm();
-            navigate('/admin/user-list'); // Redirect to user list page
+            navigate(routes.userList);
         } catch (error) {
-            console.error('Lỗi khi cập nhật người dùng:', error);
-            alert('Lỗi khi cập nhật người dùng.');
+            setNotification({ message: 'Error updating user.', type: 'error' });
+            console.error('Error updating user:', error);
         }
     };
 
-    if (!user) {
-        return <p>Loading...</p>; // Placeholder for loading state
-    }
+    if (!initialValues) return <LoadingScreen />;
 
     return (
         <div className={styles.updateUser}>
-            <h2>Cập Nhật Người dùng</h2>
-            <Formik
-                initialValues={{ ...initialValues, ...user }}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-            >
+            <h2>Update User</h2>
+            {notification.message && (
+                <div className={notification.type === 'error' ? styles.errorNotification : styles.successNotification}>
+                    {notification.message}
+                </div>
+            )}
+            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (
                     <Form>
                         <div className={styles.formGroup}>
-                            <label htmlFor="username">Tên đăng nhập</label>
+                            <label htmlFor="accountId">Account ID</label>
+                            <Field name="accountId" type="text" className={styles.input} />
+                            <ErrorMessage name="accountId" component="div" className={styles.error} />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="username">Username</label>
                             <Field name="username" type="text" className={styles.input} />
                             <ErrorMessage name="username" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
-                            <label htmlFor="email">Email</label>
-                            <Field name="email" type="email" className={styles.input} />
-                            <ErrorMessage name="email" component="div" className={styles.error} />
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label htmlFor="fullName">Họ và tên</label>
+                            <label htmlFor="fullName">Full Name</label>
                             <Field name="fullName" type="text" className={styles.input} />
                             <ErrorMessage name="fullName" component="div" className={styles.error} />
                         </div>
-                        <div className={styles.formGroup}>
-                            <label htmlFor="password">Mật khẩu</label>
-                            <Field name="password" type="password" className={styles.input} />
-                            <ErrorMessage name="password" component="div" className={styles.error} />
-                        </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                            Cập Nhật Người dùng
+                            Update User
                         </button>
                     </Form>
                 )}

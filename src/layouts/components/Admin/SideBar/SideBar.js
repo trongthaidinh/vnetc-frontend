@@ -17,6 +17,7 @@ import {
     faDiagramProject,
     faLayerGroup,
     faHandshake,
+    faBookOpen,
 } from '@fortawesome/free-solid-svg-icons';
 import routes from '~/config/routes';
 
@@ -114,7 +115,7 @@ const SideBar = () => {
                             <NavLink to={routes.userList}>Danh sách người dùng</NavLink>
                         </li>
                         <li>
-                            <NavLink to="admin/add-user">Thêm người dùng</NavLink>
+                            <NavLink to={routes.addUser}>Thêm người dùng</NavLink>
                         </li>
                     </ul>
                 </li>
@@ -138,7 +139,7 @@ const SideBar = () => {
                             <NavLink to={routes.productList}>Danh sách sản phẩm</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/add-product">Thêm sản phẩm</NavLink>
+                            <NavLink to={routes.addProduct}>Thêm sản phẩm</NavLink>
                         </li>
                     </ul>
                 </li>
@@ -239,10 +240,37 @@ const SideBar = () => {
                     </ul>
                 </li>
                 <li>
-                    <NavLink to="/settings" className={styles.menuItem}>
+                    <div className={styles.menuItem} onClick={() => toggleMenu('libraryManagement')}>
+                        <FontAwesomeIcon icon={faBookOpen} className={styles.menuIcon} />
+                        <span className={styles.menuText}>
+                            {!isCollapsed && (
+                                <>
+                                    Quản lý thư viện
+                                    <FontAwesomeIcon
+                                        icon={openMenus.libraryManagement ? faChevronDown : faChevronRight}
+                                        className={styles.chevronIcon}
+                                    />
+                                </>
+                            )}
+                        </span>
+                    </div>
+                    <ul className={`${styles.subMenu} ${openMenus.libraryManagement ? styles.open : ''}`}>
+                        <li>
+                            <NavLink to={routes.videosList}>Danh sách video</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.imagesList}>Danh sách ảnh</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.addLibrary}>Thêm thư viện</NavLink>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <div className={styles.menuItem}>
                         <FontAwesomeIcon icon={faCogs} className={styles.menuIcon} />
-                        <span className={styles.menuText}>{!isCollapsed && 'Cài đặt chung'}</span>
-                    </NavLink>
+                        <span className={styles.menuText}>{!isCollapsed && 'Cài đặt'}</span>
+                    </div>
                 </li>
             </ul>
         </div>

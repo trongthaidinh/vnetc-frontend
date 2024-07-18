@@ -15,19 +15,19 @@ export const getUsers = async () => {
 export const addUser = async (userData) => {
     try {
         const response = await httpRequest.post(API_URL, userData);
-        return response.data.data; // Có thể return response.data.data nếu backend trả về dữ liệu chi tiết sau khi thêm người dùng
+        return response.data.data;
     } catch (error) {
         console.error('Error adding user', error);
         throw error;
     }
 };
 
-export const updateUser = async (userId, userData) => {
+export const updateUser = async (userData) => {
     try {
-        const response = await httpRequest.patch(`${API_URL}/${userId}`, userData);
+        const response = await httpRequest.patch(`${API_URL}`, userData);
         return response.data.data;
     } catch (error) {
-        console.error(`Error updating user ${userId}`, error);
+        console.error(`Error updating user`, error);
         throw error;
     }
 };
@@ -45,7 +45,7 @@ export const getUserById = async (userId) => {
 export const deleteUser = async (id, accDelId) => {
     try {
         const response = await httpRequest.delete(`${API_URL}`, { id, accDelId });
-        return response.data.data; // Có thể return response.data.data nếu backend trả về dữ liệu chi tiết sau khi xóa người dùng
+        return response.data.data;
     } catch (error) {
         console.error(`Error deleting user ${id}`, error);
         throw error;

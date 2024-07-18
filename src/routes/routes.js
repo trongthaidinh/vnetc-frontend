@@ -52,6 +52,8 @@ import AddProject from '~/pages/Admin/Projects/AddProject';
 import UserList from '~/pages/Admin/Users/UserList';
 import AddUser from '~/pages/Admin/Users/AddUser';
 import UpdateUser from '~/pages/Admin/Users/UpdateUser';
+import VideoList from '~/pages/Admin/Library/Videos/VideoList';
+import ImageList from '~/pages/Admin/Library/Images/ImageList';
 
 // Public Routes
 const publicRoutes = [
@@ -169,6 +171,8 @@ const privateRoutes = [
     { path: config.routes.addProject, component: AddProject, layout: AdminLayout },
     { path: config.routes.updateUser, component: UpdateUser, layout: AdminLayout },
     { path: config.routes.userList, component: UserList, layout: AdminLayout },
+    { path: config.routes.videosList, component: VideoList, layout: AdminLayout },
+    { path: config.routes.imagesList, component: ImageList, layout: AdminLayout },
     { path: config.routes.addUser, component: AddUser, layout: AdminLayout },
 ];
 

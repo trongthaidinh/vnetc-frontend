@@ -1,0 +1,123 @@
+import React, { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { deleteVideo, getVideos } from '~/services/libraryService';
+import styles from './VideoList.module.scss';
+import Title from '~/components/Title';
+
+const VideoList = () => {
+    const [videos, setVideos] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+
+    useEffect(() => {
+        fetchVideos();
+    }, []);
+
+    const fetchVideos = async () => {
+        try {
+            const data = await getVideos();
+            if (data) {
+                setVideos(data);
+            } else {
+                alert('Failed to fetch videos.');
+            }
+        } catch (error) {
+            console.error('Error fetching videos:', error);
+            alert('Failed to fetch videos.');
+        }
+    };
+
+    const handleDelete = async (id) => {
+        if (window.confirm('Are you sure you want to delete this video?')) {
+            try {
+                await deleteVideo(id);
+                setVideos(videos.filter((video) => video._id !== id));
+                alert('Video deleted successfully!');
+            } catch (error) {
+                console.error('Error deleting video:', error);
+                alert('There was an error deleting the video.');
+            }
+        }
+    };
+
+    const filteredVideos = videos.filter((video) => video.video.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    const totalPages = Math.ceil(filteredVideos.length / itemsPerPage);
+    const indexOfLastVideo = currentPage * itemsPerPage;
+    const indexOfFirstVideo = indexOfLastVideo - itemsPerPage;
+    const currentVideos = filteredVideos.slice(indexOfFirstVideo, indexOfLastVideo);
+
+    return (
+        <div className={styles.videoContainer}>
+            <Title className={styles.pageTitle} text="Danh sách Video" />
+            <div className={styles.actionsContainer}>
+                <input
+                    type="text"
+                    placeholder="Tìm kiếm Video..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className={styles.searchInput}
+                />
+            </div>
+
+            <div className={styles.videoList}>
+                <table className={styles.table}>
+                    <thead>
+                        <tr>
+                            <th>Video</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentVideos.length > 0 ? (
+                            currentVideos.map((video) => (
+                                <tr key={video._id}>
+                                    <td>
+                                        <a href={video.video} target="_blank" rel="noopener noreferrer">
+                                            {video.video}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button onClick={() => handleDelete(video._id)} className={styles.deleteButton}>
+                                            <FontAwesomeIcon icon={faTrash} /> Xóa
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="2">Không có dữ liệu</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* Pagination */}
+            <div className={styles.pagination}>
+                <span>
+                    Hiển thị {indexOfFirstVideo + 1} đến {Math.min(indexOfLastVideo, filteredVideos.length)} của{' '}
+                    {filteredVideos.length}
+                </span>
+                <div className={styles.paginationControls}>
+                    <button
+                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                    >
+                        <FontAwesomeIcon icon={faAngleLeft} />
+                    </button>
+                    <button
+                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                    >
+                        <FontAwesomeIcon icon={faAngleRight} />
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default VideoList;

@@ -5,7 +5,37 @@ export const getImages = async (page = 1, limit = 9) => {
         const response = await httpRequest.get(`/image?page=${page}&limit=${limit}`);
         return response.data.data;
     } catch (error) {
-        console.error('Error fetching image', error);
+        console.error('Error fetching images', error);
+        throw error;
+    }
+};
+
+export const addImage = async (imageData) => {
+    try {
+        const response = await httpRequest.post('/image', imageData);
+        return response.data.data;
+    } catch (error) {
+        console.error('Error adding image', error);
+        throw error;
+    }
+};
+
+export const updateImage = async (imageId, updatedData) => {
+    try {
+        const response = await httpRequest.put(`/image/${imageId}`, updatedData);
+        return response.data.data;
+    } catch (error) {
+        console.error('Error updating image', error);
+        throw error;
+    }
+};
+
+export const deleteImage = async (imageId) => {
+    try {
+        const response = await httpRequest.delete(`/image/${imageId}`);
+        return response.data.data;
+    } catch (error) {
+        console.error('Error deleting image', error);
         throw error;
     }
 };
@@ -15,7 +45,37 @@ export const getVideos = async () => {
         const response = await httpRequest.get('/video');
         return response.data.data;
     } catch (error) {
-        console.error('Error fetching video', error);
+        console.error('Error fetching videos', error);
+        throw error;
+    }
+};
+
+export const addVideo = async (videoData) => {
+    try {
+        const response = await httpRequest.post('/video', videoData);
+        return response.data.data;
+    } catch (error) {
+        console.error('Error adding video', error);
+        throw error;
+    }
+};
+
+export const updateVideo = async (videoId, updatedData) => {
+    try {
+        const response = await httpRequest.put(`/video/${videoId}`, updatedData);
+        return response.data.data;
+    } catch (error) {
+        console.error('Error updating video', error);
+        throw error;
+    }
+};
+
+export const deleteVideo = async (videoId) => {
+    try {
+        const response = await httpRequest.delete(`/video/${videoId}`);
+        return response.data.data;
+    } catch (error) {
+        console.error('Error deleting video', error);
         throw error;
     }
 };

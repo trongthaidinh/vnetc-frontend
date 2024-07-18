@@ -22,6 +22,8 @@ const routes = {
     updateUser: '/admin/update-user/:id',
     userList: '/admin/user-list',
     addUser: '/admin/add-user',
+    videosList: '/admin/videos-list',
+    imagesList: '/admin/images-list',
     //User
     home: '/',
     about: '/gioi-thieu',

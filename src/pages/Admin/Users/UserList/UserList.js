@@ -27,11 +27,11 @@ const UserList = () => {
         fetchUsers();
     }, []);
 
-    const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this user?')) {
+    const handleDelete = async (userId) => {
+        if (window.confirm('Bạn có thực muốn xóa người dùng này?')) {
             try {
-                await deleteUser(id, '6670563f3cc92e43a5dadb3b');
-                setUsers(users.filter((user) => user._id !== id));
+                await deleteUser(userId, '6670563f3cc92e43a5dadb3b');
+                setUsers(users.filter((user) => user._id !== userId));
                 alert('User deleted successfully!');
             } catch (error) {
                 console.error('Error deleting user:', error);
