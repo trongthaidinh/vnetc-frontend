@@ -111,10 +111,10 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.userManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to="/users">Danh sách người dùng</NavLink>
+                            <NavLink to={routes.userList}>Danh sách người dùng</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/add-user">Thêm người dùng</NavLink>
+                            <NavLink to="admin/add-user">Thêm người dùng</NavLink>
                         </li>
                     </ul>
                 </li>

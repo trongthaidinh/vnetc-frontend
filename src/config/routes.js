@@ -19,6 +19,9 @@ const routes = {
     updateProject: '/admin/update-project/:id',
     projectList: '/admin/project-list',
     addProject: '/admin/add-project',
+    updateUser: '/admin/update-user/:id',
+    userList: '/admin/user-list',
+    addUser: '/admin/add-user',
     //User
     home: '/',
     about: '/gioi-thieu',

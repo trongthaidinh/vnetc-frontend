@@ -49,6 +49,9 @@ import AddPartner from '~/pages/Admin/Partners/AddPartner';
 import UpdateProject from '~/pages/Admin/Projects/UpdateProject';
 import ProjectList from '~/pages/Admin/Projects/ProjectList';
 import AddProject from '~/pages/Admin/Projects/AddProject';
+import UserList from '~/pages/Admin/Users/UserList';
+import AddUser from '~/pages/Admin/Users/AddUser';
+import UpdateUser from '~/pages/Admin/Users/UpdateUser';
 
 // Public Routes
 const publicRoutes = [
@@ -164,6 +167,9 @@ const privateRoutes = [
     { path: config.routes.updateProject, component: UpdateProject, layout: AdminLayout },
     { path: config.routes.projectList, component: ProjectList, layout: AdminLayout },
     { path: config.routes.addProject, component: AddProject, layout: AdminLayout },
+    { path: config.routes.updateUser, component: UpdateUser, layout: AdminLayout },
+    { path: config.routes.userList, component: UserList, layout: AdminLayout },
+    { path: config.routes.addUser, component: AddUser, layout: AdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };
