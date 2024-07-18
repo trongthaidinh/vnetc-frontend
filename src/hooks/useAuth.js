@@ -38,6 +38,7 @@ const useProvideAuth = () => {
             const { data } = response;
             setUser(data);
             localStorage.setItem('user', data);
+            localStorage.setItem('userEmail', credentials.email);
             navigate('/admin/dashboard');
         } else {
             throw new Error(response.message);
@@ -49,6 +50,7 @@ const useProvideAuth = () => {
         logout();
         setUser(null);
         localStorage.removeItem('user');
+        localStorage.removeItem('userEmail');
         navigate('/login');
     };
 

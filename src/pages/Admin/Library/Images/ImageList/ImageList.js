@@ -15,7 +15,7 @@ const ImageList = () => {
 
     useEffect(() => {
         fetchImages();
-    }, []);
+    }, [currentPage, itemsPerPage]);
 
     const fetchImages = async () => {
         try {
@@ -53,17 +53,17 @@ const ImageList = () => {
 
     return (
         <div className={styles.imageContainer}>
-            <Title className={styles.pageTitle} text="Danh sách ảnh" />
+            <Title className={styles.pageTitle} text="Danh sách Image" />
             <div className={styles.actionsContainer}>
                 <input
                     type="text"
-                    placeholder="Tìm kiếm ảnh..."
+                    placeholder="Tìm kiếm Image..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={styles.searchInput}
                 />
                 <Link to={routes.addImage} className={styles.addButton}>
-                    <FontAwesomeIcon icon={faPlus} /> Thêm mới ảnh
+                    <FontAwesomeIcon icon={faPlus} /> Thêm mới Image
                 </Link>
             </div>
 
@@ -72,6 +72,10 @@ const ImageList = () => {
                     <thead>
                         <tr>
                             <th>Image</th>
+                            <th>Ngày tạo</th>
+                            <th>Ngày cập nhật</th>
+                            <th>Người tạo</th>
+                            <th>Người cập nhật</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -84,6 +88,10 @@ const ImageList = () => {
                                             {image.image}
                                         </a>
                                     </td>
+                                    <td>{new Date(image.createdAt).toLocaleDateString()}</td>
+                                    <td>{new Date(image.updatedAt).toLocaleDateString()}</td>
+                                    <td>{image.createdBy}</td>
+                                    <td>{image.updatedBy}</td>
                                     <td>
                                         <button onClick={() => handleDelete(image._id)} className={styles.deleteButton}>
                                             <FontAwesomeIcon icon={faTrash} /> Xóa
@@ -93,13 +101,12 @@ const ImageList = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="2">Không có dữ liệu</td>
+                                <td colSpan="6">Không có dữ liệu</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
             </div>
-
             <div className={styles.itemsPerPage}>
                 <label htmlFor="itemsPerPage">Hiển thị: </label>
                 <select

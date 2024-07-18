@@ -40,9 +40,11 @@ export const updateNavigationLink = async (id, data) => {
     }
 };
 
-export const deleteNavigationLink = async (id) => {
+export const deleteNavigationLink = async (type, id) => {
+    const data = { type, id };
+    console.log(data);
     try {
-        await httpRequest.delete(`/navigation/${id}`);
+        await httpRequest.delete('/navigation', { data });
     } catch (error) {
         console.error('Error deleting navigation link:', error);
         throw error;

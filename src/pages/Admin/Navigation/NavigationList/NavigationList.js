@@ -6,39 +6,44 @@ import { getNavigationLinks, deleteNavigationLink } from '~/services/navigationS
 import styles from './NavigationList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
+import PushNotification from '~/components/PushNotification';
 
 const NavigationList = () => {
     const [navigations, setNavigations] = useState([]);
+    const [notification, setNotification] = useState({ message: '', type: '' });
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10); // Default items per page
 
-    useEffect(() => {
-        const fetchNavigations = async () => {
+    const fetchNavigations = async () => {
+        try {
             const data = await getNavigationLinks();
             setNavigations(data);
-        };
+        } catch (error) {
+            console.error('Error fetching navigation links:', error);
+        }
+    };
 
+    useEffect(() => {
         fetchNavigations();
     }, []);
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (type, id) => {
         if (window.confirm('Are you sure you want to delete this navigation?')) {
             try {
-                await deleteNavigationLink(id);
-                setNavigations(navigations.filter((nav) => nav._id !== id));
-                alert('Navigation deleted successfully!');
+                await deleteNavigationLink(type, id);
+                await fetchNavigations(); // Re-fetch the navigations after deletion
+                setNotification({ message: 'Navigation đã xóa thành công', type: 'success' });
             } catch (error) {
                 console.error('Error deleting navigation:', error);
-                alert('There was an error deleting the navigation.');
+                setNotification({ message: 'Xảy ra lỗi khi xóa Navigation', type: 'error' });
             }
         }
     };
 
-    // Flatten navigations for filtering and pagination
     const allNavigations = navigations.flatMap((nav) => {
         return [
-            { ...nav, type: 'Navigation chính', parent: null }, // Primary navigation
+            { ...nav, type: 'Navigation chính', parent: null },
             ...nav.childs.map((child) => ({ ...child, type: 'Navigation phụ', parent: nav.title })),
         ];
     });
@@ -96,7 +101,9 @@ const NavigationList = () => {
                                                 <FontAwesomeIcon icon={faEdit} /> Sửa
                                             </Link>
                                             <button
-                                                onClick={() => handleDelete(nav._id)}
+                                                onClick={() =>
+                                                    handleDelete(nav.type === 'Navigation chính' ? 2 : 1, nav._id)
+                                                }
                                                 className={styles.deleteButton}
                                             >
                                                 <FontAwesomeIcon icon={faTrash} /> Xóa
@@ -114,7 +121,6 @@ const NavigationList = () => {
                 </table>
             </div>
 
-            {/* Items per page selection */}
             <div className={styles.itemsPerPageContainer}>
                 <label htmlFor="itemsPerPage">Số mục mỗi trang:</label>
                 <select
@@ -122,7 +128,7 @@ const NavigationList = () => {
                     value={itemsPerPage}
                     onChange={(e) => {
                         setItemsPerPage(Number(e.target.value));
-                        setCurrentPage(1); // Reset to first page when items per page changes
+                        setCurrentPage(1);
                     }}
                     className={styles.itemsPerPageSelect}
                 >
@@ -133,7 +139,6 @@ const NavigationList = () => {
                 </select>
             </div>
 
-            {/* Pagination */}
             <div className={styles.pagination}>
                 <span>
                     Hiện {indexOfFirstNav + 1} đến {Math.min(indexOfLastNav, filteredNavigations.length)} của{' '}
@@ -154,6 +159,7 @@ const NavigationList = () => {
                     </button>
                 </div>
             </div>
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
         </div>
     );
 };

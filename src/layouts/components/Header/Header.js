@@ -14,7 +14,7 @@ function Header() {
             const topHeight = document.querySelector('.tophead-wrapper')?.offsetHeight || 0;
             const bannerHeight = document.querySelector('.banner')?.offsetHeight || 0;
             const navHeight = document.querySelector('.navigation-wrapper')?.offsetHeight || 0;
-            const extraScroll = 100; // Adjust this value to control when the navigation becomes fixed
+            const extraScroll = 100;
 
             const totalHeight = topHeight + bannerHeight + navHeight + extraScroll;
 

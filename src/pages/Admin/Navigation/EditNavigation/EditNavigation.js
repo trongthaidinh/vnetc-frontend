@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { getNavigationById, updateNavigationLink, getNavigationLinks } from '~/services/navigationService';
@@ -12,6 +12,7 @@ import LoadingScreen from '~/components/LoadingScreen';
 const EditNavigation = () => {
     const { id } = useParams();
     const [, setNavigations] = useState([]);
+    const navigate = useNavigate();
     const [navigation, setNavigation] = useState(null);
     const [title, setTitle] = useState('');
     const [type, setType] = useState(2);
@@ -61,6 +62,9 @@ const EditNavigation = () => {
         try {
             await updateNavigationLink(id, { title, type });
             setIsError(false);
+            setTimeout(() => {
+                navigate(routes.navigationList);
+            }, 1000);
             setNotificationMessage('Navigation đã được cập nhật!');
         } catch (error) {
             console.error('Error updating navigation:', error);

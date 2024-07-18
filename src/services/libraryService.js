@@ -1,6 +1,6 @@
 import httpRequest from '~/utils/httpRequest';
 
-export const getImages = async (page = 1, limit = 9) => {
+export const getImagesPagination = async (page = 1, limit = 9) => {
     try {
         const response = await httpRequest.get(`/image?page=${page}&limit=${limit}`);
         return response.data.data;
@@ -10,7 +10,17 @@ export const getImages = async (page = 1, limit = 9) => {
     }
 };
 
-export const addImage = async (imageData) => {
+export const getImages = async () => {
+    try {
+        const response = await httpRequest.get('/image');
+        return response.data.data;
+    } catch (error) {
+        console.error('Error fetching images', error);
+        throw error;
+    }
+};
+
+export const createImage = async (imageData) => {
     try {
         const response = await httpRequest.post('/image', imageData);
         return response.data.data;
@@ -50,7 +60,17 @@ export const getVideos = async () => {
     }
 };
 
-export const addVideo = async (videoData) => {
+export const getVideosPaginnation = async () => {
+    try {
+        const response = await httpRequest.get('/video');
+        return response.data.data;
+    } catch (error) {
+        console.error('Error fetching videos', error);
+        throw error;
+    }
+};
+
+export const createVideo = async (videoData) => {
     try {
         const response = await httpRequest.post('/video', videoData);
         return response.data.data;

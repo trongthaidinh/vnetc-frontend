@@ -107,7 +107,6 @@ const ProjectList = () => {
                 </table>
             </div>
 
-            {/* Items per page selection */}
             <div className={styles.itemsPerPageContainer}>
                 <label htmlFor="itemsPerPage">Số mục mỗi trang:</label>
                 <select
@@ -115,7 +114,7 @@ const ProjectList = () => {
                     value={itemsPerPage}
                     onChange={(e) => {
                         setItemsPerPage(Number(e.target.value));
-                        setCurrentPage(1); // Reset to first page when items per page changes
+                        setCurrentPage(1);
                     }}
                     className={styles.itemsPerPageSelect}
                 >
@@ -126,7 +125,6 @@ const ProjectList = () => {
                 </select>
             </div>
 
-            {/* Pagination */}
             <div className={styles.pagination}>
                 <span>
                     Hiện {indexOfFirstProject + 1} đến {Math.min(indexOfLastProject, filteredProjects.length)} của{' '}

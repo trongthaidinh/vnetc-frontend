@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Library.module.scss';
-import { getImages, getVideos } from '~/services/libraryService';
+import { getImagesPagination, getVideos } from '~/services/libraryService';
 import Title from '~/components/Title';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -32,7 +32,7 @@ function Library() {
         const loadLibrary = async () => {
             setLoading(true);
             try {
-                const [videoData, imageData] = await Promise.all([getVideos(), getImages()]);
+                const [videoData, imageData] = await Promise.all([getVideos(), getImagesPagination()]);
 
                 const updatedVideos = videoData.map((item) => ({
                     ...item,

@@ -3,13 +3,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faChevronDown, faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from './Dropdown';
 import styles from './Header.module.scss';
-import httpRequest from '~/utils/httpRequest'; // Adjust the import based on your structure
+import { useAuth } from '~/hooks/useAuth';
+import { getUserByEmail } from '~/services/userService';
 
 const Header = () => {
     const [isEmailDropdownVisible, setIsEmailDropdownVisible] = useState(false);
     const [isUserDropdownVisible, setIsUserDropdownVisible] = useState(false);
+    const [user, setUser] = useState(null);
     const emailDropdownRef = useRef(null);
     const userDropdownRef = useRef(null);
+    const { signout } = useAuth();
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userEmail = localStorage.getItem('userEmail');
+                const userData = await getUserByEmail(userEmail);
+                setUser(userData);
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     const handleClickOutside = (event) => {
         if (
@@ -25,9 +42,7 @@ const Header = () => {
 
     const handleLogout = async () => {
         try {
-            await httpRequest.post('/logout'); // Update with your actual logout endpoint
-            localStorage.removeItem('token'); // Clear the token
-            window.location.href = '/login'; // Redirect to the login page
+            await signout();
         } catch (error) {
             console.error('Logout error:', error);
         }
@@ -49,6 +64,10 @@ const Header = () => {
         { icon: faUser, text: 'Profile' },
         { icon: faSignOutAlt, text: 'Logout', action: handleLogout },
     ];
+
+    if (!user) {
+        return null;
+    }
 
     return (
         <div className={styles.header}>
@@ -75,7 +94,7 @@ const Header = () => {
                     setIsEmailDropdownVisible(false);
                 }}
             >
-                <span className={styles.userName}>User Name</span>
+                <span className={styles.userName}>{user.username}</span>
                 <FontAwesomeIcon icon={faChevronDown} className={styles.chevronIcon} />
                 <Dropdown isVisible={isUserDropdownVisible} notifications={userDropdownItems} isUserDropdown={true} />
             </div>

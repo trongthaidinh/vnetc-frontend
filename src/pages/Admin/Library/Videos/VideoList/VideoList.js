@@ -6,12 +6,14 @@ import styles from './VideoList.module.scss';
 import Title from '~/components/Title';
 import { Link } from 'react-router-dom';
 import routes from '~/config/routes';
+import PushNotification from '~/components/PushNotification';
 
 const VideoList = () => {
     const [videos, setVideos] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         fetchVideos();
@@ -23,11 +25,11 @@ const VideoList = () => {
             if (data) {
                 setVideos(data);
             } else {
-                alert('Failed to fetch videos.');
+                setNotification({ message: 'Failed to fetch videos.', type: 'error' });
             }
         } catch (error) {
             console.error('Error fetching videos:', error);
-            alert('Failed to fetch videos.');
+            setNotification({ message: 'Failed to fetch videos.', type: 'error' });
         }
     };
 
@@ -36,10 +38,10 @@ const VideoList = () => {
             try {
                 await deleteVideo(id);
                 setVideos(videos.filter((video) => video._id !== id));
-                alert('Video deleted successfully!');
+                setNotification({ message: 'Video deleted successfully!', type: 'success' });
             } catch (error) {
                 console.error('Error deleting video:', error);
-                alert('There was an error deleting the video.');
+                setNotification({ message: 'There was an error deleting the video.', type: 'error' });
             }
         }
     };
@@ -72,6 +74,10 @@ const VideoList = () => {
                     <thead>
                         <tr>
                             <th>Video</th>
+                            <th>Ngày tạo</th>
+                            <th>Ngày cập nhật</th>
+                            <th>Người tạo</th>
+                            <th>Người cập nhật</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -84,6 +90,10 @@ const VideoList = () => {
                                             {video.video}
                                         </a>
                                     </td>
+                                    <td>{new Date(video.createdAt).toLocaleDateString()}</td>
+                                    <td>{new Date(video.updatedAt).toLocaleDateString()}</td>
+                                    <td>{video.createdBy}</td>
+                                    <td>{video.updatedBy}</td>
                                     <td>
                                         <button onClick={() => handleDelete(video._id)} className={styles.deleteButton}>
                                             <FontAwesomeIcon icon={faTrash} /> Xóa
@@ -93,7 +103,7 @@ const VideoList = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="2">Không có dữ liệu</td>
+                                <td colSpan="6">Không có dữ liệu</td>
                             </tr>
                         )}
                     </tbody>
@@ -132,6 +142,7 @@ const VideoList = () => {
                     </button>
                 </div>
             </div>
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
         </div>
     );
 };

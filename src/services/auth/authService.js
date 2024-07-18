@@ -17,9 +17,9 @@ export const logout = async () => {
     }
 };
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = async (id) => {
     try {
-        const response = await httpRequest.get('/authenticate/user');
+        const response = await httpRequest.get(`/account/${id}`);
         return response.data;
     } catch (error) {
         throw error;

@@ -5,10 +5,14 @@ import styles from './AddNavigation.module.scss';
 import Title from '~/components/Title';
 import { getNavigationLinks, createNavigationLink } from '~/services/navigationService';
 import routes from '~/config/routes';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import PushNotification from '~/components/PushNotification';
 
 const AddNavigation = () => {
+    const [isError, setIsError] = useState(false);
     const [navigations, setNavigations] = useState([]);
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchNavigations = async () => {
@@ -34,11 +38,15 @@ const AddNavigation = () => {
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
             await createNavigationLink(values);
-            alert('Navigation added successfully!');
             resetForm();
+            setTimeout(() => {
+                navigate(routes.navigationList);
+            }, 1000);
+            setIsError(false);
+            setNotificationMessage('Thêm Navigation thành công');
         } catch (error) {
-            console.error('Error adding navigation:', error);
-            alert('There was an error adding the navigation.');
+            setIsError(true);
+            setNotificationMessage('Có lỗi khi thêm Navigation.');
         } finally {
             setSubmitting(false);
         }
@@ -107,6 +115,7 @@ const AddNavigation = () => {
                     )}
                 </Formik>
             </div>
+            <PushNotification message={notificationMessage} type={isError ? 'error' : 'success'} />
         </div>
     );
 };

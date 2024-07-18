@@ -42,6 +42,16 @@ export const getUserById = async (userId) => {
     }
 };
 
+export const getUserByEmail = async (email) => {
+    try {
+        const response = await httpRequest.get(`${API_URL}/email/${email}`);
+        return response.data.data;
+    } catch (error) {
+        console.error(`Error updating user ${email}`, error);
+        throw error;
+    }
+};
+
 export const deleteUser = async (id, accDelId) => {
     try {
         const response = await httpRequest.delete(`${API_URL}`, { id, accDelId });

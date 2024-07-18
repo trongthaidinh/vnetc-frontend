@@ -60,7 +60,7 @@ const SideBar = () => {
             </div>
             <ul className={styles.menu}>
                 <li>
-                    <NavLink to="/" className={styles.menuItem}>
+                    <NavLink to={routes.admin} className={styles.menuItem}>
                         <FontAwesomeIcon icon={faTachometerAlt} className={styles.menuIcon} />
                         <span className={styles.menuText}>{!isCollapsed && 'Bảng điều khiển'}</span>
                     </NavLink>
@@ -184,10 +184,10 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.projectManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to="/admin/project-list">Danh sách dự án</NavLink>
+                            <NavLink to={routes.projectList}>Danh sách dự án</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/admin/add-project">Thêm dự án</NavLink>
+                            <NavLink to={routes.addProject}>Thêm dự án</NavLink>
                         </li>
                     </ul>
                 </li>
@@ -211,7 +211,7 @@ const SideBar = () => {
                             <NavLink to={routes.serviceList}>Danh sách dịch vụ</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/admin/add-service">Thêm dịch vụ</NavLink>
+                            <NavLink to={routes.addService}>Thêm dịch vụ</NavLink>
                         </li>
                     </ul>
                 </li>
@@ -262,7 +262,10 @@ const SideBar = () => {
                             <NavLink to={routes.imagesList}>Danh sách ảnh</NavLink>
                         </li>
                         <li>
-                            <NavLink to={routes.addLibrary}>Thêm thư viện</NavLink>
+                            <NavLink to={routes.addVideo}>Thêm Video</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.addImage}>Thêm Ảnh</NavLink>
                         </li>
                     </ul>
                 </li>
