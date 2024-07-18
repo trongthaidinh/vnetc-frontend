@@ -10,6 +10,16 @@ export const getProducts = async () => {
     }
 };
 
+export const getProductsPagination = async ($page = 1, $limit = 8) => {
+    try {
+        const response = await httpRequest.get(`/product?page=${$page}&limit=${$limit}`);
+        return response.data.data;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        throw error;
+    }
+};
+
 export const getProductById = async (id) => {
     try {
         const response = await httpRequest.get(`/product/${id}`);

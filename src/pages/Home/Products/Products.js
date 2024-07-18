@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import Product from '~/components/Product';
-import { getProducts } from '~/services/productService';
+import { getProductsPagination } from '~/services/productService';
 import { getCategoriesByType } from '~/services/categoryService';
 import styles from './Products.module.scss';
 import Title from '~/components/Title';
@@ -19,7 +19,7 @@ function Products() {
     useEffect(() => {
         const fetchProductsAndCategories = async () => {
             try {
-                const productsData = await getProducts();
+                const productsData = await getProductsPagination();
                 const categoriesData = await getCategoriesByType(1);
                 setProducts(productsData);
                 setCategories(categoriesData);
