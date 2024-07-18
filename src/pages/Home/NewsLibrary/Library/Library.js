@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Library.module.scss';
-import { getProjects } from '~/services/libraryService';
+import { getImages, getProjects, getVideos } from '~/services/libraryService';
 import ButtonGroup from '~/components/ButtonGroup';
 import Title from '~/components/Title';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,12 +27,27 @@ function Library() {
     };
 
     useEffect(() => {
-        const loadLibrary = async () => {
+        const loadVideo = async () => {
             try {
-                const data = await getProjects();
+                const data = await getVideos();
                 const updatedData = data.map((item) => ({
                     ...item,
-                    link: extractVideoId(item.link),
+                    link: extractVideoId(item.video),
+                }));
+                setLibrary(updatedData);
+                setActiveVideo(updatedData[0].link);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        const loadImage = async () => {
+            try {
+                const data = await getImages();
+                const updatedData = data.map((item) => ({
+                    ...item,
+                    link: extractVideoId(item.video),
                 }));
                 setLibrary(updatedData);
                 setActiveVideo(updatedData[0].link);
@@ -43,7 +58,8 @@ function Library() {
             }
         };
 
-        loadLibrary();
+        loadImage();
+        loadVideo();
     }, []);
 
     useEffect(() => {
