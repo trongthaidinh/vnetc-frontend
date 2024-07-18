@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faAngleLeft, faAngleRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { deleteVideo, getVideos } from '~/services/libraryService';
 import styles from './VideoList.module.scss';
 import Title from '~/components/Title';
+import { Link } from 'react-router-dom';
+import routes from '~/config/routes';
 
 const VideoList = () => {
     const [videos, setVideos] = useState([]);
@@ -13,7 +15,7 @@ const VideoList = () => {
 
     useEffect(() => {
         fetchVideos();
-    }, []);
+    }, [currentPage, itemsPerPage]);
 
     const fetchVideos = async () => {
         try {
@@ -60,6 +62,9 @@ const VideoList = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={styles.searchInput}
                 />
+                <Link to={routes.addVideo} className={styles.addButton}>
+                    <FontAwesomeIcon icon={faPlus} /> Thêm mới Video
+                </Link>
             </div>
 
             <div className={styles.videoList}>
@@ -94,8 +99,19 @@ const VideoList = () => {
                     </tbody>
                 </table>
             </div>
+            <div className={styles.itemsPerPage}>
+                <label htmlFor="itemsPerPage">Hiển thị: </label>
+                <select
+                    id="itemsPerPage"
+                    value={itemsPerPage}
+                    onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                </select>
+            </div>
 
-            {/* Pagination */}
             <div className={styles.pagination}>
                 <span>
                     Hiển thị {indexOfFirstVideo + 1} đến {Math.min(indexOfLastVideo, filteredVideos.length)} của{' '}

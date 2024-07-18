@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faAngleLeft, faAngleRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { deleteImage, getImages } from '~/services/libraryService';
 import styles from './ImageList.module.scss';
 import Title from '~/components/Title';
+import { Link } from 'react-router-dom';
+import routes from '~/config/routes';
 
 const ImageList = () => {
     const [images, setImages] = useState([]);
@@ -51,15 +53,18 @@ const ImageList = () => {
 
     return (
         <div className={styles.imageContainer}>
-            <Title className={styles.pageTitle} text="Danh sách Image" />
+            <Title className={styles.pageTitle} text="Danh sách ảnh" />
             <div className={styles.actionsContainer}>
                 <input
                     type="text"
-                    placeholder="Tìm kiếm Image..."
+                    placeholder="Tìm kiếm ảnh..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={styles.searchInput}
                 />
+                <Link to={routes.addImage} className={styles.addButton}>
+                    <FontAwesomeIcon icon={faPlus} /> Thêm mới ảnh
+                </Link>
             </div>
 
             <div className={styles.imageList}>
@@ -95,7 +100,19 @@ const ImageList = () => {
                 </table>
             </div>
 
-            {/* Pagination */}
+            <div className={styles.itemsPerPage}>
+                <label htmlFor="itemsPerPage">Hiển thị: </label>
+                <select
+                    id="itemsPerPage"
+                    value={itemsPerPage}
+                    onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                </select>
+            </div>
+
             <div className={styles.pagination}>
                 <span>
                     Hiển thị {indexOfFirstImage + 1} đến {Math.min(indexOfLastImage, filteredImages.length)} của{' '}
