@@ -14,6 +14,8 @@ const routes = {
     serviceList: '/admin/service-list',
     addService: '/admin/add-service',
     updateService: '/admin/update-service/:id',
+    partnerList: '/admin/partner-list',
+    addPartner: '/admin/add-partner',
     //User
     home: '/',
     about: '/gioi-thieu',

@@ -16,6 +16,7 @@ import {
     faNewspaper,
     faDiagramProject,
     faLayerGroup,
+    faHandshake,
 } from '@fortawesome/free-solid-svg-icons';
 import routes from '~/config/routes';
 
@@ -210,6 +211,30 @@ const SideBar = () => {
                         </li>
                         <li>
                             <NavLink to="/admin/add-service">Thêm dịch vụ</NavLink>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <div className={styles.menuItem} onClick={() => toggleMenu('partnerManagement')}>
+                        <FontAwesomeIcon icon={faHandshake} className={styles.menuIcon} />
+                        <span className={styles.menuText}>
+                            {!isCollapsed && (
+                                <>
+                                    Quản lý đối tác
+                                    <FontAwesomeIcon
+                                        icon={openMenus.partnerManagement ? faChevronDown : faChevronRight}
+                                        className={styles.chevronIcon}
+                                    />
+                                </>
+                            )}
+                        </span>
+                    </div>
+                    <ul className={`${styles.subMenu} ${openMenus.partnerManagement ? styles.open : ''}`}>
+                        <li>
+                            <NavLink to={routes.partnerList}>Danh sách đối tác</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.addPartner}>Thêm đối tác</NavLink>
                         </li>
                     </ul>
                 </li>
