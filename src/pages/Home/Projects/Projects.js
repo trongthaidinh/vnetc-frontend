@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Projects.module.scss';
 import classNames from 'classnames/bind';
-import { getProjects } from '~/services/projectService';
+import { getProjectsPagiation } from '~/services/projectService';
 import { getCategoriesByType } from '~/services/categoryService';
 import CardContent from '~/components/CardContent';
 import Title from '~/components/Title';
@@ -21,7 +21,10 @@ function Projects() {
     useEffect(() => {
         const loadProjects = async () => {
             try {
-                const [projectsData, categoriesData] = await Promise.all([getProjects(), getCategoriesByType(4)]);
+                const [projectsData, categoriesData] = await Promise.all([
+                    getProjectsPagiation(),
+                    getCategoriesByType(4),
+                ]);
                 setProjects(projectsData);
                 setCategories(categoriesData);
             } catch (error) {

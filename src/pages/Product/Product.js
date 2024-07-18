@@ -10,7 +10,6 @@ import LoadingScreen from '~/components/LoadingScreen';
 import routes from '~/config/routes';
 import { getCategoriesByType } from '~/services/categoryService';
 import Product from '~/components/Product';
-import SuggestCard from '~/components/SuggestCard';
 
 const cx = classNames.bind(styles);
 
@@ -109,17 +108,6 @@ const Products = () => {
                             </div>
                         </div>
                     ))}
-                </div>
-                <div className={cx('suggest')}>
-                    <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
-                    <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} onButtonClick={handleButtonClick} />
-                    <div className={cx('suggest-items')}>
-                        {filteredProductItems.map((item, index) => (
-                            <Link key={index} to={`/products/${item._id}`}>
-                                <SuggestCard title={item.name} image={item.image[0]} createdAt={item.createdAt} />
-                            </Link>
-                        ))}
-                    </div>
                 </div>
             </div>
         </article>

@@ -10,7 +10,7 @@ export const getProjects = async () => {
     }
 };
 
-export const getProjectsPagiation = async (page = 1, limit = 8) => {
+export const getProjectsPagiation = async (page = 1, limit = 6) => {
     try {
         const response = await httpRequest.get(`/project?page=${page}&limit=${limit}`);
         return response.data.data;

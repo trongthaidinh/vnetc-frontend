@@ -20,6 +20,7 @@ function Partners() {
         const loadPartners = async () => {
             try {
                 const data = await getPartners();
+                console.log(data);
                 setPartners(data);
             } catch (error) {
                 setError(error);
@@ -91,9 +92,8 @@ function Partners() {
                         {partnersArr.map((partner, index) => (
                             <div key={index} className={cx('slide')} onClick={() => handleSlideChange(index)}>
                                 <div className={cx('partner-card')}>
-                                    <img src={partner.imageUrl} alt={partner.name} className={cx('partner-image')} />
+                                    <img src={partner.logo} alt={`Partner ${index}`} className={cx('partner-image')} />
                                     <div className={cx('partner-info')}>
-                                        <p className={cx('partner-name')}>{partner.name}</p>
                                         <p className={cx('partner-position')}>{partner.position}</p>
                                     </div>
                                 </div>

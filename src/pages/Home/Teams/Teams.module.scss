@@ -42,6 +42,7 @@
 
 .slide {
     flex: 0 0 calc(100% / var(--slides-per-view));
+    padding: 10px;
 
     @include respond-to(lg) {
         flex: 0 0 calc(100% / var(--slides-per-view-lg));

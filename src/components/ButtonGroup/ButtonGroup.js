@@ -10,7 +10,7 @@ const ButtonGroup = ({ buttons, onButtonClick }) => {
 
     const handleClick = (index) => {
         setActiveIndex(index);
-        onButtonClick(index); // Pass index instead of the button text
+        onButtonClick(index);
     };
 
     return (

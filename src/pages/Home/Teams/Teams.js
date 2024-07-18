@@ -1,29 +1,40 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './Teams.module.scss';
 import classNames from 'classnames/bind';
-import { getTeams } from '~/services/teamService';
-import ButtonGroup from '~/components/ButtonGroup';
+import { getDepartmentMembers, getDepartments } from '~/services/teamService';
 import Title from '~/components/Title';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
+import ButtonGroup from '~/components/ButtonGroup';
+import positionTitles from '~/constants/PositionTitle';
 
 const cx = classNames.bind(styles);
 
 function Teams() {
-    const [teamsArr, setTeams] = useState([]);
+    const [departments, setDepartments] = useState([]);
+    const [teamsArr, setTeams] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [currentSlide, setCurrentSlide] = useState(0);
-    const sliderRef = useRef(null);
+    const [currentSlides, setCurrentSlides] = useState({});
     const [slidesPerView, setSlidesPerView] = useState(4);
-
-    const buttons = ['Ban lãnh đạo', 'Đội công trình'];
+    const sliderRefs = useRef({});
 
     useEffect(() => {
         const loadTeams = async () => {
+            setLoading(true);
             try {
-                const data = await getTeams();
-                setTeams(data);
+                const departments = await getDepartments();
+                setDepartments(departments);
+
+                const allTeams = {};
+                const slides = {};
+                for (const department of departments) {
+                    const members = await getDepartmentMembers(department._id);
+                    allTeams[department._id] = members;
+                    slides[department._id] = 0;
+                }
+                setTeams(allTeams);
+                setCurrentSlides(slides);
             } catch (error) {
                 setError(error);
             } finally {
@@ -35,14 +46,17 @@ function Teams() {
     }, []);
 
     useEffect(() => {
-        if (!loading && teamsArr.length > 0) {
-            const interval = setInterval(() => {
-                setCurrentSlide((prevSlide) => (prevSlide + 1) % teamsArr.length);
+        const intervals = Object.keys(currentSlides).map((departmentId) => {
+            return setInterval(() => {
+                setCurrentSlides((prevSlides) => ({
+                    ...prevSlides,
+                    [departmentId]: (prevSlides[departmentId] + 1) % (teamsArr[departmentId]?.length || 1),
+                }));
             }, 2000);
+        });
 
-            return () => clearInterval(interval);
-        }
-    }, [loading, teamsArr]);
+        return () => intervals.forEach(clearInterval);
+    }, [currentSlides, teamsArr]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -52,8 +66,6 @@ function Teams() {
                 setSlidesPerView(3);
             } else if (window.innerWidth >= 768) {
                 setSlidesPerView(2);
-            } else if (window.innerWidth >= 480) {
-                setSlidesPerView(1);
             } else {
                 setSlidesPerView(1);
             }
@@ -76,8 +88,11 @@ function Teams() {
         return <LoadingScreen />;
     }
 
-    const handleSlideChange = (index) => {
-        setCurrentSlide(index);
+    const handleSlideChange = (departmentId, index) => {
+        setCurrentSlides((prevSlides) => ({
+            ...prevSlides,
+            [departmentId]: index,
+        }));
     };
 
     const translateValue = 100 / slidesPerView;
@@ -86,25 +101,33 @@ function Teams() {
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Title text="Đội ngũ" />
-                <ButtonGroup buttons={buttons} />
-                <div className={cx('slide-container')} ref={sliderRef}>
-                    <div
-                        className={cx('slide-wrapper')}
-                        style={{ transform: `translateX(-${currentSlide * translateValue}%)` }}
-                    >
-                        {teamsArr.map((team, index) => (
-                            <div key={index} className={cx('slide')} onClick={() => handleSlideChange(index)}>
-                                <div className={cx('team-card')}>
-                                    <img src={team.image} alt={team.name} className={cx('team-image')} />
-                                    <div className={cx('team-info')}>
-                                        <h3 className={cx('team-name')}>{team.name}</h3>
-                                        <p className={cx('team-position')}>{team.position}</p>
+                {departments.map((department) => (
+                    <div key={department._id}>
+                        <ButtonGroup buttons={[department.name]} />
+                        <div className={cx('slide-container')} ref={(el) => (sliderRefs.current[department._id] = el)}>
+                            <div
+                                className={cx('slide-wrapper')}
+                                style={{ transform: `translateX(-${currentSlides[department._id] * translateValue}%)` }}
+                            >
+                                {teamsArr[department._id]?.map((team, index) => (
+                                    <div
+                                        key={index}
+                                        className={cx('slide')}
+                                        onClick={() => handleSlideChange(department._id, index)}
+                                    >
+                                        <div className={cx('team-card')}>
+                                            <img src={team.image} alt={team.name} className={cx('team-image')} />
+                                            <div className={cx('team-info')}>
+                                                <h3 className={cx('team-name')}>{team.name}</h3>
+                                                <p className={cx('team-position')}>{positionTitles[team.position]}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                ))}
                             </div>
-                        ))}
+                        </div>
                     </div>
-                </div>
+                ))}
             </div>
         </div>
     );

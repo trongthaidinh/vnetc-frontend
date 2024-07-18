@@ -11,7 +11,7 @@
 }
 
 .products-column {
-    flex: 3;
+    flex: 4;
 
     .products-category {
         display: flex;
@@ -22,7 +22,7 @@
 
     .products-items {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         justify-content: space-between;
         gap: 20px;
         margin-top: 20px;
