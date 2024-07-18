@@ -1,8 +1,8 @@
 import httpRequest from '~/utils/httpRequest';
 
-export const getImages = async () => {
+export const getImages = async (page = 1, limit = 9) => {
     try {
-        const response = await httpRequest.get('/image');
+        const response = await httpRequest.get(`/image?page=${page}&limit=${limit}`);
         return response.data.data;
     } catch (error) {
         console.error('Error fetching image', error);
