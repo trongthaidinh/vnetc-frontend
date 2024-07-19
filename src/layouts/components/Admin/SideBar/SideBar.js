@@ -270,10 +270,12 @@ const SideBar = () => {
                     </ul>
                 </li>
                 <li>
-                    <div className={styles.menuItem}>
-                        <FontAwesomeIcon icon={faCogs} className={styles.menuIcon} />
-                        <span className={styles.menuText}>{!isCollapsed && 'Cài đặt'}</span>
-                    </div>
+                    <NavLink to={routes.settings}>
+                        <div className={styles.menuItem}>
+                            <FontAwesomeIcon icon={faCogs} className={styles.menuIcon} />
+                            <span className={styles.menuText}>{!isCollapsed && 'Cài đặt'}</span>
+                        </div>
+                    </NavLink>
                 </li>
             </ul>
         </div>

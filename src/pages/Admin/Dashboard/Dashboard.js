@@ -26,7 +26,7 @@ const sidebarItems = [
     { title: 'Quản lý dịch vụ', icon: faLayerGroup, count: 0, route: routes.serviceList },
     { title: 'Quản lý đối tác', icon: faHandshake, count: 0, route: routes.partnerList },
     { title: 'Quản lý thư viện', icon: faBookOpen, count: 0, route: routes.videosList },
-    { title: 'Cài đặt', icon: faCogs, count: 0, route: '/settings' },
+    { title: 'Cài đặt', icon: faCogs, count: 0, route: routes.settings },
 ];
 
 const Dashboard = () => {
