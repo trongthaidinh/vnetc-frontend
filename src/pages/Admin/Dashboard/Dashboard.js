@@ -18,7 +18,7 @@ import routes from '~/config/routes';
 
 const sidebarItems = [
     { title: 'Quản lý Menu', icon: faClipboardList, count: 0, route: routes.navigationList },
-    { title: 'Quản lý tin nhắn', icon: faEnvelope, count: 0, route: '/messages' },
+    { title: 'Quản lý tin nhắn', icon: faEnvelope, count: 0, route: routes.messagesList },
     { title: 'Quản lý người dùng', icon: faUsers, count: 0, route: routes.userList },
     { title: 'Quản lý sản phẩm', icon: faBox, count: 0, route: routes.productList },
     { title: 'Quản lý tin tức', icon: faNewspaper, count: 0, route: routes.newsList },

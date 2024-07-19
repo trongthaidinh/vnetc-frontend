@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { getMessages, deleteMessage } from '~/services/contactService';
 import styles from './MessageList.module.scss';
 import Title from '~/components/Title';
-import routes from '~/config/routes';
 
 const MessageList = () => {
     const [messages, setMessages] = useState([]);
