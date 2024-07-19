@@ -15,8 +15,16 @@
         line-height: 1.6;
         text-align: justify;
 
-        .list-info {
-            padding: 0 20px;
+        img {
+            border-radius: 8px;
+        }
+
+        p {
+            margin: 8px 0;
+        }
+
+        li {
+            margin-left: 50px;
         }
     }
 }
