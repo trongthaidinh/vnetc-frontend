@@ -57,6 +57,7 @@ import ImageList from '~/pages/Admin/Library/Images/ImageList';
 import AddImage from '~/pages/Admin/Library/Images/AddImage';
 import AddVideo from '~/pages/Admin/Library/Videos/AddVideo';
 import ChangePassword from '~/pages/Admin/Users/ChangePassword';
+import MessageList from '~/pages/Admin/Messages/MessageList';
 
 // Public Routes
 const publicRoutes = [
@@ -180,6 +181,7 @@ const privateRoutes = [
     { path: config.routes.addVideo, component: AddVideo, layout: AdminLayout },
     { path: config.routes.addUser, component: AddUser, layout: AdminLayout },
     { path: config.routes.changePassword, component: ChangePassword, layout: AdminLayout },
+    { path: config.routes.messagesList, component: MessageList, layout: AdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };

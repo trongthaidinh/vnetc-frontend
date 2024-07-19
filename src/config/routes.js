@@ -27,6 +27,7 @@ const routes = {
     imagesList: '/admin/images-list',
     addImage: '/admin/add-image',
     addVideo: '/admin/add-video',
+    messagesList: '/admin/messages-list',
     //User
     home: '/',
     about: '/gioi-thieu',

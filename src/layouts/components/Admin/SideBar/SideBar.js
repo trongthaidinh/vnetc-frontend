@@ -90,7 +90,7 @@ const SideBar = () => {
                     </ul>
                 </li>
                 <li>
-                    <NavLink to="/messages" className={styles.menuItem}>
+                    <NavLink to={routes.messagesList} className={styles.menuItem}>
                         <FontAwesomeIcon icon={faEnvelope} className={styles.menuIcon} />
                         <span className={styles.menuText}>{!isCollapsed && 'Quản lý tin nhắn'}</span>
                     </NavLink>

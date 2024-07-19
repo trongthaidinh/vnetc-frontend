@@ -1,15 +1,20 @@
 import classNames from 'classnames/bind';
 import React, { useState, useEffect } from 'react';
-import styles from './Contact.module.scss';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faMapMarkerAlt, faPhone } from '@fortawesome/free-solid-svg-icons';
 import Button from '~/components/Button';
+import { createMessage } from '~/services/contactService';
+import PushNotification from '~/components/PushNotification';
+import styles from './Contact.module.scss';
 
 const cx = classNames.bind(styles);
 
 const ContactPage = () => {
     const [, setMap] = useState(null);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -49,6 +54,33 @@ const ContactPage = () => {
         setMap(map);
     };
 
+    const initialValues = {
+        fullName: '',
+        email: '',
+        phoneNumber: '',
+        subject: '',
+        message: '',
+    };
+
+    const validationSchema = Yup.object({
+        fullName: Yup.string().required('Họ và Tên là bắt buộc'),
+        email: Yup.string().email('Email không hợp lệ').required('Email là bắt buộc'),
+        phoneNumber: Yup.string().required('Số điện thoại là bắt buộc'),
+        subject: Yup.string().required('Chủ đề là bắt buộc'),
+        message: Yup.string().required('Nội dung tin nhắn là bắt buộc'),
+    });
+
+    const handleSubmit = async (values, { resetForm }) => {
+        try {
+            await createMessage(values);
+            setNotification({ message: 'Gửi tin nhắn thành công!', type: 'success' });
+            resetForm();
+        } catch (error) {
+            console.error('Error sending message:', error);
+            setNotification({ message: 'Lỗi khi gửi tin nhắn.', type: 'error' });
+        }
+    };
+
     return (
         <div className={cx('contactPage')}>
             <div className={cx('mapContainer')}>
@@ -84,73 +116,88 @@ const ContactPage = () => {
                         </div>
                     </div>
                     <div className={cx('contactForm')}>
-                        <div className={cx('formGroup')}>
-                            <label htmlFor="fullName">Họ và Tên</label>
-                            <input type="text" id="fullName" name="fullName" />
-                        </div>
-                        <div className={cx('formGroup', 'formRow')}>
-                            <div className={cx('formHalf')}>
-                                <label htmlFor="email">Email</label>
-                                <input type="email" id="email" name="email" />
-                            </div>
-                            <div className={cx('formHalf')}>
-                                <label htmlFor="phoneNumber">Số điện thoại</label>
-                                <input type="text" id="phoneNumber" name="phoneNumber" />
-                            </div>
-                        </div>
-                        <div className={cx('formGroup')}>
-                            <label>Chủ đề</label>
-                            <div className={cx('subject')}>
-                                <input
-                                    type="radio"
-                                    name="subject"
-                                    id="subject1"
-                                    value="subject1"
-                                    className={cx('customRadio')}
-                                />
-                                <label htmlFor="subject1" className={cx('radioLabel')}>
-                                    Chủ đề 1
-                                </label>
-
-                                <input
-                                    type="radio"
-                                    name="subject"
-                                    id="subject2"
-                                    value="subject2"
-                                    className={cx('customRadio')}
-                                />
-                                <label htmlFor="subject2" className={cx('radioLabel')}>
-                                    Chủ đề 2
-                                </label>
-
-                                <input
-                                    type="radio"
-                                    name="subject"
-                                    id="subject3"
-                                    value="subject3"
-                                    className={cx('customRadio')}
-                                />
-                                <label htmlFor="subject3" className={cx('radioLabel')}>
-                                    Chủ đề 3
-                                </label>
-                            </div>
-                        </div>
-
-                        <div className={cx('formGroup')}>
-                            <label htmlFor="message">Nội dung tin nhắn</label>
-                            <textarea
-                                id="message"
-                                name="message"
-                                rows="4"
-                                placeholder="Viết tin nhắn của bạn"
-                            ></textarea>
-                        </div>
-                        <Button primary className={cx('formSubmitBtn')}>
-                            Gửi tin nhắn
-                        </Button>
+                        <Formik
+                            initialValues={initialValues}
+                            validationSchema={validationSchema}
+                            onSubmit={handleSubmit}
+                        >
+                            {({ isSubmitting }) => (
+                                <Form>
+                                    <div className={cx('formGroup')}>
+                                        <label htmlFor="fullName">Họ và Tên</label>
+                                        <Field type="text" id="fullName" name="fullName" className={cx('input')} />
+                                        <ErrorMessage name="fullName" component="div" className={cx('error')} />
+                                    </div>
+                                    <div className={cx('formGroup', 'formRow')}>
+                                        <div className={cx('formHalf')}>
+                                            <label htmlFor="email">Email</label>
+                                            <Field type="email" id="email" name="email" className={cx('input')} />
+                                            <ErrorMessage name="email" component="div" className={cx('error')} />
+                                        </div>
+                                        <div className={cx('formHalf')}>
+                                            <label htmlFor="phoneNumber">Số điện thoại</label>
+                                            <Field
+                                                type="text"
+                                                id="phoneNumber"
+                                                name="phoneNumber"
+                                                className={cx('input')}
+                                            />
+                                            <ErrorMessage name="phoneNumber" component="div" className={cx('error')} />
+                                        </div>
+                                    </div>
+                                    <div className={cx('formGroup')}>
+                                        <label>Chủ đề</label>
+                                        <div className={cx('subject')}>
+                                            <Field
+                                                type="radio"
+                                                name="subject"
+                                                id="subject1"
+                                                value="Dịch vụ"
+                                                className={cx('customRadio')}
+                                            />
+                                            <label htmlFor="subject1" className={cx('radioLabel')}>
+                                                Dịch vụ
+                                            </label>
+                                            <Field
+                                                type="radio"
+                                                name="subject"
+                                                id="subject2"
+                                                value="Sản phẩm"
+                                                className={cx('customRadio')}
+                                            />
+                                            <label htmlFor="subject2" className={cx('radioLabel')}>
+                                                Sản phẩm
+                                            </label>
+                                            <Field
+                                                type="radio"
+                                                name="subject"
+                                                id="subject3"
+                                                value="Khác"
+                                                className={cx('customRadio')}
+                                            />
+                                            <label htmlFor="subject3" className={cx('radioLabel')}>
+                                                Khác
+                                            </label>
+                                        </div>
+                                        <ErrorMessage name="subject" component="div" className={cx('error')} />
+                                    </div>
+                                    <div className={cx('formGroup')}>
+                                        <label htmlFor="message">Nội dung tin nhắn</label>
+                                        <Field as="textarea" id="message" name="message" className={cx('textarea')} />
+                                        <ErrorMessage name="message" component="div" className={cx('error')} />
+                                    </div>
+                                    <div className={cx('buttonContainer')}>
+                                        <Button primary type="submit" disabled={isSubmitting}>
+                                            Gửi tin nhắn
+                                        </Button>
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
                     </div>
                 </div>
             </div>
+            <PushNotification message={notification.message} type={notification.type} />
         </div>
     );
 };

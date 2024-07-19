@@ -148,22 +148,22 @@
                 position: absolute;
                 top: 2px;
                 left: 0;
-                width: 16px; // Đường kính của ô tròn
-                height: 16px; // Đường kính của ô tròn
-                border: 1px solid #ccc; // Viền của ô tròn
-                border-radius: 50%; // Bo tròn ô tròn
-                background-color: #fff; // Màu nền của ô tròn
+                width: 16px;
+                height: 16px;
+                border: 1px solid #ccc;
+                border-radius: 50%;
+                background-color: #fff;
             }
 
             &:after {
                 content: '';
                 position: absolute;
-                top: 4px; // Điều chỉnh vị trí của dấu tick
-                left: 4px; // Điều chỉnh vị trí của dấu tick
-                width: 8px; // Độ dài của dấu tick
-                height: 8px; // Độ cao của dấu tick
-                border: solid var(--primary); // Màu của dấu tick
-                border-width: 0 2px 2px 0; // Độ dày và hướng của dấu tick
+                top: 4px;
+                left: 4px;
+                width: 8px;
+                height: 8px;
+                border: solid var(--primary);
+                border-width: 0 2px 2px 0;
                 transform: rotate(45deg);
                 opacity: 0;
             }
@@ -183,6 +183,11 @@
 
         .formSubmitBtn {
         }
+    }
+
+    .error {
+        color: red;
+        font-size: 1.2rem;
     }
 
     .subject label {
