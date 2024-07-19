@@ -6,18 +6,18 @@ import Title from '~/components/Title';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import ButtonGroup from '~/components/ButtonGroup';
-import routes from '~/config/routes';
 
 const cx = classNames.bind(styles);
 
 function Library() {
     const [videos, setVideos] = useState([]);
     const [images, setImages] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [activeVideo, setActiveVideo] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const sliderRef = useRef(null);
+    const [activeImage, setActiveImage] = useState(null);
+    const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const videoSliderRef = useRef(null);
+    const imageSliderRef = useRef(null);
 
     const extractVideoId = (url) => {
         const urlObj = new URL(url);
@@ -30,7 +30,6 @@ function Library() {
 
     useEffect(() => {
         const loadLibrary = async () => {
-            setLoading(true);
             try {
                 const [videoData, imageData] = await Promise.all([getVideos(), getImagesPagination()]);
 
@@ -42,10 +41,9 @@ function Library() {
                 setVideos(updatedVideos);
                 setImages(imageData);
                 setActiveVideo(updatedVideos[0]?.link);
+                setActiveImage(imageData[0]?.image);
             } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
+                console.error('Failed to load library data', error);
             }
         };
 
@@ -53,41 +51,72 @@ function Library() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => {
+        const videoInterval = setInterval(() => {
+            setCurrentVideoIndex((prevIndex) => {
                 const totalItems = videos.length;
                 if (prevIndex >= totalItems) {
-                    sliderRef.current.style.transition = 'none';
+                    videoSliderRef.current.style.transition = 'none';
                     return 0;
                 }
-                sliderRef.current.style.transition = 'transform 0.5s ease-in-out';
+                videoSliderRef.current.style.transition = 'transform 0.5s ease-in-out';
                 return prevIndex + 1;
             });
         }, 3000);
 
-        return () => clearInterval(interval);
+        return () => clearInterval(videoInterval);
     }, [videos.length]);
+
+    useEffect(() => {
+        const imageInterval = setInterval(() => {
+            setCurrentImageIndex((prevIndex) => {
+                const totalItems = images.length;
+                if (prevIndex >= totalItems) {
+                    imageSliderRef.current.style.transition = 'none';
+                    return 0;
+                }
+                imageSliderRef.current.style.transition = 'transform 0.5s ease-in-out';
+                return prevIndex + 1;
+            });
+        }, 3000);
+
+        return () => clearInterval(imageInterval);
+    }, [images.length]);
 
     const handleThumbnailClick = (link) => {
         setActiveVideo(link);
     };
 
-    const handlePrevClick = () => {
-        const totalItems = videos.length;
-        setCurrentIndex((prevIndex) => (prevIndex === 0 ? totalItems - 1 : prevIndex - 1));
+    const handleImageClick = (image) => {
+        setActiveImage(image);
     };
 
-    const handleNextClick = () => {
+    const handlePrevVideoClick = () => {
         const totalItems = videos.length;
-        setCurrentIndex((prevIndex) => (prevIndex === totalItems - 1 ? 0 : prevIndex + 1));
+        setCurrentVideoIndex((prevIndex) => (prevIndex === 0 ? totalItems - 1 : prevIndex - 1));
     };
 
-    const visibleThumbnails = [...videos, ...videos.slice(0, 3)];
+    const handleNextVideoClick = () => {
+        const totalItems = videos.length;
+        setCurrentVideoIndex((prevIndex) => (prevIndex === totalItems - 1 ? 0 : prevIndex + 1));
+    };
+
+    const handlePrevImageClick = () => {
+        const totalItems = images.length;
+        setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? totalItems - 1 : prevIndex - 1));
+    };
+
+    const handleNextImageClick = () => {
+        const totalItems = images.length;
+        setCurrentImageIndex((prevIndex) => (prevIndex === totalItems - 1 ? 0 : prevIndex + 1));
+    };
+
+    const visibleVideoThumbnails = [...videos, ...videos.slice(0, 3)];
+    const visibleImageThumbnails = [...images, ...images.slice(0, 3)];
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Title text="Thư viện" showSeeAll={true} slug={`${routes.library}`} />
+                <Title text="Thư viện" />
                 <ButtonGroup buttons={['Video']} />
                 <div className={cx('library')}>
                     {activeVideo && (
@@ -107,18 +136,18 @@ function Library() {
                         <FontAwesomeIcon
                             icon={faChevronLeft}
                             className={cx('chevron', 'left')}
-                            onClick={handlePrevClick}
+                            onClick={handlePrevVideoClick}
                         />
                         <div
                             className={cx('thumbnails')}
-                            ref={sliderRef}
+                            ref={videoSliderRef}
                             style={{
                                 transform: `translateX(-${
-                                    (currentIndex % (visibleThumbnails.length + 3)) * (100 / 3)
+                                    (currentVideoIndex % (visibleVideoThumbnails.length + 3)) * (100 / 3)
                                 }%)`,
                             }}
                         >
-                            {visibleThumbnails.map((item, index) => (
+                            {visibleVideoThumbnails.map((item, index) => (
                                 <div
                                     key={index}
                                     className={cx('thumbnail')}
@@ -126,7 +155,7 @@ function Library() {
                                 >
                                     <img
                                         src={getThumbnailUrl(item.link)}
-                                        alt={`Thumbnail of ${item.title}`}
+                                        alt={item.title}
                                         className={cx('thumbnail-image')}
                                     />
                                 </div>
@@ -135,17 +164,52 @@ function Library() {
                         <FontAwesomeIcon
                             icon={faChevronRight}
                             className={cx('chevron', 'right')}
-                            onClick={handleNextClick}
+                            onClick={handleNextVideoClick}
                         />
                     </div>
                 </div>
                 <ButtonGroup buttons={['Hình ảnh']} />
-                <div className={cx('image-library')}>
-                    {images.map((image, index) => (
-                        <div key={index} className={cx('image-wrapper')}>
-                            <img src={image.image} alt={`Image ${index + 1}`} className={cx('image')} />
+                <div className={cx('library')}>
+                    {activeImage && (
+                        <div className={cx('main-image')}>
+                            <img src={activeImage} alt="Main" className={cx('main-image-content')} />
                         </div>
-                    ))}
+                    )}
+                    <div className={cx('thumbnails-wrapper')}>
+                        <FontAwesomeIcon
+                            icon={faChevronLeft}
+                            className={cx('chevron', 'left')}
+                            onClick={handlePrevImageClick}
+                        />
+                        <div
+                            className={cx('thumbnails')}
+                            ref={imageSliderRef}
+                            style={{
+                                transform: `translateX(-${
+                                    (currentImageIndex % (visibleImageThumbnails.length + 3)) * (100 / 3)
+                                }%)`,
+                            }}
+                        >
+                            {visibleImageThumbnails.map((image, index) => (
+                                <div
+                                    key={index}
+                                    className={cx('thumbnail')}
+                                    onClick={() => handleImageClick(image.image)}
+                                >
+                                    <img
+                                        src={image.image}
+                                        alt={`Thumbnail ${index + 1}`}
+                                        className={cx('thumbnail-image')}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                        <FontAwesomeIcon
+                            icon={faChevronRight}
+                            className={cx('chevron', 'right')}
+                            onClick={handleNextImageClick}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
