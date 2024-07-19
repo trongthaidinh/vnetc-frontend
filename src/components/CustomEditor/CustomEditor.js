@@ -23,7 +23,7 @@ const CustomEditor = ({ onChange, initialValue }) => {
 
     return (
         <Editor
-            apiKey="n0qx2b928zblbwkchy4kfs2zan8lsjwh2n2w7g4fm5pao1s3"
+            apiKey={process.env.REACT_APP_TINY_MCE}
             onInit={handleInit}
             init={{
                 plugins:
