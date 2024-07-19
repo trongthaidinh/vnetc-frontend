@@ -1,5 +1,15 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
 .wrapper {
     margin-left: 20px;
+    @include respond-to(lg) {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    @include respond-to(sm) {
+        padding: 10px;
+    }
     .header {
         padding-bottom: 20px;
         margin-bottom: 20px;
