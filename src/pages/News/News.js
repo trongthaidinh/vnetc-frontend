@@ -100,7 +100,7 @@ const News = () => {
                                                 title={item.title}
                                                 summary={item.summary}
                                                 image={item.images}
-                                                createdAt={item.createdAt}
+                                                createdAt={new Date(item.createdAt).getTime()}
                                                 views={item.views}
                                             />
                                         </Link>

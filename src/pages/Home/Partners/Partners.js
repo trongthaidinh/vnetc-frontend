@@ -20,7 +20,6 @@ function Partners() {
         const loadPartners = async () => {
             try {
                 const data = await getPartners();
-                console.log(data);
                 setPartners(data);
             } catch (error) {
                 setError(error);

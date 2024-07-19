@@ -64,7 +64,7 @@ const Services = () => {
                 <div className={cx('service-list')}>
                     {categoryToServiceMap.map((category) => (
                         <ServiceItem
-                            key={category.serviceType}
+                            key={category._id}
                             image={category.services[0].image}
                             name={category.name}
                             slug={category.slug}

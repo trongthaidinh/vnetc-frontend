@@ -64,7 +64,7 @@ const Banner = () => {
         <div className={styles.banner}>
             <div className={styles.slidesContainer} style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
                 {slides.map((slide, index) => (
-                    <div key={slide.id} className={styles.slide}>
+                    <div key={index} className={styles.slide}>
                         <img src={slide.image_url} alt={slide.title} className={styles.image} />
                         <div className={`${styles.contentContainer} ${styles[slide.position]}`}>
                             <div className={styles.textWrapper}>

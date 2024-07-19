@@ -7,7 +7,7 @@
     overflow: hidden;
     position: relative;
     @include respond-to(lg) {
-        height: 220px;
+        height: 260px;
     }
 
     @include respond-to(md) {
@@ -16,6 +16,7 @@
 
     @include respond-to(sm) {
         height: 120px;
+        margin-top: var(--nav-height);
     }
 
     .slidesContainer {
@@ -33,6 +34,14 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        @include respond-to(lg) {
+            height: 260px;
+        }
+
+        @include respond-to(md) {
+            height: 200px;
+        }
+
         @include respond-to(sm) {
             height: 120px;
         }

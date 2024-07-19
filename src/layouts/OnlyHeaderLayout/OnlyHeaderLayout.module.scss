@@ -15,7 +15,7 @@
     max-width: 100%;
     display: flex;
 
-    @include respond-to(sm) {
+    @include respond-to(lg) {
         display: block;
     }
 }
@@ -24,7 +24,7 @@
     flex: 1;
     display: flex;
     justify-content: center;
-    @include respond-to(sm) {
+    @include respond-to(lg) {
         display: block;
     }
 }

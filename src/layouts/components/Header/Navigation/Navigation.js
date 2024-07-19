@@ -21,9 +21,7 @@ function Navigation({ isFixed }) {
     useEffect(() => {
         const fetchNavigationLinks = async () => {
             try {
-                // const links = await getNavigationLinks();
-                let links = await getNavigationLinks();
-                // links = [
+                const links = await getNavigationLinks();
                 //     {
                 //         _id: '6671b495255a57dd268763c3',
                 //         title: 'Giới thiệu',

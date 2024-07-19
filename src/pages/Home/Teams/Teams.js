@@ -73,8 +73,6 @@ function Teams() {
             }
         };
 
-        console.log(slidesPerView);
-
         handleResize();
         window.addEventListener('resize', handleResize);
 

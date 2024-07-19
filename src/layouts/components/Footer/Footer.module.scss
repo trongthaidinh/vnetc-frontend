@@ -1,4 +1,5 @@
-/* Footer.module.scss */
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
 
 .wrapper {
     width: 100%;
@@ -12,6 +13,15 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 40px 20px;
+        @include respond-to(md) {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        @include respond-to(sm) {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+        }
 
         .footerColumn {
             flex: calc(20% - 20px);

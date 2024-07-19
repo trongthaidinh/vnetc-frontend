@@ -30,7 +30,7 @@ const ButtonGroup = ({ buttons, onButtonClick }) => {
 
 ButtonGroup.propTypes = {
     buttons: PropTypes.arrayOf(PropTypes.string).isRequired,
-    onButtonClick: PropTypes.func.isRequired,
+    onButtonClick: PropTypes.func,
 };
 
 export default ButtonGroup;
