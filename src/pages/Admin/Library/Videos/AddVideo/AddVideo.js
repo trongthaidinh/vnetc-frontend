@@ -37,7 +37,7 @@ const AddVideo = () => {
             resetForm();
             setTimeout(() => {
                 navigate(routes.videosList);
-            }, 3000);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi thêm video.', type: 'error' });
             console.error('Lỗi khi tạo video:', error);

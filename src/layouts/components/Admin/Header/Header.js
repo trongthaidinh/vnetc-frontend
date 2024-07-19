@@ -5,6 +5,8 @@ import Dropdown from './Dropdown';
 import styles from './Header.module.scss';
 import { useAuth } from '~/hooks/useAuth';
 import { getUserByEmail } from '~/services/userService';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import routes from '~/config/routes';
 
 const Header = () => {
     const [isEmailDropdownVisible, setIsEmailDropdownVisible] = useState(false);
@@ -13,6 +15,7 @@ const Header = () => {
     const emailDropdownRef = useRef(null);
     const userDropdownRef = useRef(null);
     const { signout } = useAuth();
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -48,6 +51,10 @@ const Header = () => {
         }
     };
 
+    const handleChangePassword = () => {
+        navigate(routes.changePassword);
+    };
+
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -61,8 +68,8 @@ const Header = () => {
     ];
 
     const userDropdownItems = [
-        { icon: faUser, text: 'Profile' },
-        { icon: faSignOutAlt, text: 'Logout', action: handleLogout },
+        { icon: faUser, text: 'Đổi mật khẩu', action: handleChangePassword },
+        { icon: faSignOutAlt, text: 'Đăng xuất', action: handleLogout },
     ];
 
     if (!user) {

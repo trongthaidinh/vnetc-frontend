@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { addUser } from '~/services/userService';
 import styles from './AddUser.module.scss';
+import routes from '~/config/routes';
 
 const AddUser = () => {
     const navigate = useNavigate();
@@ -27,7 +28,9 @@ const AddUser = () => {
             await addUser(values);
             alert('Thêm người dùng thành công!');
             resetForm();
-            navigate('/admin/user-list'); // Redirect to user list page
+            setTimeout(() => {
+                navigate(routes.userList);
+            }, 1000);
         } catch (error) {
             console.error('Error adding user:', error);
             alert('Lỗi khi thêm người dùng.');

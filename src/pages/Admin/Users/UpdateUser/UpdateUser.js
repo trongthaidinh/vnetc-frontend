@@ -41,7 +41,9 @@ const UpdateUser = () => {
             await updateUser(values);
             setNotification({ message: 'User updated successfully!', type: 'success' });
             resetForm();
-            navigate(routes.userList);
+            setTimeout(() => {
+                navigate(routes.userList);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Error updating user.', type: 'error' });
             console.error('Error updating user:', error);

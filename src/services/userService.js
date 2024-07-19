@@ -61,3 +61,13 @@ export const deleteUser = async (id, accDelId) => {
         throw error;
     }
 };
+
+export const changePassword = async (oldPassword, newPassword, userId) => {
+    try {
+        const response = await httpRequest.patch(`${API_URL}/${userId}`, { oldPassword, newPassword });
+        return response.data.data;
+    } catch (error) {
+        console.error('Error changing password', error);
+        throw error;
+    }
+};

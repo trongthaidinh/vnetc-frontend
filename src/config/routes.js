@@ -20,6 +20,7 @@ const routes = {
     projectList: '/admin/project-list',
     addProject: '/admin/add-project',
     updateUser: '/admin/update-user/:id',
+    changePassword: '/admin/change-password',
     userList: '/admin/user-list',
     addUser: '/admin/add-user',
     videosList: '/admin/videos-list',
