@@ -56,7 +56,7 @@ function Teams() {
         });
 
         return () => intervals.forEach(clearInterval);
-    }, [currentSlides, teamsArr]);
+    }, [currentSlides, teamsArr, slidesPerView]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -66,10 +66,14 @@ function Teams() {
                 setSlidesPerView(3);
             } else if (window.innerWidth >= 768) {
                 setSlidesPerView(2);
+            } else if (window.innerWidth >= 480) {
+                setSlidesPerView(1);
             } else {
                 setSlidesPerView(1);
             }
         };
+
+        console.log(slidesPerView);
 
         handleResize();
         window.addEventListener('resize', handleResize);
@@ -77,7 +81,9 @@ function Teams() {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []);
+    }, [slidesPerView]);
+
+    const translateValue = 100 / slidesPerView;
 
     if (error) {
         const errorMessage = error.response ? error.response.data.message : 'Network Error';
@@ -95,19 +101,20 @@ function Teams() {
         }));
     };
 
-    const translateValue = 100 / slidesPerView;
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Title text="Đội ngũ" />
                 {departments.map((department) => (
-                    <div key={department._id}>
+                    <div key={department._id} className={cx('department-section')}>
                         <ButtonGroup buttons={[department.name]} />
                         <div className={cx('slide-container')} ref={(el) => (sliderRefs.current[department._id] = el)}>
                             <div
                                 className={cx('slide-wrapper')}
-                                style={{ transform: `translateX(-${currentSlides[department._id] * translateValue}%)` }}
+                                style={{
+                                    transform: `translateX(-${currentSlides[department._id] * translateValue}%)`,
+                                    transition: 'transform 0.5s ease',
+                                }}
                             >
                                 {teamsArr[department._id]?.map((team, index) => (
                                     <div

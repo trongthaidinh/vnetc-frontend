@@ -13,7 +13,8 @@
     }
 
     @include respond-to(sm) {
-        width: 75%;
+        width: 100%;
+        margin-top: 20px;
     }
 }
 
@@ -41,19 +42,19 @@
 }
 
 .slide {
-    flex: 0 0 calc(100% / var(--slides-per-view));
+    flex: 0 0 calc(100% / 4);
     padding: 10px;
 
     @include respond-to(lg) {
-        flex: 0 0 calc(100% / var(--slides-per-view-lg));
+        flex: 0 0 calc(100% / 3);
     }
 
     @include respond-to(md) {
-        flex: 0 0 calc(100% / var(--slides-per-view-md));
+        flex: 0 0 calc(100% / 2);
     }
 
     @include respond-to(sm) {
-        flex: 0 0 calc(100% / var(--slides-per-view-sm));
+        flex: 0 0 100%;
         width: 100px;
     }
 }

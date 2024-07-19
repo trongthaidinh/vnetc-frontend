@@ -10,10 +10,12 @@
 
     @include respond-to(lg) {
         width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     @include respond-to(sm) {
-        width: 75%;
+        width: 100%;
     }
 }
 
@@ -26,6 +28,10 @@
     @include respond-to(lg) {
         width: 100%;
     }
+}
+
+.department-section {
+    margin-bottom: 40px;
 }
 
 .slide-container {
@@ -41,19 +47,19 @@
 }
 
 .slide {
-    flex: 0 0 calc(100% / var(--slides-per-view));
+    flex: 0 0 calc(100% / 4);
     padding: 10px;
 
     @include respond-to(lg) {
-        flex: 0 0 calc(100% / var(--slides-per-view-lg));
+        flex: 0 0 calc(100% / 3);
     }
 
     @include respond-to(md) {
-        flex: 0 0 calc(100% / var(--slides-per-view-md));
+        flex: 0 0 calc(100% / 2);
     }
 
     @include respond-to(sm) {
-        flex: 0 0 calc(100% / var(--slides-per-view-sm));
+        flex: 0 0 100%;
     }
 }
 
@@ -63,6 +69,7 @@
     text-align: center;
     width: 100%;
     max-width: 300px;
+    border-radius: 8px;
 }
 
 .team-image {
@@ -77,12 +84,20 @@
 }
 
 .team-name {
-    font-size: 18px;
+    font-size: 1.8rem;
     font-weight: bold;
     margin: 10px 0 5px;
+
+    @include respond-to(sm) {
+        font-size: 2.4rem;
+    }
 }
 
 .team-position {
-    font-size: 16px;
+    font-size: 1.6rem;
     color: gray;
+
+    @include respond-to(sm) {
+        font-size: 1.2rem;
+    }
 }

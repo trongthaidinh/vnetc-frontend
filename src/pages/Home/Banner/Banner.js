@@ -12,7 +12,7 @@ const Banner = () => {
     const fetchSlides = useCallback(async () => {
         try {
             const configData = await getConfiguration();
-            const sliderData = JSON.parse(configData[0].homepage_slider);
+            const sliderData = JSON.parse(configData.homepage_slider);
             setSlides(sliderData);
         } catch (error) {
             console.error('Error fetching slides:', error);

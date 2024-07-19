@@ -53,6 +53,13 @@
             height: 200px;
             border-radius: 8px;
             overflow: hidden;
+            @include respond-to(lg) {
+                height: 400px;
+            }
+
+            @include respond-to(sm) {
+                height: 250px;
+            }
         }
 
         .main-image-content {
