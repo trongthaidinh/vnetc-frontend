@@ -8,7 +8,7 @@
 
 .button {
     min-width: 120px;
-    padding: 8px 20px;
+    padding: 8px 16px;
     border: 1px solid var(--primary);
     background-color: transparent;
     cursor: pointer;
@@ -17,7 +17,8 @@
     color: var(--primary);
 
     @include respond-to(sm) {
-        min-width: 80px;
+        padding: 6px 10px;
+        min-width: 70px;
     }
 
     &.active {

@@ -1,3 +1,6 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
 .contactPage {
     width: 100%;
     display: flex;
@@ -13,6 +16,10 @@
     flex-direction: column;
     gap: 16px;
     overflow: hidden;
+    @include respond-to(lg) {
+        width: 100%;
+        padding: 10px;
+    }
 }
 
 .mapContainer {
@@ -24,6 +31,9 @@
     width: 100%;
     height: 600px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    @include respond-to(sm) {
+        height: 400px;
+    }
 }
 
 .formWrapper {
@@ -31,6 +41,10 @@
     border-radius: 4px;
     overflow: hidden;
     border: 1px solid #ddd;
+    @include respond-to(sm) {
+        flex-direction: column;
+        border: none;
+    }
 
     .contactInfo {
         position: relative;
@@ -39,6 +53,9 @@
         flex-direction: column;
         justify-content: space-between;
         overflow: hidden;
+        @include respond-to(sm) {
+            width: 100%;
+        }
 
         &::before {
             content: '';
@@ -48,6 +65,10 @@
             background-color: rgba(43, 30, 98, 0.5);
             border-radius: 50%;
             z-index: 1;
+            @include respond-to(sm) {
+                width: 50px;
+                height: 50px;
+            }
         }
         &::after {
             content: '';
@@ -57,11 +78,19 @@
             background-color: rgba(43, 30, 98, 0.5);
             border-radius: 50%;
             z-index: 1;
+            @include respond-to(sm) {
+                width: 140px;
+                height: 140px;
+            }
         }
 
         &::before {
             top: 68%;
             right: 18%;
+            @include respond-to(sm) {
+                top: 72%;
+                right: 16%;
+            }
         }
 
         &::after {
@@ -117,6 +146,11 @@
     .contactForm {
         width: 60%;
         padding: 40px;
+        @include respond-to(sm) {
+            width: 100%;
+            padding: 10px 20px;
+            margin-top: 20px;
+        }
     }
 
     .formGroup {
@@ -138,7 +172,7 @@
         .radioLabel {
             position: relative;
             display: inline-block;
-            padding-left: 25px; // Khoảng cách giữa checkbox và nội dung
+            padding-left: 25px;
             cursor: pointer;
             line-height: 1.5;
             font-size: 16px;

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { getProductsByCategory } from '~/services/productService';
 import styles from './Product.module.scss';
 import Title from '~/components/Title';
-import ButtonGroup from '~/components/ButtonGroup';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
 import routes from '~/config/routes';
@@ -14,17 +12,16 @@ import Product from '~/components/Product';
 const cx = classNames.bind(styles);
 
 const Products = () => {
-    const [products, setProducts] = useState([]);
+    const [, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [groupedProducts, setGroupedProducts] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [selectedSuggestion, setSelectedSuggestion] = useState(0);
 
     useEffect(() => {
         const fetchCategoriesAndProducts = async () => {
             try {
-                const categoriesData = await getCategoriesByType(1); // Assuming type 1 is for products
+                const categoriesData = await getCategoriesByType(1);
                 setCategories(categoriesData);
 
                 const groupedProductsMap = {};
@@ -52,9 +49,6 @@ const Products = () => {
         fetchCategoriesAndProducts();
     }, []);
 
-    const handleButtonClick = (index) => {
-        setSelectedSuggestion(index);
-    };
     const getCategorySlug = (categoryId) => {
         const category = categories.find((cat) => cat._id === categoryId);
         return category ? category.slug : 'unknown';
@@ -68,18 +62,6 @@ const Products = () => {
     if (loading) {
         return <LoadingScreen />;
     }
-
-    const filteredProductItems = products
-        .filter((item) => {
-            if (selectedSuggestion === 0) {
-                return item.isFeatured;
-            }
-            if (selectedSuggestion === 1) {
-                return item.isFeatured;
-            }
-            return true;
-        })
-        .slice(0, 5);
 
     return (
         <article className={cx('wrapper')}>

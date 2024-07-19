@@ -1,3 +1,6 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
 .header {
     width: 100%;
     position: relative;
@@ -11,6 +14,10 @@
     font-size: 2.4rem;
     font-weight: 700;
     text-transform: capitalize;
+
+    @include respond-to(lg) {
+        font-size: 2.8rem;
+    }
 }
 
 .line {

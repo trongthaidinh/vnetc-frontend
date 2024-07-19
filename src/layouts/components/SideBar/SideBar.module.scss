@@ -1,4 +1,11 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
 .wrapper {
     width: 280px;
     display: flex;
+
+    @include respond-to(lg) {
+        display: none;
+    }
 }

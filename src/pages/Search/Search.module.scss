@@ -1,13 +1,32 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
 .wrapper {
     display: flex;
     justify-content: center;
     margin-top: 60px;
+
+    @include respond-to(lg) {
+        margin-top: 0;
+        padding: 20px;
+    }
+
+    @include respond-to(sm) {
+        padding: 10px;
+    }
 }
 
 .search-section {
     width: var(--default-layout-width);
     gap: 20px;
     display: flex;
+    @include respond-to(lg) {
+        width: 100%;
+        flex-direction: column;
+    }
+    @include respond-to(sm) {
+        margin-top: 100px;
+    }
 }
 
 .search-column {
@@ -19,6 +38,14 @@
         justify-content: space-between;
         gap: 20px;
         margin-top: 20px;
+
+        @include respond-to(lg) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @include respond-to(sm) {
+            grid-template-columns: repeat(1, 1fr);
+        }
     }
 
     .search-title {

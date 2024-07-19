@@ -1,13 +1,33 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
 .wrapper {
     display: flex;
     justify-content: center;
     margin-top: 60px;
+
+    @include respond-to(lg) {
+        margin-top: 20px;
+        padding: 20px;
+    }
+
+    @include respond-to(sm) {
+        margin-top: 60px;
+        padding: 10px;
+    }
 }
 
 .project-section {
     width: var(--default-layout-width);
     gap: 20px;
     display: flex;
+    @include respond-to(lg) {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    @include respond-to(sm) {
+    }
 }
 
 .project-column {
@@ -32,6 +52,9 @@
         justify-content: space-between;
         gap: 20px;
         margin-top: 20px;
+        @include respond-to(sm) {
+            grid-template-columns: repeat(1, 1fr);
+        }
     }
 
     .project-title {
@@ -49,6 +72,9 @@
 
 .suggest {
     flex: 1;
+    @include respond-to(sm) {
+        display: none;
+    }
     .suggest-items {
         display: grid;
         grid-template-columns: repeat(1, 1fr);

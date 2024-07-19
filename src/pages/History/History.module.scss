@@ -1,9 +1,22 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
 .wrapper {
     width: var(--default-layout-width);
     padding: 40px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     margin-top: 20px;
+
+    @include respond-to(lg) {
+        padding: 20px;
+        width: 100%;
+    }
+
+    @include respond-to(sm) {
+        margin-top: 60px;
+        padding: 10px;
+    }
 
     .content {
         display: flex;
