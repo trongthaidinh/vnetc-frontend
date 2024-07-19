@@ -1,5 +1,1 @@
-import React from 'react';
-
-const Search = () => <div>Search Page</div>;
-
-export default Search;
+export { default } from './Search';

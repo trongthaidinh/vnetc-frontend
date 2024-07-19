@@ -41,7 +41,7 @@ const routes = {
     news: '/tin-tuc',
     newsDetail: `/tin-tuc/:category/:id`,
     newsCategory: `/tin-tuc/:slug`,
-    search: '/tim-kiem',
+    search: '/search',
     projects: '/du-an-va-nang-luc',
     projectCategory: '/du-an-va-nang-luc/:slug',
     projectDetail: '/du-an-va-nang-luc/:category/:id',

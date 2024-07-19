@@ -81,11 +81,11 @@ function News() {
                         <Link key={index} to={`${routes.news}/${getCategorySlug(news)}/${news._id}`}>
                             <CardContent
                                 title={news.title}
-                                description={news.description}
+                                summary={news.summary}
                                 image={news.image}
                                 link={news.link}
                                 createdAt={news.createdAt}
-                                readers={news.readers}
+                                views={news.views}
                             />
                         </Link>
                     ))}
