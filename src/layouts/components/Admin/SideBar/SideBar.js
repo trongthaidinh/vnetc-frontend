@@ -18,6 +18,7 @@ import {
     faLayerGroup,
     faHandshake,
     faBookOpen,
+    faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import routes from '~/config/routes';
 
@@ -270,11 +271,33 @@ const SideBar = () => {
                     </ul>
                 </li>
                 <li>
-                    <NavLink to={routes.settings}>
-                        <div className={styles.menuItem}>
-                            <FontAwesomeIcon icon={faCogs} className={styles.menuIcon} />
-                            <span className={styles.menuText}>{!isCollapsed && 'Cài đặt'}</span>
-                        </div>
+                    <div className={styles.menuItem} onClick={() => toggleMenu('aboutPageManagement')}>
+                        <FontAwesomeIcon icon={faInfoCircle} className={styles.menuIcon} />
+                        <span className={styles.menuText}>
+                            {!isCollapsed && (
+                                <>
+                                    Quản lý trang
+                                    <FontAwesomeIcon
+                                        icon={openMenus.aboutPageManagement ? faChevronDown : faChevronRight}
+                                        className={styles.chevronIcon}
+                                    />
+                                </>
+                            )}
+                        </span>
+                    </div>
+                    <ul className={`${styles.subMenu} ${openMenus.aboutPageManagement ? styles.open : ''}`}>
+                        <li>
+                            <NavLink to={routes.pageList}>Danh sách trang</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.addPage}>Thêm trang</NavLink>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <NavLink to={routes.settings} className={styles.menuItem}>
+                        <FontAwesomeIcon icon={faCogs} className={styles.menuIcon} />
+                        <span className={styles.menuText}>{!isCollapsed && 'Cài đặt'}</span>
                     </NavLink>
                 </li>
             </ul>

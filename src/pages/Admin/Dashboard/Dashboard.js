@@ -12,6 +12,7 @@ import {
     faHandshake,
     faBookOpen,
     faCogs,
+    faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import styles from './Dashboard.module.scss';
 import routes from '~/config/routes';
@@ -26,6 +27,7 @@ const sidebarItems = [
     { title: 'Quản lý dịch vụ', icon: faLayerGroup, count: 0, route: routes.serviceList },
     { title: 'Quản lý đối tác', icon: faHandshake, count: 0, route: routes.partnerList },
     { title: 'Quản lý thư viện', icon: faBookOpen, count: 0, route: routes.videosList },
+    { title: 'Quản lý trang', icon: faInfoCircle, count: 0, route: routes.pageList },
     { title: 'Cài đặt', icon: faCogs, count: 0, route: routes.settings },
 ];
 

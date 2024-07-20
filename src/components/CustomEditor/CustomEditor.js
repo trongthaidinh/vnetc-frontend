@@ -5,14 +5,10 @@ const CustomEditor = ({ onChange, initialValue }) => {
     const editorRef = useRef(null);
 
     const handleEditorChange = (content) => {
-        onChange(content);
-    };
-
-    useEffect(() => {
         if (editorRef.current) {
-            editorRef.current.setContent(initialValue);
+            onChange(content);
         }
-    }, [initialValue]);
+    };
 
     const handleInit = (evt, editor) => {
         editorRef.current = editor;
@@ -20,6 +16,12 @@ const CustomEditor = ({ onChange, initialValue }) => {
             handleEditorChange(editor.getContent());
         });
     };
+
+    useEffect(() => {
+        if (editorRef.current) {
+            editorRef.current.setContent(initialValue, { format: 'html' });
+        }
+    }, [initialValue]);
 
     return (
         <Editor
@@ -36,6 +38,7 @@ const CustomEditor = ({ onChange, initialValue }) => {
                     { value: 'First.Name', title: 'First Name' },
                     { value: 'Email', title: 'Email' },
                 ],
+                language: 'vi',
                 ai_request: (request, respondWith) =>
                     respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
             }}

@@ -78,6 +78,7 @@ function NewsCategory() {
         return currentNewsCategory.map((newsItem, index) => (
             <Link to={`${routes.news}/${slug}/${newsItem._id}`} key={newsItem._id}>
                 <Card
+                    key={index}
                     title={newsItem.title}
                     image={newsItem.images}
                     summary={newsItem.summary}

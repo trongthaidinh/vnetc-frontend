@@ -59,6 +59,9 @@ import AddVideo from '~/pages/Admin/Library/Videos/AddVideo';
 import ChangePassword from '~/pages/Admin/Users/ChangePassword';
 import MessageList from '~/pages/Admin/Messages/MessageList';
 import Settings from '~/pages/Admin/Settings';
+import PageInfoList from '~/pages/Admin/PagesAbout/PageList/PageList';
+import AddPage from '~/pages/Admin/PagesAbout/AddPage';
+import UpdatePage from '~/pages/Admin/PagesAbout/UpdatePage';
 
 // Public Routes
 const publicRoutes = [
@@ -184,6 +187,9 @@ const privateRoutes = [
     { path: config.routes.changePassword, component: ChangePassword, layout: AdminLayout },
     { path: config.routes.messagesList, component: MessageList, layout: AdminLayout },
     { path: config.routes.settings, component: Settings, layout: AdminLayout },
+    { path: config.routes.pageList, component: PageInfoList, layout: AdminLayout },
+    { path: config.routes.addPage, component: AddPage, layout: AdminLayout },
+    { path: config.routes.updatePage, component: UpdatePage, layout: AdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };
