@@ -70,16 +70,16 @@ const Settings = () => {
         e.preventDefault();
         try {
             const { homepage_slider, ...restSettings } = settings;
-            const flattenedSlider = homepage_slider.reduce((acc, slide, index) => {
-                acc[`title_${index}`] = slide.title;
-                acc[`image_${index}`] = slide.image_url;
-                acc[`position_${index}`] = slide.position;
-                return acc;
-            }, {});
+
+            const titles = homepage_slider.map((slide) => slide.title);
+            const images = homepage_slider.map((slide) => slide.image_url);
+            const positions = homepage_slider.map((slide) => slide.position);
 
             const updatedSettings = {
                 ...restSettings,
-                ...flattenedSlider,
+                titles,
+                images,
+                positions,
             };
 
             await updateConfiguration(updatedSettings);
