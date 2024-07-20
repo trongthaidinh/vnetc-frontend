@@ -35,11 +35,18 @@
     display: flex;
     overflow: hidden;
     margin-bottom: 20px;
+    @include respond-to(sm) {
+        height: 150px;
+    }
 
     .imageWrapper {
         flex: 0 0 200px;
         border-radius: 8px;
         overflow: hidden;
+
+        @include respond-to(sm) {
+            flex: 0 0 150px;
+        }
 
         .image {
             object-fit: cover;
@@ -62,14 +69,20 @@
         }
 
         .name {
-            font-size: 24px;
+            font-size: 2.4rem;
             font-weight: 600;
             margin: 8px 0;
+            @include respond-to(sm) {
+                font-size: 1.8rem;
+            }
         }
 
         .position {
-            font-size: 16px;
+            font-size: 1.6rem;
             color: #888;
+            @include respond-to(sm) {
+                font-size: 1.4rem;
+            }
         }
     }
 }

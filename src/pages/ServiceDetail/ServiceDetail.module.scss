@@ -8,6 +8,7 @@
     }
 
     @include respond-to(sm) {
+        margin-top: var(--nav-height);
         padding: 10px;
     }
     .header {
