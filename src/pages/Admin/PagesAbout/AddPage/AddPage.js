@@ -5,10 +5,9 @@ import { addPageContent } from '~/services/pageService';
 import CustomEditor from '~/components/CustomEditor';
 import styles from './AddPage.module.scss';
 
-// Validation schema
 const validationSchema = Yup.object({
-    title: Yup.string().required('Title is required'),
-    content: Yup.string().required('Content is required'),
+    title: Yup.string().required('Hãy nhập tên trang'),
+    content: Yup.string().required('Hãy viết nội dung cho trang'),
 });
 
 const AddPage = () => {
@@ -22,9 +21,9 @@ const AddPage = () => {
             const { title, content } = values;
             await addPageContent({ name: title, content });
             resetForm();
-            alert('Page added successfully!');
+            alert('Đã thêm trang thành công!');
         } catch (error) {
-            alert('Error adding page!');
+            alert('Lỗi khi thêm trang');
         } finally {
             setSubmitting(false);
         }
