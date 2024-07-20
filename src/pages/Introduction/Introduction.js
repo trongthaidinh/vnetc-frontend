@@ -34,7 +34,7 @@ const Introduction = () => {
         };
 
         fetchPageContent();
-    }, [slug]); // Add slug to dependency array
+    }, [slug]);
 
     if (error) {
         const errorMessage = error.response ? error.response.data.message : 'Network Error';
@@ -51,7 +51,7 @@ const Introduction = () => {
 
     return (
         <article className={cx('wrapper')}>
-            <Title text={pageContent.title} />
+            <Title text={pageContent.name} />
             <div className={cx('content')} dangerouslySetInnerHTML={{ __html: pageContent.content }} />
         </article>
     );
