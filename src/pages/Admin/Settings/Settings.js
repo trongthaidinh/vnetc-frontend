@@ -5,6 +5,7 @@ import Title from '~/components/Title';
 
 const Settings = () => {
     const [settings, setSettings] = useState({
+        id: '',
         name: '',
         homepage_slider: [],
         contact_email: '',
@@ -21,6 +22,7 @@ const Settings = () => {
                 const parsedSlider = JSON.parse(data.homepage_slider);
                 setSettings({
                     ...data,
+                    id: data._id,
                     homepage_slider: parsedSlider,
                 });
             } else {
@@ -69,17 +71,18 @@ const Settings = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { homepage_slider, ...restSettings } = settings;
+            const { homepage_slider, id, ...restSettings } = settings;
 
-            const titles = homepage_slider.map((slide) => slide.title);
-            const images = homepage_slider.map((slide) => slide.image_url);
-            const positions = homepage_slider.map((slide) => slide.position);
+            const title = homepage_slider.map((slide) => slide.title);
+            const image = homepage_slider.map((slide) => slide.image_url);
+            const position = homepage_slider.map((slide) => slide.position);
 
             const updatedSettings = {
                 ...restSettings,
-                titles,
-                images,
-                positions,
+                id,
+                title,
+                image,
+                position,
             };
 
             await updateConfiguration(updatedSettings);

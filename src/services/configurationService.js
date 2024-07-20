@@ -12,7 +12,7 @@ export const getConfiguration = async () => {
 
 export const updateConfiguration = async (data) => {
     try {
-        const response = await httpRequest.patch('/configuration', { data });
+        const response = await httpRequest.patch(`/configuration/${data.id}`, data);
         return response.data.data;
     } catch (error) {
         console.error('Error fetching configuration', error);
