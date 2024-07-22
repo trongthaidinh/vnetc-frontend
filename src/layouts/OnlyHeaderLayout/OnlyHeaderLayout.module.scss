@@ -1,5 +1,8 @@
+// OnlyHeaderLayout.module.scss
+
 @import '../../styles/mixins';
 @import '../../styles/variables';
+
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -26,5 +29,61 @@
     justify-content: center;
     @include respond-to(lg) {
         display: block;
+    }
+}
+
+.contact-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @include respond-to(sm) {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .button {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: var(--primary);
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .hotline {
+        background-color: #ff5722;
+
+        &:hover {
+            background-color: darken(#ff5722, 10%);
+        }
+    }
+
+    .zalo {
+        background-color: #0084ff;
+
+        &:hover {
+            background-color: darken(#0084ff, 10%);
+        }
+    }
+
+    .facebook {
+        background-color: #3b5998;
+
+        &:hover {
+            background-color: darken(#3b5998, 10%);
+        }
     }
 }
