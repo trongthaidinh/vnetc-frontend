@@ -2,7 +2,10 @@
 @import '../../styles/variables';
 
 .wrapper {
+    box-sizing: border-box;
+    max-width: 100%;
     margin-left: 20px;
+
     @include respond-to(lg) {
         margin-left: 0;
         padding: 20px;
@@ -11,21 +14,34 @@
     @include respond-to(sm) {
         padding: 10px;
         margin-top: var(--nav-height);
+        padding: 10px;
     }
+
     .header {
         padding-bottom: 20px;
         margin-bottom: 20px;
     }
 
     .content {
+        width: 100%;
         margin-bottom: 20px;
+        text-align: justify;
+        overflow: hidden;
+
+        @include respond-to(sm) {
+            font-size: 18px;
+        }
 
         img {
             width: 100%;
             max-height: 600px;
             object-fit: cover;
             border-radius: 4px;
-            margin: 40px 0;
+            margin: 40px;
+        }
+
+        a {
+            width: 100%;
         }
     }
 
@@ -39,6 +55,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        box-sizing: border-box;
     }
 
     .image {

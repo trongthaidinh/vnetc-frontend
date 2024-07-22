@@ -283,10 +283,16 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.libraryManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to={routes.libraryList}>Danh sách thư viện</NavLink>
+                            <NavLink to={routes.videosList}>Danh sách video</NavLink>
                         </li>
                         <li>
-                            <NavLink to={routes.addLibrary}>Thêm thư viện</NavLink>
+                            <NavLink to={routes.addVideo}>Thêm video</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.imagesList}>Danh sách hình ảnh</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.addImage}>Thêm hình ảnh</NavLink>
                         </li>
                     </ul>
                 </li>

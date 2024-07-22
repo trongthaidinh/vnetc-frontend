@@ -82,7 +82,7 @@ function News() {
                             <CardContent
                                 title={news.title}
                                 summary={news.summary}
-                                image={news.image}
+                                image={news.images}
                                 link={news.link}
                                 createdAt={news.createdAt}
                                 views={news.views}
