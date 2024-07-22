@@ -14,8 +14,8 @@ const Tophead = () => {
 
     const hotlines = [
         { number: '02623977171', name: '' },
-        { number: '0931951140', name: 'Mr.Phi' },
-        { number: '0982064747', name: 'Ms.Ngọc' },
+        { number: '0931951140', name: '' },
+        { number: '0982064747', name: '' },
     ];
 
     const handleLanguageClick = () => {

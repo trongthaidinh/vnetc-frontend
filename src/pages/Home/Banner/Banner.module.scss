@@ -15,8 +15,7 @@
     }
 
     @include respond-to(sm) {
-        height: 120px;
-        margin-top: var(--nav-height);
+        height: 100px;
     }
 
     .slidesContainer {
@@ -43,7 +42,7 @@
         }
 
         @include respond-to(sm) {
-            height: 120px;
+            height: 100px;
         }
     }
 
@@ -69,7 +68,9 @@
         }
 
         @include respond-to(sm) {
-            display: none;
+            max-height: 80px;
+            width: 50%;
+            padding: 10px 45px;
         }
     }
 
@@ -87,6 +88,10 @@
 
         @include respond-to(md) {
             font-size: 1.3rem;
+        }
+
+        @include respond-to(sm) {
+            font-size: 0.6rem;
         }
     }
 

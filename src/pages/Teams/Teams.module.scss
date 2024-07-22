@@ -31,16 +31,17 @@
 }
 
 .teamItem {
-    height: 200px;
+    height: 100%;
+    max-height: 300px;
     display: flex;
     overflow: hidden;
     margin-bottom: 20px;
     @include respond-to(sm) {
-        height: 150px;
+        max-height: 200px;
     }
 
     .imageWrapper {
-        flex: 0 0 200px;
+        flex: 0 0 250px;
         border-radius: 8px;
         overflow: hidden;
 
