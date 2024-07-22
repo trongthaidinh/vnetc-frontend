@@ -19,6 +19,8 @@ import {
     faHandshake,
     faBookOpen,
     faInfoCircle,
+    faUserFriends,
+    faListAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import routes from '~/config/routes';
 
@@ -87,6 +89,30 @@ const SideBar = () => {
                         </li>
                         <li>
                             <NavLink to={routes.addNavigation}>Thêm Menu</NavLink>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <div className={styles.menuItem} onClick={() => toggleMenu('categoryManagement')}>
+                        <FontAwesomeIcon icon={faListAlt} className={styles.menuIcon} />
+                        <span className={styles.menuText}>
+                            {!isCollapsed && (
+                                <>
+                                    Quản lý danh mục
+                                    <FontAwesomeIcon
+                                        icon={openMenus.categoryManagement ? faChevronDown : faChevronRight}
+                                        className={styles.chevronIcon}
+                                    />
+                                </>
+                            )}
+                        </span>
+                    </div>
+                    <ul className={`${styles.subMenu} ${openMenus.categoryManagement ? styles.open : ''}`}>
+                        <li>
+                            <NavLink to={routes.categoryList}>Danh sách danh mục</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.addCategory}>Thêm danh mục</NavLink>
                         </li>
                     </ul>
                 </li>
@@ -257,40 +283,58 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.libraryManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to={routes.videosList}>Danh sách video</NavLink>
+                            <NavLink to={routes.libraryList}>Danh sách thư viện</NavLink>
                         </li>
                         <li>
-                            <NavLink to={routes.imagesList}>Danh sách ảnh</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={routes.addVideo}>Thêm Video</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={routes.addImage}>Thêm Ảnh</NavLink>
+                            <NavLink to={routes.addLibrary}>Thêm thư viện</NavLink>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <div className={styles.menuItem} onClick={() => toggleMenu('aboutPageManagement')}>
+                    <div className={styles.menuItem} onClick={() => toggleMenu('aboutManagement')}>
                         <FontAwesomeIcon icon={faInfoCircle} className={styles.menuIcon} />
                         <span className={styles.menuText}>
                             {!isCollapsed && (
                                 <>
                                     Quản lý trang
                                     <FontAwesomeIcon
-                                        icon={openMenus.aboutPageManagement ? faChevronDown : faChevronRight}
+                                        icon={openMenus.aboutManagement ? faChevronDown : faChevronRight}
                                         className={styles.chevronIcon}
                                     />
                                 </>
                             )}
                         </span>
                     </div>
-                    <ul className={`${styles.subMenu} ${openMenus.aboutPageManagement ? styles.open : ''}`}>
+                    <ul className={`${styles.subMenu} ${openMenus.aboutManagement ? styles.open : ''}`}>
                         <li>
                             <NavLink to={routes.pageList}>Danh sách trang</NavLink>
                         </li>
                         <li>
                             <NavLink to={routes.addPage}>Thêm trang</NavLink>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <div className={styles.menuItem} onClick={() => toggleMenu('teamManagement')}>
+                        <FontAwesomeIcon icon={faUserFriends} className={styles.menuIcon} />
+                        <span className={styles.menuText}>
+                            {!isCollapsed && (
+                                <>
+                                    Quản lý đội ngũ
+                                    <FontAwesomeIcon
+                                        icon={openMenus.teamManagement ? faChevronDown : faChevronRight}
+                                        className={styles.chevronIcon}
+                                    />
+                                </>
+                            )}
+                        </span>
+                    </div>
+                    <ul className={`${styles.subMenu} ${openMenus.teamManagement ? styles.open : ''}`}>
+                        <li>
+                            <NavLink to={routes.teamList}>Danh sách đội ngũ</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.addTeam}>Thêm đội ngũ</NavLink>
                         </li>
                     </ul>
                 </li>

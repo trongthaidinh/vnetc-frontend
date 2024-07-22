@@ -62,6 +62,8 @@ import Settings from '~/pages/Admin/Settings';
 import PageInfoList from '~/pages/Admin/PagesAbout/PageList/PageList';
 import AddPage from '~/pages/Admin/PagesAbout/AddPage';
 import UpdatePage from '~/pages/Admin/PagesAbout/UpdatePage';
+import CategoryList from '~/pages/Admin/Category/CategoryList';
+import AddCategory from '~/pages/Admin/Category/AddCategory';
 
 // Public Routes
 const publicRoutes = [
@@ -190,6 +192,8 @@ const privateRoutes = [
     { path: config.routes.pageList, component: PageInfoList, layout: AdminLayout },
     { path: config.routes.addPage, component: AddPage, layout: AdminLayout },
     { path: config.routes.updatePage, component: UpdatePage, layout: AdminLayout },
+    { path: config.routes.categoryList, component: CategoryList, layout: AdminLayout },
+    { path: config.routes.addCategory, component: AddCategory, layout: AdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };

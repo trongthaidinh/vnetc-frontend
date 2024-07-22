@@ -49,3 +49,24 @@ export const getCategoriesByType = async (value) => {
         throw error;
     }
 };
+
+export const addCategory = async (categoryData) => {
+    try {
+        const response = await httpRequest.post('/category', categoryData);
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi khi thêm danh mục:', error);
+        throw error;
+    }
+};
+
+export const deleteCategory = async (id) => {
+    try {
+        const response = await httpRequest.delete(`/category/${id}`);
+        const category = response.data.data;
+        return category;
+    } catch (error) {
+        console.error(`Error delete category name for ID ${id}`, error);
+        throw error;
+    }
+};

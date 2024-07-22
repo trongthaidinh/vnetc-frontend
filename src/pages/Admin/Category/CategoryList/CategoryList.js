@@ -1,90 +1,96 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { getMessages, deleteMessage } from '~/services/contactService';
-import styles from './MessageList.module.scss';
+import { faPlus, faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { getCategories, deleteCategory } from '~/services/categoryService';
+import styles from './CategoryList.module.scss';
 import Title from '~/components/Title';
+import routes from '~/config/routes';
+import CATEGORY_TYPES from '~/constants/CategoryType/CategoryType';
 
-const MessageList = () => {
-    const [messages, setMessages] = useState([]);
+const CategoryList = () => {
+    const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
     useEffect(() => {
-        const fetchMessages = async () => {
-            const data = await getMessages();
+        const fetchCategories = async () => {
+            const data = await getCategories();
             if (data) {
-                setMessages(data);
+                setCategories(data);
             } else {
-                alert('Failed to fetch messages.');
+                alert('Failed to fetch categories.');
             }
         };
 
-        fetchMessages();
+        fetchCategories();
     }, []);
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this message?')) {
+        if (window.confirm('Are you sure you want to delete this category?')) {
             try {
-                await deleteMessage(id);
-                setMessages(messages.filter((message) => message._id !== id));
-                alert('Message deleted successfully!');
+                await deleteCategory(id);
+                setCategories(categories.filter((category) => category._id !== id));
+                alert('Category deleted successfully!');
             } catch (error) {
-                console.error('Error deleting message:', error);
-                alert('There was an error deleting the message.');
+                console.error('Error deleting category:', error);
+                alert('There was an error deleting the category.');
             }
         }
     };
 
-    const filteredMessages = messages.filter((message) =>
-        message.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    const filteredCategories = categories.filter((category) =>
+        category.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
-    const totalPages = Math.ceil(filteredMessages.length / itemsPerPage);
-    const indexOfLastMessage = currentPage * itemsPerPage;
-    const indexOfFirstMessage = indexOfLastMessage - itemsPerPage;
-    const currentMessages = filteredMessages.slice(indexOfFirstMessage, indexOfLastMessage);
+    const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
+    const indexOfLastCategory = currentPage * itemsPerPage;
+    const indexOfFirstCategory = indexOfLastCategory - itemsPerPage;
+    const currentCategories = filteredCategories.slice(indexOfFirstCategory, indexOfLastCategory);
 
     return (
-        <div className={styles.messageContainer}>
-            <Title className={styles.pageTitle} text="Danh sách Tin nhắn" />
+        <div className={styles.categoryContainer}>
+            <Title className={styles.pageTitle} text="Danh sách Danh mục" />
             <div className={styles.actionsContainer}>
                 <input
                     type="text"
-                    placeholder="Tìm kiếm Tin nhắn..."
+                    placeholder="Tìm kiếm Danh mục..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={styles.searchInput}
                 />
+                <Link to={routes.addCategory} className={styles.addButton}>
+                    <FontAwesomeIcon icon={faPlus} /> Thêm mới Danh mục
+                </Link>
             </div>
 
-            <div className={styles.messageList}>
+            <div className={styles.categoryList}>
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Tên</th>
-                            <th>Email</th>
-                            <th>Số điện thoại</th>
-                            <th>Tiêu đề</th>
-                            <th>Nội dung</th>
+                            <th>Tên danh mục</th>
+                            <th>Loại</th>
+                            <th>Người tạo</th>
                             <th>Ngày tạo</th>
+                            <th>Người cập nhật</th>
+                            <th>Ngày cập nhật</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {currentMessages.length > 0 ? (
-                            currentMessages.map((message) => (
-                                <tr key={message._id}>
-                                    <td>{message.name}</td>
-                                    <td>{message.email}</td>
-                                    <td>{message.phone}</td>
-                                    <td>{message.title}</td>
-                                    <td>{message.content}</td>
-                                    <td>{new Date(message.createdAt).toLocaleString()}</td>
+                        {currentCategories.length > 0 ? (
+                            currentCategories.map((category) => (
+                                <tr key={category._id}>
+                                    <td>{category.name}</td>
+                                    <td>{CATEGORY_TYPES[category.type]}</td>
+                                    <td>{category.createBy}</td>
+                                    <td>{new Date(category.createdAt).toLocaleString()}</td>
+                                    <td>{category.updateBy}</td>
+                                    <td>{new Date(category.updatedAt).toLocaleString()}</td>
                                     <td>
                                         <button
-                                            onClick={() => handleDelete(message._id)}
+                                            onClick={() => handleDelete(category._id)}
                                             className={styles.deleteButton}
                                         >
                                             <FontAwesomeIcon icon={faTrash} /> Xóa
@@ -101,6 +107,7 @@ const MessageList = () => {
                 </table>
             </div>
 
+            {/* Items per page selection */}
             <div className={styles.itemsPerPageContainer}>
                 <label htmlFor="itemsPerPage">Số mục mỗi trang:</label>
                 <select
@@ -119,10 +126,11 @@ const MessageList = () => {
                 </select>
             </div>
 
+            {/* Pagination */}
             <div className={styles.pagination}>
                 <span>
-                    Hiện {indexOfFirstMessage + 1} đến {Math.min(indexOfLastMessage, filteredMessages.length)} của{' '}
-                    {filteredMessages.length}
+                    Hiện {indexOfFirstCategory + 1} đến {Math.min(indexOfLastCategory, filteredCategories.length)} của{' '}
+                    {filteredCategories.length}
                 </span>
                 <div className={styles.paginationControls}>
                     <button
@@ -143,4 +151,4 @@ const MessageList = () => {
     );
 };
 
-export default MessageList;
+export default CategoryList;

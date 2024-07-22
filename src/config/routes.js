@@ -32,6 +32,8 @@ const routes = {
     pageList: '/admin/page-list',
     addPage: '/admin/add-page',
     updatePage: '/admin/update-page',
+    categoryList: '/admin/category-list',
+    addCategory: '/admin/add-category',
     //User
     home: '/',
     about: '/gioi-thieu',
