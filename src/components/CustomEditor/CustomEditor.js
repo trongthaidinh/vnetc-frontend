@@ -1,14 +1,24 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
-const CustomEditor = ({ initialValue }) => {
+const CustomEditor = ({ onChange, initialValue }) => {
     const editorRef = useRef(null);
+    const [isEditorReady, setIsEditorReady] = useState(false);
+
+    const handleEditorChange = (content) => {
+        onChange(content);
+    };
+
+    const handleInit = (evt, editor) => {
+        editorRef.current = editor;
+        setIsEditorReady(true);
+    };
 
     useEffect(() => {
-        if (editorRef.current) {
+        if (editorRef.current && isEditorReady) {
             editorRef.current.setContent(initialValue, { format: 'html' });
         }
-    }, [initialValue]);
+    }, [initialValue, isEditorReady]);
 
     return (
         <Editor
@@ -29,6 +39,8 @@ const CustomEditor = ({ initialValue }) => {
                     respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
             }}
             initialValue=""
+            onInit={handleInit}
+            onChange={(e) => handleEditorChange(e.target.getContent())}
         />
     );
 };
