@@ -9,10 +9,6 @@
     @include respond-to(lg) {
         padding: 0 20px;
     }
-
-    @include respond-to(sm) {
-        padding: 0 10px;
-    }
 }
 
 .inner {
