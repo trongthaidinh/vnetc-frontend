@@ -78,7 +78,6 @@
 
                     @include respond-to(sm) {
                         flex-direction: row;
-                        gap: 8px;
                         align-items: center;
                         font-size: 1.2rem;
                         white-space: wrap;
