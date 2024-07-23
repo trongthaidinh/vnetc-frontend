@@ -6,10 +6,13 @@ import { getCategoriesByType } from '~/services/categoryService';
 import CustomEditor from '~/components/CustomEditor';
 import PushNotification from '~/components/PushNotification';
 import styles from './AddNews.module.scss';
+import routes from '~/config/routes';
+import { useNavigate } from 'react-router-dom';
 
 const AddNews = () => {
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const navigate = useNavigate();
 
     const initialValues = {
         title: '',
@@ -62,6 +65,9 @@ const AddNews = () => {
             await createNews(formData);
             setNotification({ message: 'Thêm tin tức thành công!', type: 'success' });
             resetForm();
+            setTimeout(() => {
+                navigate(routes.newsList);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi thêm tin tức.', type: 'error' });
             console.error('Lỗi khi tạo tin tức:', error);

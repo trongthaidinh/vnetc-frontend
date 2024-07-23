@@ -6,20 +6,27 @@ import { getProducts, deleteProduct } from '~/services/productService';
 import styles from './ProductList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
+import PushNotification from '~/components/PushNotification';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10); // Default items per page
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         const fetchProducts = async () => {
-            const data = await getProducts();
-            if (data) {
-                setProducts(data);
-            } else {
-                alert('Failed to fetch products.');
+            try {
+                const data = await getProducts();
+                if (data) {
+                    setProducts(data);
+                } else {
+                    setNotification({ message: 'Có lỗi khi tải dữ liệu sản phẩm!', type: 'error' });
+                }
+            } catch (error) {
+                setNotification({ message: 'Lỗi khi tải dữ liệu sản phẩm!.', type: 'error' });
+                console.error('Error fetching products:', error);
             }
         };
 
@@ -27,14 +34,14 @@ const ProductList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this product?')) {
+        if (window.confirm('Bạn có chắn chắn sẽ muốn xóa sản phẩm này không?')) {
             try {
                 await deleteProduct(id);
                 setProducts(products.filter((prod) => prod._id !== id));
-                alert('Product deleted successfully!');
+                setNotification({ message: 'Xóa sản phẩm thành công!', type: 'success' });
             } catch (error) {
                 console.error('Error deleting product:', error);
-                alert('There was an error deleting the product.');
+                setNotification({ message: 'Xảy ra lỗi khi xóa sản phẩm.', type: 'error' });
             }
         }
     };
@@ -49,6 +56,7 @@ const ProductList = () => {
     return (
         <div className={styles.productContainer}>
             <Title className={styles.pageTitle} text="Danh sách Sản phẩm" />
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <div className={styles.actionsContainer}>
                 <input
                     type="text"
@@ -106,7 +114,7 @@ const ProductList = () => {
                     value={itemsPerPage}
                     onChange={(e) => {
                         setItemsPerPage(Number(e.target.value));
-                        setCurrentPage(1); // Reset to first page when items per page changes
+                        setCurrentPage(1);
                     }}
                     className={styles.itemsPerPageSelect}
                 >

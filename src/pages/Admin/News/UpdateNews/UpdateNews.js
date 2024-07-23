@@ -75,7 +75,9 @@ const UpdateNews = () => {
             await updateNews(id, formData);
             setNotification({ message: 'Cập nhật tin tức thành công!', type: 'success' });
             resetForm();
-            navigate(routes.newsList);
+            setTimeout(() => {
+                navigate(routes.newsList);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi cập nhật tin tức.', type: 'error' });
             console.error('Lỗi khi cập nhật tin tức:', error);

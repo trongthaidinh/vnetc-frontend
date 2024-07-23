@@ -6,10 +6,13 @@ import { getCategoriesByType } from '~/services/categoryService';
 import CustomEditor from '~/components/CustomEditor';
 import PushNotification from '~/components/PushNotification';
 import styles from './AddProduct.module.scss';
+import { useNavigate } from 'react-router-dom';
+import routes from '~/config/routes';
 
 const AddProduct = () => {
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const navigate = useNavigate();
 
     const initialValues = {
         name: '',
@@ -71,6 +74,9 @@ const AddProduct = () => {
             await createProduct(formData);
             setNotification({ message: 'Thêm sản phẩm thành công!', type: 'success' });
             resetForm();
+            setTimeout(() => {
+                navigate(routes.productList);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi thêm sản phẩm.', type: 'error' });
             console.error('Lỗi khi tạo sản phẩm:', error);

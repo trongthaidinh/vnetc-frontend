@@ -97,7 +97,9 @@ const EditProduct = () => {
             await updateProduct(id, formData);
             setNotification({ message: 'Cập nhật sản phẩm thành công!', type: 'success' });
             resetForm();
-            navigate(routes.productList);
+            setTimeout(() => {
+                navigate(routes.productList);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi cập nhật sản phẩm.', type: 'error' });
             console.error('Lỗi khi cập nhật sản phẩm:', error);

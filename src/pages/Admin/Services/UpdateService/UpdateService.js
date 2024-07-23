@@ -127,8 +127,8 @@ const UpdateService = () => {
                             <label htmlFor="serviceType">Loại Dịch vụ</label>
                             <Field as="select" name="serviceType" className={styles.input}>
                                 <option value="">Chọn loại dịch vụ</option>
-                                {categories.map((category) => (
-                                    <option key={category._id} value={category._id}>
+                                {categories.map((category, index) => (
+                                    <option key={category._id} value={index}>
                                         {category.name}
                                     </option>
                                 ))}

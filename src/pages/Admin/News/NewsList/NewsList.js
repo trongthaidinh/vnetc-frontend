@@ -2,24 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEdit, faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { getNews, deleteNews, getNewsAll } from '~/services/newsService';
+import { getNewsAll, deleteNews } from '~/services/newsService';
 import styles from './NewsList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
+import PushNotification from '~/components/PushNotification';
 
 const NewsList = () => {
     const [news, setNews] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         const fetchNews = async () => {
-            const data = await getNewsAll();
-            if (data) {
-                setNews(data);
-            } else {
-                alert('Failed to fetch news.');
+            try {
+                const data = await getNewsAll();
+                if (data) {
+                    setNews(data);
+                } else {
+                    setNotification({ message: 'Failed to fetch news.', type: 'error' });
+                }
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                setNotification({ message: 'Error fetching news.', type: 'error' });
             }
         };
 
@@ -27,14 +34,14 @@ const NewsList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this news article?')) {
+        if (window.confirm('Bạn có chắc chắn muốn xóa tin tức này?')) {
             try {
                 await deleteNews(id);
                 setNews(news.filter((article) => article._id !== id));
-                alert('News article deleted successfully!');
+                setNotification({ message: 'Tin đã được xóa thành công!', type: 'success' });
             } catch (error) {
-                console.error('Error deleting news article:', error);
-                alert('There was an error deleting the news article.');
+                console.error('Có lỗi khi xóa tin:', error);
+                setNotification({ message: 'Đã xảy ra lỗi khi xóa tin tức!', type: 'error' });
             }
         }
     };
@@ -49,6 +56,7 @@ const NewsList = () => {
     return (
         <div className={styles.newsContainer}>
             <Title className={styles.pageTitle} text="Danh sách Tin tức" />
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <div className={styles.actionsContainer}>
                 <input
                     type="text"
@@ -107,7 +115,6 @@ const NewsList = () => {
                 </table>
             </div>
 
-            {/* Items per page selection */}
             <div className={styles.itemsPerPageContainer}>
                 <label htmlFor="itemsPerPage">Số mục mỗi trang:</label>
                 <select
@@ -115,7 +122,7 @@ const NewsList = () => {
                     value={itemsPerPage}
                     onChange={(e) => {
                         setItemsPerPage(Number(e.target.value));
-                        setCurrentPage(1); // Reset to first page when items per page changes
+                        setCurrentPage(1);
                     }}
                     className={styles.itemsPerPageSelect}
                 >
