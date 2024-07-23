@@ -4,15 +4,14 @@ import Title from '~/components/Title';
 import { getDepartments, getDepartmentMembers } from '~/services/teamService';
 import classNames from 'classnames/bind';
 import styles from './Teams.module.scss';
-import positionTitles from '~/constants/PositionTitle';
-import LoadingScreen from '~/components/LoadingScreen'; // Import your LoadingScreen component
+import LoadingScreen from '~/components/LoadingScreen';
 
 const cx = classNames.bind(styles);
 
 const TeamPage = () => {
     const [departments, setDepartments] = useState([]);
     const [members, setMembers] = useState({});
-    const [loading, setLoading] = useState(true); // Loading state
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchDepartments = async () => {
@@ -39,7 +38,7 @@ const TeamPage = () => {
     }, []);
 
     if (loading) {
-        return <LoadingScreen />; // Display loading screen while loading
+        return <LoadingScreen />;
     }
 
     return (
@@ -56,7 +55,7 @@ const TeamPage = () => {
                                     imageUrl={member.image}
                                     gender={member.gender}
                                     name={member.name}
-                                    position={positionTitles[member.position]}
+                                    position={member.qualification}
                                 />
                             ))}
                     </div>

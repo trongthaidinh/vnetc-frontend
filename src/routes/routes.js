@@ -64,6 +64,9 @@ import AddPage from '~/pages/Admin/PagesAbout/AddPage';
 import UpdatePage from '~/pages/Admin/PagesAbout/UpdatePage';
 import CategoryList from '~/pages/Admin/Category/CategoryList';
 import AddCategory from '~/pages/Admin/Category/AddCategory';
+import DepartmentList from '~/pages/Admin/Department/DepartmentList';
+import AddDepartment from '~/pages/Admin/Department/AddDepartment/AddDepartment';
+import MemberList from '~/pages/Admin/Department/MemberList';
 
 // Public Routes
 const publicRoutes = [
@@ -194,6 +197,9 @@ const privateRoutes = [
     { path: config.routes.updatePage, component: UpdatePage, layout: AdminLayout },
     { path: config.routes.categoryList, component: CategoryList, layout: AdminLayout },
     { path: config.routes.addCategory, component: AddCategory, layout: AdminLayout },
+    { path: config.routes.departmentList, component: DepartmentList, layout: AdminLayout },
+    { path: config.routes.addDepartment, component: AddDepartment, layout: AdminLayout },
+    { path: config.routes.memberList, component: MemberList, layout: AdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };

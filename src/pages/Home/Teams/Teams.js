@@ -6,7 +6,6 @@ import Title from '~/components/Title';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
 import ButtonGroup from '~/components/ButtonGroup';
-import positionTitles from '~/constants/PositionTitle';
 
 const cx = classNames.bind(styles);
 
@@ -124,7 +123,7 @@ function Teams() {
                                             <img src={team.image} alt={team.name} className={cx('team-image')} />
                                             <div className={cx('team-info')}>
                                                 <h3 className={cx('team-name')}>{team.name}</h3>
-                                                <p className={cx('team-position')}>{positionTitles[team.position]}</p>
+                                                <p className={cx('team-position')}>{team.qualification}</p>
                                             </div>
                                         </div>
                                     </div>

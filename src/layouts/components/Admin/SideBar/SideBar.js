@@ -337,10 +337,10 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.teamManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to={routes.teamList}>Danh sách đội ngũ</NavLink>
+                            <NavLink to={routes.memberList}>Danh sách đội ngũ</NavLink>
                         </li>
                         <li>
-                            <NavLink to={routes.addTeam}>Thêm đội ngũ</NavLink>
+                            <NavLink to={routes.addMember}>Thêm đội ngũ</NavLink>
                         </li>
                     </ul>
                 </li>

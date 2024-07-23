@@ -34,6 +34,10 @@ const routes = {
     updatePage: '/admin/update-page',
     categoryList: '/admin/category-list',
     addCategory: '/admin/add-category',
+    departmentList: '/admin/department-list',
+    addDepartment: '/admin/add-department',
+    memberList: '/admin/member-list',
+    addMember: '/admin/add-member',
     //User
     home: '/',
     about: '/gioi-thieu',

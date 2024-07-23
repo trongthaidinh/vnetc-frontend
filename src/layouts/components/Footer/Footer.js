@@ -148,7 +148,12 @@ const Footer = () => {
                 </div>
             </div>
             <div className={cx('bottomBar')}>
-                <p>&copy; Copyright Công Ty Cổ Phần Thí Nghiệm Cơ Điện Việt Nam. All Rights Reserved.</p>
+                <p>
+                    &copy; Copyright Công Ty Cổ Phần Thí Nghiệm Cơ Điện Việt Nam. All Rights Reserved. Thiết kế bởi{' '}
+                    <a href="https://www.takatech.com.vn/" target="_blank" rel="noopener noreferrer">
+                        Takatech
+                    </a>
+                </p>
             </div>
         </footer>
     );
