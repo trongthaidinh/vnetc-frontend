@@ -31,13 +31,18 @@ const AddNavigation = () => {
 
     const validationSchema = Yup.object({
         title: Yup.string().required('Vui lòng nhập tiêu đề!'),
-        type: Yup.string().required('Vui lòng chọn loại Navigation!'),
+        type: Yup.number().required('Vui lòng chọn loại Navigation!').oneOf([1, 2], 'Chọn loại không hợp lệ!'),
         parentNavId: Yup.string(),
     });
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
-            await createNavigationLink(values);
+            const dataToSend = { ...values };
+            if (values.type === 2) {
+                delete dataToSend.parentNavId;
+            }
+
+            await createNavigationLink(dataToSend);
             resetForm();
             setTimeout(() => {
                 navigate(routes.navigationList);
@@ -71,10 +76,9 @@ const AddNavigation = () => {
                                     as="select"
                                     name="type"
                                     onChange={(e) => {
-                                        const value = e.target.value;
+                                        const value = parseInt(e.target.value, 10);
                                         setFieldValue('type', value);
-                                        if (value === '1') {
-                                            // Assuming '1' is for main navigation
+                                        if (value === 1) {
                                             setFieldValue('parentNavId', '');
                                         }
                                     }}
@@ -86,7 +90,7 @@ const AddNavigation = () => {
                                 <ErrorMessage name="type" component="div" className={styles.errorMessage} />
                             </div>
 
-                            {values.type === '1' && (
+                            {values.type === 1 && (
                                 <div className={styles.formItem}>
                                     <label htmlFor="parentNavId">Navigation Cha</label>
                                     <Field as="select" name="parentNavId">

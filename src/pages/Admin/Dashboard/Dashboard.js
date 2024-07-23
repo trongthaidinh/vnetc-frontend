@@ -13,12 +13,15 @@ import {
     faBookOpen,
     faCogs,
     faInfoCircle,
+    faUsersBetweenLines,
+    faList,
 } from '@fortawesome/free-solid-svg-icons';
 import styles from './Dashboard.module.scss';
 import routes from '~/config/routes';
 
 const sidebarItems = [
     { title: 'Quản lý Menu', icon: faClipboardList, count: 0, route: routes.navigationList },
+    { title: 'Quản lý danh mục', icon: faList, count: 0, route: routes.categoryList },
     { title: 'Quản lý tin nhắn', icon: faEnvelope, count: 0, route: routes.messagesList },
     { title: 'Quản lý người dùng', icon: faUsers, count: 0, route: routes.userList },
     { title: 'Quản lý sản phẩm', icon: faBox, count: 0, route: routes.productList },
@@ -28,6 +31,7 @@ const sidebarItems = [
     { title: 'Quản lý đối tác', icon: faHandshake, count: 0, route: routes.partnerList },
     { title: 'Quản lý thư viện', icon: faBookOpen, count: 0, route: routes.videosList },
     { title: 'Quản lý trang', icon: faInfoCircle, count: 0, route: routes.pageList },
+    { title: 'Quản lý đội ngũ', icon: faUsersBetweenLines, count: 0, route: routes.memberList },
     { title: 'Cài đặt', icon: faCogs, count: 0, route: routes.settings },
 ];
 
