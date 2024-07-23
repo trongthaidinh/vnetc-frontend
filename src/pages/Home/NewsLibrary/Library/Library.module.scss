@@ -114,13 +114,13 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            z-index: 10;
             padding: 4px;
             background-color: rgba($color: #fff, $alpha: 0.4);
             border-radius: 4px;
 
             &.left {
                 left: 8px;
+                z-index: 1;
             }
 
             &.right {
