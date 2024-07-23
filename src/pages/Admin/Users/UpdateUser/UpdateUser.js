@@ -6,6 +6,7 @@ import { getUserById, updateUser } from '~/services/userService';
 import styles from './UpdateUser.module.scss';
 import routes from '~/config/routes';
 import LoadingScreen from '~/components/LoadingScreen';
+import PushNotification from '~/components/PushNotification';
 
 const UpdateUser = () => {
     const navigate = useNavigate();
@@ -15,8 +16,8 @@ const UpdateUser = () => {
 
     const validationSchema = Yup.object({
         accountId: Yup.string().required('Account ID is required'),
-        username: Yup.string().required('Username is required'),
-        fullName: Yup.string().required('Full name is required'),
+        username: Yup.string().required('Vui lòng nhập tên đăng nhập!'),
+        fullName: Yup.string().required('Vui lòng nhập Họ Tên'),
     });
 
     useEffect(() => {
@@ -30,6 +31,7 @@ const UpdateUser = () => {
                 });
             } catch (error) {
                 console.error('Error fetching user:', error);
+                setNotification({ message: 'Error fetching user data.', type: 'error' });
             }
         };
 
@@ -54,32 +56,28 @@ const UpdateUser = () => {
 
     return (
         <div className={styles.updateUser}>
-            <h2>Update User</h2>
-            {notification.message && (
-                <div className={notification.type === 'error' ? styles.errorNotification : styles.successNotification}>
-                    {notification.message}
-                </div>
-            )}
+            <h2>Chỉnh sửa thông tin người dùng</h2>
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (
                     <Form>
                         <div className={styles.formGroup}>
-                            <label htmlFor="accountId">Account ID</label>
-                            <Field name="accountId" type="text" className={styles.input} />
+                            <Field readOnly hidden name="accountId" type="text" className={styles.input} />
                             <ErrorMessage name="accountId" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
-                            <label htmlFor="username">Username</label>
+                            <label htmlFor="username">Tên đăng nhập</label>
+
                             <Field name="username" type="text" className={styles.input} />
                             <ErrorMessage name="username" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
-                            <label htmlFor="fullName">Full Name</label>
+                            <label htmlFor="fullName">Họ Tên</label>
                             <Field name="fullName" type="text" className={styles.input} />
                             <ErrorMessage name="fullName" component="div" className={styles.error} />
                         </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                            Update User
+                            Cập nhật người dùng
                         </button>
                     </Form>
                 )}

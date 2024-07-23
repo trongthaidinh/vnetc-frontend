@@ -52,12 +52,12 @@ export const getUserByEmail = async (email) => {
     }
 };
 
-export const deleteUser = async (id, accDelId) => {
+export const deleteUser = async (accDelId, userId) => {
     try {
-        const response = await httpRequest.delete(`${API_URL}`, { id, accDelId });
+        const response = await httpRequest.delete(`${API_URL}`, { accDelId, userId });
         return response.data.data;
     } catch (error) {
-        console.error(`Error deleting user ${id}`, error);
+        console.error(`Error deleting user ${userId}`, error);
         throw error;
     }
 };

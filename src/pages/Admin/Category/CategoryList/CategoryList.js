@@ -7,20 +7,25 @@ import styles from './CategoryList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
 import CATEGORY_TYPES from '~/constants/CategoryType/CategoryType';
+import PushNotification from '~/components/PushNotification';
 
 const CategoryList = () => {
     const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const [isError, setIsError] = useState(false);
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const data = await getCategories();
-            if (data) {
-                setCategories(data);
-            } else {
-                alert('Failed to fetch categories.');
+            try {
+                const data = await getCategories();
+                setCategories(data || []);
+            } catch (error) {
+                console.error('Failed to fetch categories:', error);
+                setNotificationMessage('Failed to fetch categories.');
+                setIsError(true);
             }
         };
 
@@ -28,14 +33,16 @@ const CategoryList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this category?')) {
+        if (window.confirm('Bạn có thực sự muốn xóa danh mục này?')) {
             try {
                 await deleteCategory(id);
                 setCategories(categories.filter((category) => category._id !== id));
-                alert('Category deleted successfully!');
+                setNotificationMessage('Xóa danh mục thành công!');
+                setIsError(false);
             } catch (error) {
                 console.error('Error deleting category:', error);
-                alert('There was an error deleting the category.');
+                setNotificationMessage('Có lỗi khi xóa danh mục.');
+                setIsError(true);
             }
         }
     };
@@ -52,6 +59,9 @@ const CategoryList = () => {
     return (
         <div className={styles.categoryContainer}>
             <Title className={styles.pageTitle} text="Danh sách Danh mục" />
+            {notificationMessage && (
+                <PushNotification message={notificationMessage} type={isError ? 'error' : 'success'} />
+            )}
             <div className={styles.actionsContainer}>
                 <input
                     type="text"

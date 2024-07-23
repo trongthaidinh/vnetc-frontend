@@ -10,7 +10,8 @@ import CATEGORY_TYPES from '~/constants/CategoryType/CategoryType';
 
 const AddCategory = () => {
     const navigate = useNavigate();
-    const [notification, setNotification] = useState({ message: '', type: '' });
+    const [isError, setIsError] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState('');
 
     const initialValues = {
         name: '',
@@ -25,22 +26,30 @@ const AddCategory = () => {
             .max(Object.keys(CATEGORY_TYPES).length, 'Giá trị không hợp lệ'),
     });
 
-    const handleSubmit = async (values, { resetForm }) => {
+    const handleSubmit = async (values, { resetForm, setSubmitting }) => {
         try {
             await addCategory(values);
-            setNotification({ message: 'Thêm danh mục thành công!', type: 'success' });
             resetForm();
-            navigate(routes.categoryList);
+            setNotificationMessage('Thêm danh mục thành công!');
+            setIsError(false);
+            setTimeout(() => {
+                navigate(routes.categoryList);
+            }, 1000);
         } catch (error) {
-            setNotification({ message: 'Lỗi khi thêm danh mục.', type: 'error' });
+            setIsError(true);
+            setNotificationMessage('Lỗi khi thêm danh mục.');
             console.error('Lỗi khi tạo danh mục:', error);
+        } finally {
+            setSubmitting(false);
         }
     };
 
     return (
         <div className={styles.addCategory}>
             <h2>Thêm Danh mục</h2>
-            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
+            {notificationMessage && (
+                <PushNotification message={notificationMessage} type={isError ? 'error' : 'success'} />
+            )}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (
                     <Form>

@@ -5,37 +5,56 @@ import { faPlus, faEdit, faTrash, faAngleRight, faAngleLeft } from '@fortawesome
 import styles from './UserList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
-import { getUsers, deleteUser } from '~/services/userService'; // Import deleteUser from userService
+import { getUsers, deleteUser, getUserByEmail } from '~/services/userService';
+import PushNotification from '~/components/PushNotification';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notification, setNotification] = useState({ message: '', type: '' });
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try {
+                const email = localStorage.getItem('userEmail');
+                const user = await getUserByEmail(email);
+                setCurrentUser(user);
+            } catch (error) {
+                console.error('Error fetching current user:', error);
+            }
+        };
+
         const fetchUsers = async () => {
             try {
                 const data = await getUsers();
                 setUsers(data);
             } catch (error) {
                 console.error('Error fetching users:', error);
-                alert('Failed to fetch users.');
+                setNotification({ message: 'Failed to fetch users.', type: 'error' });
             }
         };
 
+        fetchCurrentUser();
         fetchUsers();
     }, []);
 
     const handleDelete = async (userId) => {
         if (window.confirm('Bạn có thực muốn xóa người dùng này?')) {
             try {
-                await deleteUser(userId, '6670563f3cc92e43a5dadb3b');
-                setUsers(users.filter((user) => user._id !== userId));
-                alert('User deleted successfully!');
+                if (currentUser && currentUser._id) {
+                    const accDelId = currentUser._id.toString();
+                    await deleteUser(accDelId, userId);
+                    setUsers(users.filter((user) => user._id !== userId));
+                    setNotification({ message: 'User deleted successfully!', type: 'success' });
+                } else {
+                    throw new Error('Current user ID is not available.');
+                }
             } catch (error) {
                 console.error('Error deleting user:', error);
-                alert('There was an error deleting the user.');
+                setNotification({ message: 'There was an error deleting the user.', type: 'error' });
             }
         }
     };
@@ -50,6 +69,7 @@ const UserList = () => {
     return (
         <div className={styles.userContainer}>
             <Title className={styles.pageTitle} text="Danh sách Người dùng" />
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <div className={styles.actionsContainer}>
                 <input
                     type="text"
@@ -107,7 +127,6 @@ const UserList = () => {
                 </table>
             </div>
 
-            {/* Items per page selection */}
             <div className={styles.itemsPerPageContainer}>
                 <label htmlFor="itemsPerPage">Số mục mỗi trang:</label>
                 <select
@@ -115,7 +134,7 @@ const UserList = () => {
                     value={itemsPerPage}
                     onChange={(e) => {
                         setItemsPerPage(Number(e.target.value));
-                        setCurrentPage(1); // Reset to first page when items per page changes
+                        setCurrentPage(1);
                     }}
                     className={styles.itemsPerPageSelect}
                 >

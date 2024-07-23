@@ -4,20 +4,25 @@ import { faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-
 import { getMessages, deleteMessage } from '~/services/contactService';
 import styles from './MessageList.module.scss';
 import Title from '~/components/Title';
+import PushNotification from '~/components/PushNotification';
 
 const MessageList = () => {
     const [messages, setMessages] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const [isError, setIsError] = useState(false);
 
     useEffect(() => {
         const fetchMessages = async () => {
-            const data = await getMessages();
-            if (data) {
-                setMessages(data);
-            } else {
-                alert('Failed to fetch messages.');
+            try {
+                const data = await getMessages();
+                setMessages(data || []);
+            } catch (error) {
+                console.error('Failed to fetch messages:', error);
+                setNotificationMessage('Tải tin nhắn thất bại. Vui lòng thử lại!');
+                setIsError(true);
             }
         };
 
@@ -25,14 +30,16 @@ const MessageList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this message?')) {
+        if (window.confirm('Bạn có chắc chắn muốn xóa tin nhắn này không?')) {
             try {
                 await deleteMessage(id);
                 setMessages(messages.filter((message) => message._id !== id));
-                alert('Message deleted successfully!');
+                setNotificationMessage('Xóa tin nhắn thành công!');
+                setIsError(false);
             } catch (error) {
                 console.error('Error deleting message:', error);
-                alert('There was an error deleting the message.');
+                setNotificationMessage('Có lỗi khi xóa tin nhắn.');
+                setIsError(true);
             }
         }
     };
@@ -49,6 +56,9 @@ const MessageList = () => {
     return (
         <div className={styles.messageContainer}>
             <Title className={styles.pageTitle} text="Danh sách Tin nhắn" />
+            {notificationMessage && (
+                <PushNotification message={notificationMessage} type={isError ? 'error' : 'success'} />
+            )}
             <div className={styles.actionsContainer}>
                 <input
                     type="text"

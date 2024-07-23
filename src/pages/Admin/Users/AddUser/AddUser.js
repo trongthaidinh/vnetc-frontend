@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { addUser } from '~/services/userService';
 import styles from './AddUser.module.scss';
 import routes from '~/config/routes';
+import PushNotification from '~/components/PushNotification';
 
 const AddUser = () => {
     const navigate = useNavigate();
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const [isError, setIsError] = useState(false);
 
     const initialValues = {
         username: '',
@@ -26,20 +29,32 @@ const AddUser = () => {
     const handleSubmit = async (values, { resetForm }) => {
         try {
             await addUser(values);
-            alert('Thêm người dùng thành công!');
+            setNotificationMessage('Thêm người dùng thành công!');
+            setIsError(false);
             resetForm();
             setTimeout(() => {
                 navigate(routes.userList);
             }, 1000);
         } catch (error) {
-            console.error('Error adding user:', error);
-            alert('Lỗi khi thêm người dùng.');
+            if (
+                error.response &&
+                error.response.status === 400 &&
+                error.response.data.message === 'Email is already in use!'
+            ) {
+                setNotificationMessage('Email đã tồn tại.');
+            } else {
+                setNotificationMessage('Lỗi khi thêm người dùng.');
+            }
+            setIsError(true);
         }
     };
 
     return (
         <div className={styles.addUser}>
             <h2>Thêm Người dùng</h2>
+            {notificationMessage && (
+                <PushNotification message={notificationMessage} type={isError ? 'error' : 'success'} />
+            )}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (
                     <Form>
