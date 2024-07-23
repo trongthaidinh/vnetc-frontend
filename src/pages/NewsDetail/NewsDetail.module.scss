@@ -12,7 +12,7 @@
     }
 
     @include respond-to(sm) {
-        margin-top: var(--nav-height);
+        margin-top: 10px;
         padding: 10px;
     }
 
@@ -37,6 +37,12 @@
             object-fit: cover;
             border-radius: 4px;
             margin: 40px;
+            @include respond-to(sm) {
+                max-width: 100%;
+                margin: 0;
+                margin-bottom: 30px;
+                margin-top: 20px;
+            }
         }
         em {
             display: block;
