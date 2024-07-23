@@ -27,10 +27,6 @@
             width: 100%;
         }
 
-        @include respond-to(sm) {
-            width: 100%;
-        }
-
         .hotline-container {
             flex-grow: 1;
             overflow: hidden;
@@ -44,7 +40,7 @@
                 align-items: center;
                 animation: slideRightToLeft 10s linear infinite;
 
-                @include respond-to(sm) {
+                @include respond-to(lg) {
                     flex-direction: row;
                     align-items: center;
                     font-size: 1.2rem;
@@ -61,7 +57,7 @@
                         margin-right: 5px;
                     }
 
-                    @include respond-to(sm) {
+                    @include respond-to(lg) {
                         margin-right: 8px;
                     }
                 }
@@ -72,11 +68,6 @@
                     white-space: nowrap;
 
                     @include respond-to(lg) {
-                        flex-direction: column;
-                        align-items: flex-start;
-                    }
-
-                    @include respond-to(sm) {
                         flex-direction: row;
                         align-items: center;
                         font-size: 1.2rem;
@@ -110,11 +101,6 @@
             cursor: pointer;
 
             @include respond-to(lg) {
-                width: 100%;
-                justify-content: center;
-                margin-top: 10px;
-            }
-            @include respond-to(sm) {
                 display: none;
             }
         }
@@ -147,11 +133,6 @@
             transition: opacity 0.3s ease, transform 0.3s ease;
 
             @include respond-to(lg) {
-                position: static;
-                transform: none;
-                opacity: 1;
-            }
-            @include respond-to(sm) {
                 display: none;
             }
         }
