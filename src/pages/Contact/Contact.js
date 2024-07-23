@@ -49,7 +49,7 @@ const ContactPage = () => {
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d243.27342674958496!2d108.052657970545!3d12.688940890483984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3171f7d7415f7d55%3A0x5a3cd6dc81a8de0d!2sVietnam%20Electromechanical%20Testing%20Joint%20Stock%20Company!5e0!3m2!1sen!2s!4v1721701975769!5m2!1sen!2s"
                     width="100%"
-                    height="500"
+                    height="600"
                     style={{ border: 0 }}
                     allowFullScreen=""
                     loading="lazy"
