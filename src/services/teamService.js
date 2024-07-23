@@ -1,15 +1,6 @@
 import httpRequest from '~/utils/httpRequest';
 
-export const getDepartments = async () => {
-    try {
-        const response = await httpRequest.get('/department');
-        return response.data.data;
-    } catch (error) {
-        console.error('Error fetching departments', error);
-        throw error;
-    }
-};
-
+// Members
 export const getDepartmentMembers = async (departmentId) => {
     try {
         const response = await httpRequest.get(`/department/${departmentId}/members`);
@@ -20,12 +11,75 @@ export const getDepartmentMembers = async (departmentId) => {
     }
 };
 
-export const deleteDepartmentMembers = async (departmentId) => {
+export const addMember = async (memberData, departmentId) => {
+    console.log(memberData);
     try {
-        const response = await httpRequest.get(`/department/${departmentId}/members`);
+        const response = await httpRequest.post(`/department/${departmentId}`, memberData);
         return response.data.data;
     } catch (error) {
-        console.error('Error fetching department members', error);
+        console.error('Error adding member', error);
+        throw error;
+    }
+};
+
+export const updateMember = async (memberId, memberData) => {
+    try {
+        const response = await httpRequest.put(`/members/${memberId}`, memberData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating member', error);
+        throw error;
+    }
+};
+
+export const deleteMember = async (memberId, departmentId) => {
+    try {
+        const response = await httpRequest.delete(`department/${departmentId}/members/${memberId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting member', error);
+        throw error;
+    }
+};
+
+//Department
+
+export const getDepartments = async () => {
+    try {
+        const response = await httpRequest.get('/department');
+        return response.data.data;
+    } catch (error) {
+        console.error('Error fetching departments', error);
+        throw error;
+    }
+};
+
+export const addDepartment = async (departmentData) => {
+    try {
+        const response = await httpRequest.post('/department', departmentData);
+        return response.data;
+    } catch (error) {
+        console.error('Error adding department', error);
+        throw error;
+    }
+};
+
+export const updateDepartment = async (departmentId, departmentData) => {
+    try {
+        const response = await httpRequest.put(`/department/${departmentId}`, departmentData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating department', error);
+        throw error;
+    }
+};
+
+export const deleteDepartment = async (departmentId) => {
+    try {
+        const response = await httpRequest.delete(`/department/${departmentId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting department', error);
         throw error;
     }
 };

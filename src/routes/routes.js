@@ -67,6 +67,7 @@ import AddCategory from '~/pages/Admin/Category/AddCategory';
 import DepartmentList from '~/pages/Admin/Department/DepartmentList';
 import AddDepartment from '~/pages/Admin/Department/AddDepartment/AddDepartment';
 import MemberList from '~/pages/Admin/Department/MemberList';
+import AddMember from '~/pages/Admin/Department/AddMember/AddMember';
 
 // Public Routes
 const publicRoutes = [
@@ -200,6 +201,7 @@ const privateRoutes = [
     { path: config.routes.departmentList, component: DepartmentList, layout: AdminLayout },
     { path: config.routes.addDepartment, component: AddDepartment, layout: AdminLayout },
     { path: config.routes.memberList, component: MemberList, layout: AdminLayout },
+    { path: config.routes.addMember, component: AddMember, layout: AdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };

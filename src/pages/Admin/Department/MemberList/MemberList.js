@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEdit, faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { deleteDepartmentMembers, getDepartmentMembers, getDepartments } from '~/services/teamService';
+import { deleteMember, getDepartmentMembers, getDepartments } from '~/services/teamService';
 import styles from './MemberList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
@@ -22,7 +22,13 @@ const MemberList = () => {
 
                 if (departmentsData.length > 0) {
                     const allMembers = await Promise.all(
-                        departmentsData.map((department) => getDepartmentMembers(department._id)),
+                        departmentsData.map(async (department) => {
+                            const members = await getDepartmentMembers(department._id);
+                            return members.map((member) => ({
+                                ...member,
+                                departmentId: department._id,
+                            }));
+                        }),
                     );
                     setMembers(allMembers.flat());
                 }
@@ -34,10 +40,10 @@ const MemberList = () => {
         fetchDepartmentsAndMembers();
     }, []);
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (id, departmentId) => {
         if (window.confirm('Are you sure you want to delete this member?')) {
             try {
-                await deleteDepartmentMembers(id);
+                await deleteMember(id, departmentId);
                 setMembers(members.filter((member) => member._id !== id));
                 alert('Member deleted successfully!');
             } catch (error) {
@@ -79,8 +85,6 @@ const MemberList = () => {
                             <th>Ban</th>
                             <th>Năm sinh</th>
                             <th>Vị trí</th>
-                            <th>Người tạo</th>
-                            <th>Ngày tạo</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -92,17 +96,15 @@ const MemberList = () => {
                                         <img src={member.image} alt={member.name} className={styles.memberImage} />
                                     </td>
                                     <td>{member.name}</td>
-                                    <td>{member.position}</td>
+                                    <td>{member.position === 1 ? 'Ban lãnh đạo' : 'Đội công trình'}</td>
                                     <td>{member.yearOfBirth}</td>
                                     <td>{member.qualification}</td>
-                                    <td>{member.createdBy}</td>
-                                    <td>{new Date(member.createdAt).toLocaleDateString()}</td>
                                     <td>
                                         <Link to={`/admin/update-member/${member._id}`} className={styles.editButton}>
                                             <FontAwesomeIcon icon={faEdit} /> Sửa
                                         </Link>
                                         <button
-                                            onClick={() => handleDelete(member._id)}
+                                            onClick={() => handleDelete(member._id, member.departmentId)}
                                             className={styles.deleteButton}
                                         >
                                             <FontAwesomeIcon icon={faTrash} /> Xóa
@@ -112,7 +114,7 @@ const MemberList = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="8">Không có dữ liệu</td>
+                                <td colSpan="6">Không có dữ liệu</td>
                             </tr>
                         )}
                     </tbody>
