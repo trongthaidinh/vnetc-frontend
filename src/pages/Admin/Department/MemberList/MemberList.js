@@ -8,7 +8,7 @@ import Title from '~/components/Title';
 import routes from '~/config/routes';
 
 const MemberList = () => {
-    const [departments, setDepartments] = useState([]);
+    const [, setDepartments] = useState([]);
     const [members, setMembers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -96,11 +96,14 @@ const MemberList = () => {
                                         <img src={member.image} alt={member.name} className={styles.memberImage} />
                                     </td>
                                     <td>{member.name}</td>
-                                    <td>{member.position === 1 ? 'Ban lãnh đạo' : 'Đội công trình'}</td>
+                                    <td>{member.position === 0 ? 'Ban lãnh đạo' : 'Đội công trình'}</td>
                                     <td>{member.yearOfBirth}</td>
                                     <td>{member.qualification}</td>
                                     <td>
-                                        <Link to={`/admin/update-member/${member._id}`} className={styles.editButton}>
+                                        <Link
+                                            to={`/admin/update-member/${member._id}/${member.departmentId}`}
+                                            className={styles.editButton}
+                                        >
                                             <FontAwesomeIcon icon={faEdit} /> Sửa
                                         </Link>
                                         <button

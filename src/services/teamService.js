@@ -22,12 +22,22 @@ export const addMember = async (memberData, departmentId) => {
     }
 };
 
-export const updateMember = async (memberId, memberData) => {
+export const updateMember = async (memberId, departmentId, memberData) => {
     try {
-        const response = await httpRequest.put(`/members/${memberId}`, memberData);
+        const response = await httpRequest.patch(`department/${departmentId}/members/${memberId}`, memberData);
         return response.data;
     } catch (error) {
         console.error('Error updating member', error);
+        throw error;
+    }
+};
+
+export const getMemberById = async (memberId, departmentId) => {
+    try {
+        const response = await httpRequest.get(`department/${departmentId}/members/${memberId}`);
+        return response.data.data;
+    } catch (error) {
+        console.error('Error deleting member', error);
         throw error;
     }
 };
