@@ -5,6 +5,7 @@ import DefaultLayout from '~/layouts/DefaultLayout';
 import LoadingScreen from '~/components/LoadingScreen';
 import { AuthProvider, useAuth } from '~/hooks/useAuth';
 import Login from '~/pages/Admin/Login';
+import ScrollToTop from '~/components/ScrollToTop';
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -25,6 +26,7 @@ function App() {
         <Router>
             <AuthProvider>
                 <div className="App">
+                    <ScrollToTop />
                     <Routes>
                         {publicRoutes.map((route, index) => {
                             const Page = route.component;

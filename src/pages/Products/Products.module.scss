@@ -9,8 +9,9 @@
     padding: 20px;
 
     @include respond-to(sm) {
-        margin-top: 40px;
+        margin-top: 20px;
         padding: 10px;
+        box-shadow: none;
     }
 }
 

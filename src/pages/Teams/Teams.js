@@ -53,7 +53,6 @@ const TeamPage = () => {
                                 <TeamItem
                                     key={member._id}
                                     imageUrl={member.image}
-                                    gender={member.gender}
                                     name={member.name}
                                     position={member.qualification}
                                 />
