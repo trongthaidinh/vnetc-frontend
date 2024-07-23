@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,46 +13,7 @@ import styles from './Contact.module.scss';
 const cx = classNames.bind(styles);
 
 const ContactPage = () => {
-    const [, setMap] = useState(null);
     const [notification, setNotification] = useState({ message: '', type: '' });
-
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
-        script.async = true;
-        script.defer = true;
-        script.onload = () => {
-            initMap();
-        };
-        document.head.appendChild(script);
-
-        return () => {
-            document.head.removeChild(script);
-        };
-    }, []);
-
-    const initMap = () => {
-        const map = new window.google.maps.Map(document.getElementById('map'), {
-            center: { lat: 12.688833, lng: 108.052747 },
-            zoom: 15,
-        });
-
-        const poi = [{ key: 'companyLocation', location: { lat: 12.688833, lng: 108.052747 } }];
-
-        poi.forEach(({ location }) => {
-            const marker = new window.google.maps.Marker({
-                position: location,
-                map: map,
-            });
-
-            marker.addListener('click', () => {
-                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`;
-                window.open(googleMapsUrl, '_blank');
-            });
-        });
-
-        setMap(map);
-    };
 
     const initialValues = {
         fullName: '',
@@ -84,7 +45,15 @@ const ContactPage = () => {
     return (
         <div className={cx('contactPage')}>
             <div className={cx('mapContainer')}>
-                <div className={cx('map')} id="map"></div>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d243.27342674958496!2d108.052657970545!3d12.688940890483984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3171f7d7415f7d55%3A0x5a3cd6dc81a8de0d!2sVietnam%20Electromechanical%20Testing%20Joint%20Stock%20Company!5e0!3m2!1sen!2s!4v1721701975769!5m2!1sen!2s"
+                    width="100%"
+                    height="500"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
             </div>
             <div className={cx('inner')}>
                 <div className={cx('formWrapper')}>

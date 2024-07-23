@@ -2,108 +2,107 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEdit, faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { deleteDepartmentMembers, getDepartmentMembers } from '~/services/teamService';
+import { deleteDepartmentMembers, getDepartmentMembers, getDepartments } from '~/services/teamService';
 import styles from './MemberList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
 
 const MemberList = () => {
     const [departments, setDepartments] = useState([]);
+    const [members, setMembers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
     useEffect(() => {
-        const fetchDepartments = async () => {
-            const data = await getDepartmentMembers();
-            if (data) {
-                setDepartments(data);
-            } else {
-                alert('Failed to fetch departments.');
+        const fetchDepartmentsAndMembers = async () => {
+            try {
+                const departmentsData = await getDepartments();
+                setDepartments(departmentsData);
+
+                if (departmentsData.length > 0) {
+                    const allMembers = await Promise.all(
+                        departmentsData.map((department) => getDepartmentMembers(department._id)),
+                    );
+                    setMembers(allMembers.flat());
+                }
+            } catch (error) {
+                alert('Failed to fetch departments or members.');
             }
         };
 
-        fetchDepartments();
+        fetchDepartmentsAndMembers();
     }, []);
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this department?')) {
+        if (window.confirm('Are you sure you want to delete this member?')) {
             try {
                 await deleteDepartmentMembers(id);
-                setDepartments(departments.filter((department) => department._id !== id));
-                alert('Department deleted successfully!');
+                setMembers(members.filter((member) => member._id !== id));
+                alert('Member deleted successfully!');
             } catch (error) {
-                console.error('Error deleting department:', error);
-                alert('There was an error deleting the department.');
+                console.error('Error deleting member:', error);
+                alert('There was an error deleting the member.');
             }
         }
     };
 
-    const filteredDepartments = departments.filter((department) =>
-        department.name.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
+    const filteredMembers = members.filter((member) => member.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
-    const totalPages = Math.ceil(filteredDepartments.length / itemsPerPage);
-    const indexOfLastDepartment = currentPage * itemsPerPage;
-    const indexOfFirstDepartment = indexOfLastDepartment - itemsPerPage;
-    const currentDepartments = filteredDepartments.slice(indexOfFirstDepartment, indexOfLastDepartment);
+    const totalPages = Math.ceil(filteredMembers.length / itemsPerPage);
+    const indexOfLastMember = currentPage * itemsPerPage;
+    const indexOfFirstMember = indexOfLastMember - itemsPerPage;
+    const currentMembers = filteredMembers.slice(indexOfFirstMember, indexOfLastMember);
 
     return (
-        <div className={styles.departmentContainer}>
-            <Title className={styles.pageTitle} text="Danh sách Phòng ban" />
+        <div className={styles.memberContainer}>
+            <Title className={styles.pageTitle} text="Danh sách Đội ngũ" />
             <div className={styles.actionsContainer}>
                 <input
                     type="text"
-                    placeholder="Tìm kiếm Phòng ban..."
+                    placeholder="Tìm kiếm Đội ngũ..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={styles.searchInput}
                 />
-                <Link to={routes.addDepartment} className={styles.addButton}>
-                    <FontAwesomeIcon icon={faPlus} /> Thêm mới Phòng ban
+                <Link to={routes.addMember} className={styles.addButton}>
+                    <FontAwesomeIcon icon={faPlus} /> Thêm mới Đội ngũ
                 </Link>
             </div>
 
-            <div className={styles.departmentList}>
+            <div className={styles.memberList}>
                 <table className={styles.table}>
                     <thead>
                         <tr>
                             <th>Hình ảnh</th>
                             <th>Tên</th>
-                            <th>Vị trí</th>
+                            <th>Ban</th>
                             <th>Năm sinh</th>
-                            <th>Bằng cấp</th>
+                            <th>Vị trí</th>
                             <th>Người tạo</th>
                             <th>Ngày tạo</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {currentDepartments.length > 0 ? (
-                            currentDepartments.map((department) => (
-                                <tr key={department._id}>
+                        {currentMembers.length > 0 ? (
+                            currentMembers.map((member) => (
+                                <tr key={member._id}>
                                     <td>
-                                        <img
-                                            src={department.image}
-                                            alt={department.name}
-                                            className={styles.departmentImage}
-                                        />
+                                        <img src={member.image} alt={member.name} className={styles.memberImage} />
                                     </td>
-                                    <td>{department.name}</td>
-                                    <td>{department.position === 1 ? 'Ban lãnh đạo' : 'Đội công trình'}</td>
-                                    <td>{department.yearOfBirth}</td>
-                                    <td>{department.qualification}</td>
-                                    <td>{department.createdBy}</td>
-                                    <td>{new Date(department.createdAt).toLocaleDateString()}</td>
+                                    <td>{member.name}</td>
+                                    <td>{member.position}</td>
+                                    <td>{member.yearOfBirth}</td>
+                                    <td>{member.qualification}</td>
+                                    <td>{member.createdBy}</td>
+                                    <td>{new Date(member.createdAt).toLocaleDateString()}</td>
                                     <td>
-                                        <Link
-                                            to={`/admin/update-department/${department._id}`}
-                                            className={styles.editButton}
-                                        >
+                                        <Link to={`/admin/update-member/${member._id}`} className={styles.editButton}>
                                             <FontAwesomeIcon icon={faEdit} /> Sửa
                                         </Link>
                                         <button
-                                            onClick={() => handleDelete(department._id)}
+                                            onClick={() => handleDelete(member._id)}
                                             className={styles.deleteButton}
                                         >
                                             <FontAwesomeIcon icon={faTrash} /> Xóa
@@ -140,8 +139,8 @@ const MemberList = () => {
 
             <div className={styles.pagination}>
                 <span>
-                    Hiện {indexOfFirstDepartment + 1} đến {Math.min(indexOfLastDepartment, filteredDepartments.length)}{' '}
-                    của {filteredDepartments.length}
+                    Hiện {indexOfFirstMember + 1} đến {Math.min(indexOfLastMember, filteredMembers.length)} của{' '}
+                    {filteredMembers.length}
                 </span>
                 <div className={styles.paginationControls}>
                     <button
