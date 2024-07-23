@@ -7,7 +7,7 @@ import styles from './DefaultLayout.module.scss';
 import { BaseRouteProvider } from '~/context/BaseRouteContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
-import { faCommentDots, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faPhone } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -28,9 +28,7 @@ function DefaultLayout({ children, baseRoute, categoryType }) {
                     <div
                         className={cx('button', 'zalo')}
                         onClick={() => (window.location.href = 'https://zalo.me/0905174001')}
-                    >
-                        <FontAwesomeIcon icon={faCommentDots} />
-                    </div>
+                    ></div>
                     <div
                         className={cx('button', 'facebook')}
                         onClick={() => (window.location.href = 'https://www.facebook.com/thinghiemcodien.vnetc/')}

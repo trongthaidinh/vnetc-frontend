@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhone, faCommentDots } from '@fortawesome/free-solid-svg-icons';
+import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import classNames from 'classnames/bind';
 import Header from '../components/Header';
@@ -24,9 +24,7 @@ function OnlyHeaderLayout({ children }) {
                 <div
                     className={cx('button', 'zalo')}
                     onClick={() => (window.location.href = 'https://zalo.me/0905174001')}
-                >
-                    <FontAwesomeIcon icon={faCommentDots} />
-                </div>
+                ></div>
                 <div
                     className={cx('button', 'facebook')}
                     onClick={() => (window.location.href = 'https://www.facebook.com/thinghiemcodien.vnetc/')}

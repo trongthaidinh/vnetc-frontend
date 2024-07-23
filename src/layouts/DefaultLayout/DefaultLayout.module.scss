@@ -57,6 +57,7 @@
 
     .hotline {
         background-color: #ff5722;
+        animation: shake 3s infinite;
 
         &:hover {
             background-color: darken(#ff5722, 10%);
@@ -64,7 +65,9 @@
     }
 
     .zalo {
-        background-color: #0084ff;
+        background-image: url(../../assets/images/zalo-icon-circle-1.png);
+        background-size: cover;
+        animation: shake 3s infinite;
 
         &:hover {
             background-color: darken(#0084ff, 10%);
@@ -72,10 +75,31 @@
     }
 
     .facebook {
-        background-color: #3b5998;
+        background-color: #0866ff;
+        animation: shake 3s infinite;
 
         &:hover {
-            background-color: darken(#3b5998, 10%);
+            background-color: darken(rgb(51, 83, 154), 10%);
         }
+    }
+}
+
+@keyframes shake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-5px);
+    }
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(5px);
     }
 }
