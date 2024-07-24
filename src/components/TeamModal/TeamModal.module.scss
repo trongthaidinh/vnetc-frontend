@@ -67,6 +67,7 @@
     gap: 20px;
     @include respond-to(sm) {
         padding-left: 0px;
+        gap: 10px;
     }
 }
 
@@ -79,12 +80,14 @@
     height: auto;
     min-width: 400px;
     min-height: 500px;
+    max-height: 500px;
     object-fit: cover;
     border-radius: 8px;
     @include respond-to(sm) {
-        min-width: 100px;
-        min-height: 200px;
+        min-width: 200px;
+        min-height: 300px;
         max-width: 100%;
+        max-height: 400px;
     }
 }
 
