@@ -6,6 +6,7 @@ import Title from '~/components/Title';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
 import ButtonGroup from '~/components/ButtonGroup';
+import TeamModal from '~/components/TeamModal';
 
 const cx = classNames.bind(styles);
 
@@ -16,6 +17,7 @@ function Teams() {
     const [error, setError] = useState(null);
     const [currentSlides, setCurrentSlides] = useState({});
     const [slidesPerView, setSlidesPerView] = useState(4);
+    const [selectedTeam, setSelectedTeam] = useState(null); // Trạng thái modal
     const sliderRefs = useRef({});
 
     useEffect(() => {
@@ -98,6 +100,14 @@ function Teams() {
         }));
     };
 
+    const handleOpenDetail = (team) => {
+        setSelectedTeam(team);
+    };
+
+    const handleCloseDetail = () => {
+        setSelectedTeam(null);
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -114,11 +124,7 @@ function Teams() {
                                 }}
                             >
                                 {teamsArr[department._id]?.map((team, index) => (
-                                    <div
-                                        key={index}
-                                        className={cx('slide')}
-                                        onClick={() => handleSlideChange(department._id, index)}
-                                    >
+                                    <div key={index} className={cx('slide')} onClick={() => handleOpenDetail(team)}>
                                         <div className={cx('team-card')}>
                                             <img src={team.image} alt={team.name} className={cx('team-image')} />
                                             <div className={cx('team-info')}>
@@ -133,6 +139,7 @@ function Teams() {
                     </div>
                 ))}
             </div>
+            <TeamModal visible={!!selectedTeam} onClose={handleCloseDetail} team={selectedTeam} />
         </div>
     );
 }

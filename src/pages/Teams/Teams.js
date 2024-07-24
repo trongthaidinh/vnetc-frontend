@@ -5,6 +5,7 @@ import { getDepartments, getDepartmentMembers } from '~/services/teamService';
 import classNames from 'classnames/bind';
 import styles from './Teams.module.scss';
 import LoadingScreen from '~/components/LoadingScreen';
+import TeamModal from '~/components/TeamModal'; // Import your modal component
 
 const cx = classNames.bind(styles);
 
@@ -12,6 +13,7 @@ const TeamPage = () => {
     const [departments, setDepartments] = useState([]);
     const [members, setMembers] = useState({});
     const [loading, setLoading] = useState(true);
+    const [selectedTeam, setSelectedTeam] = useState(null); // Trạng thái modal
 
     useEffect(() => {
         const fetchDepartments = async () => {
@@ -41,6 +43,14 @@ const TeamPage = () => {
         return <LoadingScreen />;
     }
 
+    const handleOpenDetail = (member) => {
+        setSelectedTeam(member);
+    };
+
+    const handleCloseDetail = () => {
+        setSelectedTeam(null);
+    };
+
     return (
         <div className={cx('teamPage')}>
             {departments.map((department) => (
@@ -55,11 +65,13 @@ const TeamPage = () => {
                                     imageUrl={member.image}
                                     name={member.name}
                                     position={member.qualification}
+                                    onClick={() => handleOpenDetail(member)}
                                 />
                             ))}
                     </div>
                 </React.Fragment>
             ))}
+            <TeamModal visible={!!selectedTeam} onClose={handleCloseDetail} team={selectedTeam} />
         </div>
     );
 };

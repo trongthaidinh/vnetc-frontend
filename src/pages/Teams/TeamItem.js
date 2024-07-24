@@ -5,9 +5,9 @@ import styles from './Teams.module.scss';
 
 const cx = classNames.bind(styles);
 
-const TeamItem = ({ imageUrl, name, position }) => {
+const TeamItem = ({ imageUrl, name, position, onClick }) => {
     return (
-        <div className={cx('teamItem')}>
+        <div className={cx('teamItem')} onClick={onClick}>
             <div className={cx('imageWrapper')}>
                 <img src={imageUrl} alt={`${name}`} className={cx('image')} />
             </div>
