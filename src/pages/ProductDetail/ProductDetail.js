@@ -155,7 +155,7 @@ const ProductDetail = () => {
                         <span>{productDetail.detail[0].warranty} năm</span>
                     </p>
                     <Button className={cx('contact-button')} primary>
-                        Liên hệ
+                        <a href="tel:02623977171">Liên hệ</a>
                     </Button>
                 </div>
             </div>
