@@ -140,12 +140,12 @@ const ProductDetail = () => {
                         <span>{productDetail.detail[0].brand}</span>
                     </p>
                     <p className={cx('product-info')}>
-                        <span className={cx('label')}>Kích cỡ:</span>
+                        <span className={cx('label')}>Kích cỡ</span>
                         <span>:</span>
                         <span>{productDetail.detail[0].size}</span>
                     </p>
                     <p className={cx('product-info')}>
-                        <span className={cx('label')}>Trọng lượng:</span>
+                        <span className={cx('label')}>Trọng lượng</span>
                         <span>:</span>
                         <span>{productDetail.detail[0].weight} Kg</span>
                     </p>
