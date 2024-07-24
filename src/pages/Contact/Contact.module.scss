@@ -67,9 +67,8 @@
             position: absolute;
             width: 100px;
             height: 100px;
-            background-color: rgba(43, 30, 98, 0.5);
+            background-color: rgba(43, 30, 98, 0.3);
             border-radius: 50%;
-            z-index: 1;
             @include respond-to(sm) {
                 width: 50px;
                 height: 50px;
@@ -80,9 +79,8 @@
             position: absolute;
             width: 200px;
             height: 200px;
-            background-color: rgba(43, 30, 98, 0.5);
+            background-color: rgba(43, 30, 98, 0.3);
             border-radius: 50%;
-            z-index: 1;
             @include respond-to(sm) {
                 width: 140px;
                 height: 140px;
@@ -124,6 +122,8 @@
                 margin-bottom: 10px;
 
                 .icon {
+                    width: 16px;
+                    font-size: 1.6rem;
                     margin-right: 10px;
                 }
             }
@@ -141,11 +141,27 @@
         }
     }
 
+    .contact-list {
+        display: flex;
+        flex-direction: column;
+
+        li {
+            list-style-type: none;
+            margin-left: 16px;
+            margin-top: 8px;
+            font-size: 1.4rem;
+        }
+    }
+
     .contactInfo {
         grid-column: span 5;
         background-color: var(--primary);
         color: #fff;
-        padding: 20px;
+        padding: 30px;
+
+        a {
+            color: var(--white);
+        }
     }
 
     .contactForm {
@@ -227,6 +243,7 @@
     .error {
         color: red;
         font-size: 1.2rem;
+        margin-top: 8px;
     }
 
     .subject label {

@@ -4,8 +4,16 @@ import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope, faMapMarkerAlt, faPhone } from '@fortawesome/free-solid-svg-icons';
+import {
+    faEnvelope,
+    faMapMarkerAlt,
+    faPhone,
+    faMobileAlt,
+    faWrench,
+    faCogs,
+    faChartLine,
+    faFileAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import Button from '~/components/Button';
 import { createMessage } from '~/services/contactService';
 import PushNotification from '~/components/PushNotification';
@@ -25,11 +33,11 @@ const ContactPage = () => {
     };
 
     const validationSchema = Yup.object({
-        fullName: Yup.string().required('Họ và Tên là bắt buộc'),
-        email: Yup.string().email('Email không hợp lệ').required('Email là bắt buộc'),
-        phoneNumber: Yup.string().required('Số điện thoại là bắt buộc'),
-        subject: Yup.string().required('Chủ đề là bắt buộc'),
-        message: Yup.string().required('Nội dung tin nhắn là bắt buộc'),
+        fullName: Yup.string().required('Vui lòng nhập Họ và Tên của bạn!'),
+        email: Yup.string().email('Email không hợp lệ').required('Vui lòng nhập Email!'),
+        phoneNumber: Yup.string().required('Vui lòng nhập số điện thoại'),
+        subject: Yup.string().required('Vui lòng chọn chủ đề!'),
+        message: Yup.string().required('Vui lòng nhập nội dung tin nhắn!'),
     });
 
     const handleSubmit = async (values, { resetForm }) => {
@@ -66,11 +74,41 @@ const ContactPage = () => {
                         <div className={cx('infoDetails')}>
                             <div className={cx('infoItem')}>
                                 <FontAwesomeIcon icon={faPhone} className={cx('icon')} />
-                                <span>Số điện thoại: 0123 456 789</span>
+                                <a href="tel:02623977171">Số điện thoại: 02623 977 171 (Văn phòng công ty)</a>
+                            </div>
+                            <div className={cx('infoItem')}>
+                                <span>
+                                    <FontAwesomeIcon icon={faMobileAlt} className={cx('icon')} />
+                                    Hotline theo mảng phụ trách:
+                                    <ul className={cx('contact-list')}>
+                                        <li>
+                                            <FontAwesomeIcon icon={faWrench} className={cx('icon')} />
+                                            <a href="tel:0931951140">Thí nghiệm điện: 093 1951 140 (Mr. Phi)</a>
+                                        </li>
+                                        <li>
+                                            <FontAwesomeIcon icon={faCogs} className={cx('icon')} />
+                                            <a href="tel:0911711933">
+                                                QLVH và xử lý sự cố lưới điện: 091 1711 933 (Mr. Phước)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <FontAwesomeIcon icon={faChartLine} className={cx('icon')} />
+                                            <a href="tel:0982064747">Lập dự toán kinh doanh: 098 2064 747 (Ms. Ngọc)</a>
+                                        </li>
+                                        <li>
+                                            <FontAwesomeIcon icon={faFileAlt} className={cx('icon')} />
+                                            <a href="tel:0932585866">Tài chính - Tổng hợp: 093 2585 866 (Ms. Mai)</a>
+                                        </li>
+                                        <li>
+                                            <FontAwesomeIcon icon={faFileAlt} className={cx('icon')} />
+                                            <a href="tel:0971787996">Hồ sơ pháp lý kỹ thuật: 097 1787 996 (Mr. Kiệt)</a>
+                                        </li>
+                                    </ul>
+                                </span>
                             </div>
                             <div className={cx('infoItem')}>
                                 <FontAwesomeIcon icon={faEnvelope} className={cx('icon')} />
-                                <span>Email: info@company.com</span>
+                                <a href="mailto:vietnam.etc.ltd@gmail.com">Email: vietnam.etc.ltd@gmail.com</a>
                             </div>
                             <div className={cx('infoItem')}>
                                 <FontAwesomeIcon icon={faMapMarkerAlt} className={cx('icon')} />
@@ -78,11 +116,6 @@ const ContactPage = () => {
                                     Địa chỉ: 22 Trần Hữu Dực, Tân Lợi, Thành phố Buôn Ma Thuột, Đắk Lắk, Vietnam
                                 </span>
                             </div>
-                        </div>
-                        <div className={cx('socialLinks')}>
-                            <FontAwesomeIcon icon={faFacebook} className={cx('socialIcon')} />
-                            <FontAwesomeIcon icon={faLinkedinIn} className={cx('socialIcon')} />
-                            <FontAwesomeIcon icon={faTwitter} className={cx('socialIcon')} />
                         </div>
                     </div>
                     <div className={cx('contactForm')}>
@@ -124,6 +157,7 @@ const ContactPage = () => {
                                                 id="subject1"
                                                 value="Dịch vụ"
                                                 className={cx('customRadio')}
+                                                checked
                                             />
                                             <label htmlFor="subject1" className={cx('radioLabel')}>
                                                 Dịch vụ
