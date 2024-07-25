@@ -57,13 +57,13 @@ const ImageList = () => {
             <div className={styles.actionsContainer}>
                 <input
                     type="text"
-                    placeholder="Tìm kiếm Image..."
+                    placeholder="Tìm kiếm hình ảnh..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={styles.searchInput}
                 />
                 <Link to={routes.addImage} className={styles.addButton}>
-                    <FontAwesomeIcon icon={faPlus} /> Thêm mới Image
+                    <FontAwesomeIcon icon={faPlus} /> Thêm mới hình ảnh
                 </Link>
             </div>
 
@@ -71,7 +71,7 @@ const ImageList = () => {
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Image</th>
+                            <th>Hình ảnh</th>
                             <th>Ngày tạo</th>
                             <th>Ngày cập nhật</th>
                             <th>Người tạo</th>
