@@ -15,8 +15,8 @@ const Footer = () => {
     const [stats, setStats] = useState({ online: 0, total: 0 });
 
     useEffect(() => {
-        const socket = io(`http://localhost:8686`, {
-            transports: ['websocket', 'polling'], // Thử cả WebSocket và polling
+        const socket = io(`${process.env.REACT_APP_HOST}`, {
+            transports: ['websocket', 'polling'],
         });
 
         socket.on('connect', () => {
