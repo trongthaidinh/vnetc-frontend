@@ -15,10 +15,12 @@ function Teams() {
     const [teamsArr, setTeams] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [currentSlides, setCurrentSlides] = useState({});
+    const [currentDepartment, setCurrentDepartment] = useState(null);
+    const [currentSlide, setCurrentSlide] = useState(0);
     const [slidesPerView, setSlidesPerView] = useState(4);
-    const [selectedTeam, setSelectedTeam] = useState(null); // Trạng thái modal
-    const sliderRefs = useRef({});
+    const [selectedTeam, setSelectedTeam] = useState(null);
+    const [autoSlide, setAutoSlide] = useState(true);
+    const sliderRef = useRef(null);
 
     useEffect(() => {
         const loadTeams = async () => {
@@ -28,14 +30,15 @@ function Teams() {
                 setDepartments(departments);
 
                 const allTeams = {};
-                const slides = {};
                 for (const department of departments) {
                     const members = await getDepartmentMembers(department._id);
+                    members.sort((a, b) => b.name.localeCompare(a.name));
                     allTeams[department._id] = members;
-                    slides[department._id] = 0;
+                }
+                if (departments.length > 0) {
+                    setCurrentDepartment(departments[0]._id);
                 }
                 setTeams(allTeams);
-                setCurrentSlides(slides);
             } catch (error) {
                 setError(error);
             } finally {
@@ -45,19 +48,6 @@ function Teams() {
 
         loadTeams();
     }, []);
-
-    useEffect(() => {
-        const intervals = Object.keys(currentSlides).map((departmentId) => {
-            return setInterval(() => {
-                setCurrentSlides((prevSlides) => ({
-                    ...prevSlides,
-                    [departmentId]: (prevSlides[departmentId] + 1) % (teamsArr[departmentId]?.length || 1),
-                }));
-            }, 2000);
-        });
-
-        return () => intervals.forEach(clearInterval);
-    }, [currentSlides, teamsArr, slidesPerView]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -82,6 +72,27 @@ function Teams() {
         };
     }, [slidesPerView]);
 
+    useEffect(() => {
+        if (currentDepartment) {
+            const members = teamsArr[currentDepartment] || [];
+            if (members.length > slidesPerView) {
+                setAutoSlide(true);
+            } else {
+                setAutoSlide(false);
+            }
+        }
+    }, [currentDepartment, teamsArr, slidesPerView]);
+
+    useEffect(() => {
+        let interval;
+        if (autoSlide) {
+            interval = setInterval(() => {
+                setCurrentSlide((prev) => (prev + 1) % (teamsArr[currentDepartment]?.length || 1));
+            }, 2000);
+        }
+        return () => clearInterval(interval);
+    }, [autoSlide, currentDepartment, teamsArr, slidesPerView]);
+
     const translateValue = 100 / slidesPerView;
 
     if (error) {
@@ -101,36 +112,42 @@ function Teams() {
         setSelectedTeam(null);
     };
 
+    const handleButtonClick = (departmentId) => {
+        setCurrentDepartment(departmentId);
+        setCurrentSlide(0);
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Title text="Đội ngũ" />
-                {departments.map((department) => (
-                    <div key={department._id} className={cx('department-section')}>
-                        <ButtonGroup buttons={[department.name]} />
-                        <div className={cx('slide-container')} ref={(el) => (sliderRefs.current[department._id] = el)}>
-                            <div
-                                className={cx('slide-wrapper')}
-                                style={{
-                                    transform: `translateX(-${currentSlides[department._id] * translateValue}%)`,
-                                    transition: 'transform 0.5s ease',
-                                }}
-                            >
-                                {teamsArr[department._id]?.map((team, index) => (
-                                    <div key={index} className={cx('slide')} onClick={() => handleOpenDetail(team)}>
-                                        <div className={cx('team-card')}>
-                                            <img src={team.image} alt={team.name} className={cx('team-image')} />
-                                            <div className={cx('team-info')}>
-                                                <h3 className={cx('team-name')}>{team.name}</h3>
-                                                <p className={cx('team-position')}>{team.qualification}</p>
-                                            </div>
+                <ButtonGroup
+                    buttons={departments.map((department) => department.name)}
+                    onButtonClick={(index) => handleButtonClick(departments[index]._id)}
+                />
+                {currentDepartment && (
+                    <div className={cx('slide-container')} ref={sliderRef}>
+                        <div
+                            className={cx('slide-wrapper')}
+                            style={{
+                                transform: `translateX(-${currentSlide * translateValue}%)`,
+                                transition: 'transform 0.5s ease',
+                            }}
+                        >
+                            {teamsArr[currentDepartment]?.map((team, index) => (
+                                <div key={index} className={cx('slide')} onClick={() => handleOpenDetail(team)}>
+                                    <div className={cx('team-card')}>
+                                        <img src={team.image} alt={team.name} className={cx('team-image')} />
+                                        <div className={cx('team-info')}>
+                                            <h3 className={cx('team-name')}>{team.name}</h3>
+                                            <p className={cx('team-position')}>{team.qualification}</p>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
-                ))}
+                )}
             </div>
             <TeamModal visible={!!selectedTeam} onClose={handleCloseDetail} team={selectedTeam} />
         </div>
