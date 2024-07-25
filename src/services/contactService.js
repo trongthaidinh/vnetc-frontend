@@ -2,7 +2,7 @@ import httpRequest from '~/utils/httpRequest';
 
 export const getMessages = async () => {
     try {
-        const response = await httpRequest.get('/contact');
+        const response = await httpRequest.get('/contact?limit');
         return response.data.data;
     } catch (error) {
         console.error('Error fetching configuration', error);
