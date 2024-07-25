@@ -93,13 +93,6 @@ function Teams() {
         return <LoadingScreen />;
     }
 
-    const handleSlideChange = (departmentId, index) => {
-        setCurrentSlides((prevSlides) => ({
-            ...prevSlides,
-            [departmentId]: index,
-        }));
-    };
-
     const handleOpenDetail = (team) => {
         setSelectedTeam(team);
     };

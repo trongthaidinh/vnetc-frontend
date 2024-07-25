@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope, faChevronRight, faCircle } from '@fortawesome/free-solid-svg-icons';
@@ -7,10 +7,33 @@ import companyLogo from '~/assets/images/logo_vnetc.png';
 import boCongThuongLogo from '~/assets/images/bocongthuong.png';
 import styles from './Footer.module.scss';
 import classNames from 'classnames/bind';
+import io from 'socket.io-client';
 
 const cx = classNames.bind(styles);
 
 const Footer = () => {
+    const [stats, setStats] = useState({ online: 0, total: 0 });
+
+    useEffect(() => {
+        const socket = io(`http://localhost:8686`, {
+            transports: ['websocket', 'polling'], // Thử cả WebSocket và polling
+        });
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        socket.on('connect_error', (error) => {
+            console.error('Connection error:', error);
+        });
+
+        socket.on('stats', (data) => {
+            console.log('Received stats:', data);
+            setStats(data);
+        });
+
+        return () => socket.disconnect();
+    }, []);
     return (
         <footer className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -23,12 +46,12 @@ const Footer = () => {
                     <div className={cx('onlineStatus')}>
                         <span>
                             <FontAwesomeIcon className={cx('footer-icon-dot')} icon={faCircle} />
-                            Đang online: <span className={cx('online-number')}>123</span>
+                            Đang online: <span className={cx('online-number')}>{stats.online}</span>
                         </span>{' '}
                         |{' '}
                         <span>
                             <FontAwesomeIcon className={cx('footer-icon-dot')} icon={faCircle} />
-                            Tổng số lượt truy cập: <span className={cx('online-access')}>45678</span>
+                            Tổng số lượt truy cập: <span className={cx('online-access')}>{stats.total}</span>
                         </span>
                     </div>
                     <div className={cx('boCongThuong')}>
@@ -148,12 +171,7 @@ const Footer = () => {
                 </div>
             </div>
             <div className={cx('bottomBar')}>
-                <p>
-                    &copy; Copyright Công Ty Cổ Phần Thí Nghiệm Cơ Điện Việt Nam. All Rights Reserved. Thiết kế bởi{' '}
-                    <a href="https://www.takatech.com.vn/" target="_blank" rel="noopener noreferrer">
-                        Takatech
-                    </a>
-                </p>
+                <p>&copy; Copyright Công Ty Cổ Phần Thí Nghiệm Cơ Điện Việt Nam. All Rights Reserved.</p>
             </div>
         </footer>
     );
