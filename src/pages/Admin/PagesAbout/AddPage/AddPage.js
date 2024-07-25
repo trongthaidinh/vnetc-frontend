@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { addPageContent } from '~/services/pageService';
 import CustomEditor from '~/components/CustomEditor';
+import PushNotification from '~/components/PushNotification';
 import styles from './AddPage.module.scss';
+import routes from '~/config/routes';
+import { useNavigate } from 'react-router-dom';
 
 const validationSchema = Yup.object({
     title: Yup.string().required('Hãy nhập tên trang'),
@@ -11,6 +14,9 @@ const validationSchema = Yup.object({
 });
 
 const AddPage = () => {
+    const [notification, setNotification] = useState({ message: '', type: '' });
+    const navigate = useNavigate();
+
     const initialValues = {
         title: '',
         content: '',
@@ -21,9 +27,12 @@ const AddPage = () => {
             const { title, content } = values;
             await addPageContent({ name: title, content });
             resetForm();
-            alert('Đã thêm trang thành công!');
+            setNotification({ message: 'Đã thêm trang thành công!', type: 'success' });
+            setTimeout(() => {
+                navigate(routes.pageList);
+            }, 1000);
         } catch (error) {
-            alert('Lỗi khi thêm trang');
+            setNotification({ message: 'Lỗi khi thêm trang', type: 'error' });
         } finally {
             setSubmitting(false);
         }
@@ -32,6 +41,7 @@ const AddPage = () => {
     return (
         <div className={styles.addPage}>
             <h2>Thêm mới Trang</h2>
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
                     <Form>
@@ -50,7 +60,7 @@ const AddPage = () => {
                         </div>
                         <div className={styles.formGroup}>
                             <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
-                                Thêm Trang
+                                {isSubmitting ? 'Đang thêm...' : 'Thêm Trang'}
                             </button>
                         </div>
                     </Form>

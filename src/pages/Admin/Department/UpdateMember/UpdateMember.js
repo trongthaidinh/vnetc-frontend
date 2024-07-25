@@ -80,7 +80,9 @@ const UpdateMember = () => {
             await updateMember(id, departmentId, formData);
             setNotification({ message: 'Cập nhật thành viên thành công!', type: 'success' });
             resetForm();
-            navigate(routes.memberList);
+            setTimeout(() => {
+                navigate(routes.teamList);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi cập nhật thành viên.', type: 'error' });
             console.error('Lỗi khi cập nhật thành viên:', error);

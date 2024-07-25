@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getConfiguration, updateConfiguration } from '~/services/configurationService';
+import PushNotification from '~/components/PushNotification';
 import styles from './Settings.module.scss';
 import Title from '~/components/Title';
 
@@ -14,18 +15,23 @@ const Settings = () => {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         const fetchSettings = async () => {
-            const data = await getConfiguration();
-            if (data) {
-                const parsedSlider = JSON.parse(data.homepage_slider);
-                setSettings({
-                    ...data,
-                    id: data._id,
-                    homepage_slider: parsedSlider,
-                });
-            } else {
+            try {
+                const data = await getConfiguration();
+                if (data) {
+                    const parsedSlider = JSON.parse(data.homepage_slider);
+                    setSettings({
+                        ...data,
+                        id: data._id,
+                        homepage_slider: parsedSlider,
+                    });
+                } else {
+                    setError('Failed to fetch settings.');
+                }
+            } catch (error) {
                 setError('Failed to fetch settings.');
             }
             setLoading(false);
@@ -86,10 +92,10 @@ const Settings = () => {
             };
 
             await updateConfiguration(updatedSettings);
-            alert('Settings updated successfully!');
+            setNotification({ message: 'Cài đặt đã được cập nhật thành công!', type: 'success' });
         } catch (error) {
             console.error('Error updating settings:', error);
-            alert('There was an error updating the settings.');
+            setNotification({ message: 'Đã xảy ra lỗi khi cập nhật cài đặt.', type: 'error' });
         }
     };
 
@@ -99,6 +105,7 @@ const Settings = () => {
     return (
         <div className={styles.settingsContainer}>
             <Title className={styles.pageTitle} text="Cài đặt chung" />
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <form onSubmit={handleSubmit} className={styles.settingsForm}>
                 <div className={styles.formGroup}>
                     <label htmlFor="name">Tên công ty</label>

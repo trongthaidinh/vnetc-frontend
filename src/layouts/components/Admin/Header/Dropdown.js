@@ -10,16 +10,16 @@ const Dropdown = ({ isVisible, notifications, isUserDropdown }) => {
         <div className={`${styles.dropdown} ${isVisible ? styles.visible : ''}`}>
             {isUserDropdown ? (
                 notifications.map((item, index) => (
-                    <div key={index} className={styles.dropdownItem} onClick={item.action}>
+                    <div key={item._id || index} className={styles.dropdownItem} onClick={item.action}>
                         <FontAwesomeIcon icon={item.icon} className={styles.icon} />
                         {item.text}
                     </div>
                 ))
             ) : notifications.length > 0 ? (
                 <>
-                    {notifications.map((notification, index) => (
-                        <Link to={routes.messagesList}>
-                            <div key={index} className={styles.dropdownItem}>
+                    {notifications.map((notification) => (
+                        <Link to={routes.messagesList} key={notification._id}>
+                            <div className={styles.dropdownItem}>
                                 <FontAwesomeIcon icon={faEnvelope} className={styles.icon} />
                                 <div className={styles.notificationContent}>
                                     <div className={styles.notificationTitle}>Chủ đề: {notification.title}</div>

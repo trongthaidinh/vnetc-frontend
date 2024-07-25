@@ -6,20 +6,27 @@ import styles from './PageList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
 import { getPageContent } from '~/services/pageService';
+import PushNotification from '~/components/PushNotification';
 
 const PageInfoList = () => {
     const [pages, setPages] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         const fetchPages = async () => {
-            const data = await getPageContent('gioi-thieu');
-            if (data) {
-                setPages(data);
-            } else {
-                alert('Failed to fetch pages.');
+            try {
+                const data = await getPageContent('gioi-thieu');
+                if (data) {
+                    setPages(data);
+                } else {
+                    setNotification({ message: 'Không có dữ liệu trang.', type: 'success' });
+                }
+            } catch (error) {
+                console.error('Error fetching pages:', error);
+                setNotification({ message: 'Lỗi khi tải dữ liệu trang.', type: 'error' });
             }
         };
 
@@ -36,6 +43,7 @@ const PageInfoList = () => {
     return (
         <div className={styles.pageContainer}>
             <Title className={styles.pageTitle} text="Danh sách Trang" />
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <div className={styles.actionsContainer}>
                 <input
                     type="text"

@@ -29,13 +29,14 @@ const AddPartner = () => {
         values.image.forEach((image) => {
             formData.append('image', image);
         });
-        // formData.append('createdBy', 'admin');
 
         try {
             await createPartner(formData);
             setNotification({ message: 'Thêm đối tác thành công!', type: 'success' });
             resetForm();
-            navigate(routes.partnerList);
+            setTimeout(() => {
+                navigate(routes.partnerList);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi thêm đối tác.', type: 'error' });
             console.error('Lỗi khi tạo đối tác:', error);
@@ -69,7 +70,7 @@ const AddPartner = () => {
                             ))}
                         </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                            Thêm Đối tác
+                            {isSubmitting ? <div className={styles.spinner}></div> : 'Thêm Đối tác'}
                         </button>
                     </Form>
                 )}

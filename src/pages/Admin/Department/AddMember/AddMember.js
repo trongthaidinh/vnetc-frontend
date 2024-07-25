@@ -70,9 +70,12 @@ const AddMember = () => {
 
         try {
             await addMember(formData, values.positionDetails.departmentId);
-            setNotification({ message: 'Thêm thành viên thành công!', type: 'success' });
             resetForm();
-            navigate(routes.teamList);
+            setNotification({ message: 'Thêm thành viên thành công!', type: 'success' });
+
+            setTimeout(() => {
+                navigate(routes.teamList);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi thêm thành viên.', type: 'error' });
             console.error('Lỗi khi tạo thành viên:', error);

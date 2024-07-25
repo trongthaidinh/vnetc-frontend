@@ -6,6 +6,7 @@ import { deleteMember, getDepartmentMembers, getDepartments } from '~/services/t
 import styles from './MemberList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
+import PushNotification from '~/components/PushNotification';
 
 const MemberList = () => {
     const [, setDepartments] = useState([]);
@@ -13,6 +14,7 @@ const MemberList = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         const fetchDepartmentsAndMembers = async () => {
@@ -31,9 +33,12 @@ const MemberList = () => {
                         }),
                     );
                     setMembers(allMembers.flat());
+                } else {
+                    setNotification({ message: 'Không có dữ liệu đội ngũ.', type: 'success' });
                 }
             } catch (error) {
-                alert('Failed to fetch departments or members.');
+                console.error('Error fetching departments or members:', error);
+                setNotification({ message: 'Lỗi khi tải dữ liệu đội ngũ.', type: 'error' });
             }
         };
 
@@ -41,14 +46,14 @@ const MemberList = () => {
     }, []);
 
     const handleDelete = async (id, departmentId) => {
-        if (window.confirm('Are you sure you want to delete this member?')) {
+        if (window.confirm('Bạn có chắc chắn muốn xóa thành viên này không?')) {
             try {
                 await deleteMember(id, departmentId);
                 setMembers(members.filter((member) => member._id !== id));
-                alert('Member deleted successfully!');
+                setNotification({ message: 'Xóa thành viên thành công!', type: 'success' });
             } catch (error) {
                 console.error('Error deleting member:', error);
-                alert('There was an error deleting the member.');
+                setNotification({ message: 'Có lỗi xảy ra khi xóa thành viên.', type: 'error' });
             }
         }
     };
@@ -63,6 +68,7 @@ const MemberList = () => {
     return (
         <div className={styles.memberContainer}>
             <Title className={styles.pageTitle} text="Danh sách Đội ngũ" />
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <div className={styles.actionsContainer}>
                 <input
                     type="text"

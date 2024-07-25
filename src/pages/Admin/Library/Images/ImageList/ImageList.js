@@ -6,12 +6,14 @@ import styles from './ImageList.module.scss';
 import Title from '~/components/Title';
 import { Link } from 'react-router-dom';
 import routes from '~/config/routes';
+import PushNotification from '~/components/PushNotification';
 
 const ImageList = () => {
     const [images, setImages] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         fetchImages();
@@ -23,23 +25,23 @@ const ImageList = () => {
             if (data) {
                 setImages(data);
             } else {
-                alert('Failed to fetch images.');
+                setNotification({ message: 'Có lỗi khi tải thư viện ảnh!', type: 'error' });
             }
         } catch (error) {
             console.error('Error fetching images:', error);
-            alert('Failed to fetch images.');
+            setNotification({ message: 'Có lỗi khi tải thư viện ảnh.', type: 'error' });
         }
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this image?')) {
+        if (window.confirm('Bạn có chắc chắn muốn xóa hình ảnh này?')) {
             try {
                 await deleteImage(id);
                 setImages(images.filter((image) => image._id !== id));
-                alert('Image deleted successfully!');
+                setNotification({ message: 'Hình ảnh đã được xóa thành công!', type: 'success' });
             } catch (error) {
                 console.error('Error deleting image:', error);
-                alert('There was an error deleting the image.');
+                setNotification({ message: 'Đã xảy ra lỗi khi xóa hình ảnh!', type: 'error' });
             }
         }
     };
@@ -54,6 +56,7 @@ const ImageList = () => {
     return (
         <div className={styles.imageContainer}>
             <Title className={styles.pageTitle} text="Danh sách Image" />
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <div className={styles.actionsContainer}>
                 <input
                     type="text"

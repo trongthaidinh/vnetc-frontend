@@ -6,12 +6,14 @@ import { getPartners, deletePartner } from '~/services/partnerService';
 import styles from './PartnerList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
+import PushNotification from '~/components/PushNotification';
 
 const PartnerList = () => {
     const [partners, setPartners] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         const fetchPartners = async () => {
@@ -19,7 +21,7 @@ const PartnerList = () => {
             if (data) {
                 setPartners(data);
             } else {
-                alert('Failed to fetch partners.');
+                setNotification({ message: 'Có lỗi khi tải dữ liệu đối tác!', type: 'error' });
             }
         };
 
@@ -27,14 +29,14 @@ const PartnerList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this partner?')) {
+        if (window.confirm('Bạn có chắc chắn muốn xóa đối tác này?')) {
             try {
                 await deletePartner(id);
                 setPartners(partners.filter((partner) => partner._id !== id));
-                alert('Partner deleted successfully!');
+                setNotification({ message: 'Đối tác đã được xóa thành công!', type: 'success' });
             } catch (error) {
                 console.error('Error deleting partner:', error);
-                alert('There was an error deleting the partner.');
+                setNotification({ message: 'Đã xảy ra lỗi khi xóa đối tác!', type: 'error' });
             }
         }
     };
@@ -49,6 +51,7 @@ const PartnerList = () => {
     return (
         <div className={styles.partnerContainer}>
             <Title className={styles.pageTitle} text="Danh sách Đối tác" />
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <div className={styles.actionsContainer}>
                 <input
                     type="text"

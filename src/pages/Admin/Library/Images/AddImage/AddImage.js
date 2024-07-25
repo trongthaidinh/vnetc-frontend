@@ -37,7 +37,7 @@ const AddImage = () => {
             resetForm();
             setTimeout(() => {
                 navigate(routes.imagesList);
-            }, 3000);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi thêm ảnh.', type: 'error' });
             console.error('Lỗi khi tạo ảnh:', error);
@@ -71,7 +71,7 @@ const AddImage = () => {
                             ))}
                         </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                            Thêm ảnh
+                            {isSubmitting ? <div className={styles.spinner}></div> : 'Thêm ảnh'}
                         </button>
                     </Form>
                 )}

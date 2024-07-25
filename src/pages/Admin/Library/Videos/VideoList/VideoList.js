@@ -25,23 +25,23 @@ const VideoList = () => {
             if (data) {
                 setVideos(data);
             } else {
-                setNotification({ message: 'Failed to fetch videos.', type: 'error' });
+                setNotification({ message: 'Có lỗi khi tải dữ liệu thư viện video.', type: 'error' });
             }
         } catch (error) {
             console.error('Error fetching videos:', error);
-            setNotification({ message: 'Failed to fetch videos.', type: 'error' });
+            setNotification({ message: 'Có lỗi khi tải dữ liệu thư viện video.', type: 'error' });
         }
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this video?')) {
+        if (window.confirm('Bạn có chắc chắn muốn xóa video này không?')) {
             try {
                 await deleteVideo(id);
                 setVideos(videos.filter((video) => video._id !== id));
-                setNotification({ message: 'Video deleted successfully!', type: 'success' });
+                setNotification({ message: 'Video đã được xóa thành công!', type: 'success' });
             } catch (error) {
                 console.error('Error deleting video:', error);
-                setNotification({ message: 'There was an error deleting the video.', type: 'error' });
+                setNotification({ message: 'Đã xảy ra lỗi khi xóa video!', type: 'error' });
             }
         }
     };

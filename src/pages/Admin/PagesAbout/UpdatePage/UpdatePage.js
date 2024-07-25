@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { getPageBySlug, updatePageContent } from '~/services/pageService';
 import CustomEditor from '~/components/CustomEditor';
+import PushNotification from '~/components/PushNotification';
 import styles from './UpdatePage.module.scss';
 import routes from '~/config/routes';
 
@@ -14,13 +15,14 @@ const UpdatePageSchema = Yup.object({
 
 const UpdatePage = () => {
     const location = useLocation();
-    const { slug } = location.state || {}; // Retrieve slug from state
+    const { slug } = location.state || {};
     const [initialValues, setInitialValues] = useState({ name: '', content: '' });
     const [currentSlug, setCurrentSlug] = useState('');
+    const [notification, setNotification] = useState({ message: '', type: '' });
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!slug) return; // Ensure slug exists
+        if (!slug) return;
 
         const fetchPageContent = async () => {
             try {
@@ -29,11 +31,11 @@ const UpdatePage = () => {
                     setInitialValues({ name: data.name, content: data.content });
                     setCurrentSlug(data.slug);
                 } else {
-                    alert('Không tìm thấy trang.');
+                    setNotification({ message: 'Không tìm thấy trang.', type: 'error' });
                 }
             } catch (error) {
                 console.error('Error fetching page content:', error);
-                alert('Lỗi khi tải dữ liệu trang.');
+                setNotification({ message: 'Lỗi khi tải dữ liệu trang.', type: 'error' });
             }
         };
 
@@ -43,11 +45,13 @@ const UpdatePage = () => {
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             await updatePageContent(currentSlug, values);
-            alert('Cập nhật trang thành công!');
-            navigate(routes.pageList);
+            setNotification({ message: 'Cập nhật trang thành công!', type: 'success' });
+            setTimeout(() => {
+                navigate(routes.pageList);
+            }, 1000);
         } catch (error) {
             console.error('Error updating page content:', error);
-            alert('Lỗi khi cập nhật trang.');
+            setNotification({ message: 'Lỗi khi cập nhật trang.', type: 'error' });
         } finally {
             setSubmitting(false);
         }
@@ -56,6 +60,7 @@ const UpdatePage = () => {
     return (
         <div className={styles.updatePage}>
             <h2>Cập nhật Trang</h2>
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik
                 initialValues={initialValues}
                 validationSchema={UpdatePageSchema}
@@ -79,7 +84,7 @@ const UpdatePage = () => {
                         </div>
                         <div className={styles.formActions}>
                             <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                                Cập nhật
+                                {isSubmitting ? 'Đang cập nhật...' : 'Cập nhật'}
                             </button>
                         </div>
                     </Form>
