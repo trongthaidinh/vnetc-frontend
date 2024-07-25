@@ -16,7 +16,7 @@
     text-transform: capitalize;
 
     @include respond-to(lg) {
-        font-size: 2.8rem;
+        font-size: 2.6rem;
     }
 
     @include respond-to(sm) {

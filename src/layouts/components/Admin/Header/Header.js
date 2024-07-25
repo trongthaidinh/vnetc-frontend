@@ -4,18 +4,20 @@ import { faEnvelope, faChevronDown, faUser, faSignOutAlt } from '@fortawesome/fr
 import Dropdown from './Dropdown';
 import styles from './Header.module.scss';
 import { useAuth } from '~/hooks/useAuth';
+import { getMessages } from '~/services/contactService';
 import { getUserByEmail } from '~/services/userService';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import routes from '~/config/routes';
 
 const Header = () => {
     const [isEmailDropdownVisible, setIsEmailDropdownVisible] = useState(false);
     const [isUserDropdownVisible, setIsUserDropdownVisible] = useState(false);
     const [user, setUser] = useState(null);
+    const [notifications, setNotifications] = useState([]);
     const emailDropdownRef = useRef(null);
     const userDropdownRef = useRef(null);
     const { signout } = useAuth();
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -28,7 +30,17 @@ const Header = () => {
             }
         };
 
+        const fetchNotifications = async () => {
+            try {
+                const messages = await getMessages(10);
+                setNotifications(messages);
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
+
         fetchUser();
+        fetchNotifications();
     }, []);
 
     const handleClickOutside = (event) => {
@@ -62,11 +74,6 @@ const Header = () => {
         };
     }, []);
 
-    const emailNotifications = [
-        { icon: faEnvelope, title: 'New Message', message: 'You have received a new message.' },
-        { icon: faEnvelope, title: 'New Message', message: 'Another message received.' },
-    ];
-
     const userDropdownItems = [
         { icon: faUser, text: 'Đổi mật khẩu', action: handleChangePassword },
         { icon: faSignOutAlt, text: 'Đăng xuất', action: handleLogout },
@@ -87,11 +94,7 @@ const Header = () => {
                 }}
             >
                 <FontAwesomeIcon icon={faEnvelope} className={styles.icon} />
-                <Dropdown
-                    isVisible={isEmailDropdownVisible}
-                    notifications={emailNotifications}
-                    isUserDropdown={false}
-                />
+                <Dropdown isVisible={isEmailDropdownVisible} notifications={notifications} isUserDropdown={false} />
             </div>
             <div
                 className={styles.userWrapper}

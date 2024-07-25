@@ -1,8 +1,8 @@
 import httpRequest from '~/utils/httpRequest';
 
-export const getMessages = async () => {
+export const getMessages = async (limit = '') => {
     try {
-        const response = await httpRequest.get('/contact?limit');
+        const response = await httpRequest.get(`/contact?limit=${limit}`);
         return response.data.data;
     } catch (error) {
         console.error('Error fetching configuration', error);

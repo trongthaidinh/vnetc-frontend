@@ -67,9 +67,7 @@
 
 .suggest {
     flex: 1;
-    @include respond-to(sm) {
-        display: none;
-    }
+
     .suggest-items {
         display: grid;
         grid-template-columns: repeat(1, 1fr);

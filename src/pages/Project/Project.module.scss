@@ -12,7 +12,7 @@
     }
 
     @include respond-to(sm) {
-        margin-top: 60px;
+        margin-top: 20px;
         padding: 10px;
     }
 }
@@ -72,9 +72,7 @@
 
 .suggest {
     flex: 1;
-    @include respond-to(sm) {
-        display: none;
-    }
+
     .suggest-items {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
