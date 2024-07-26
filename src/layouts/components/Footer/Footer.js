@@ -105,13 +105,13 @@ const Footer = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to={routes.abo}>
+                            <Link to={`${routes.about}/muc-tieu-chat-luong`}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Mục tiêu chất lượng
                             </Link>
                         </li>
                         <li>
-                            <Link to={`${routes.about}/muc-tieu-chat-luong`}>
+                            <Link to={routes.about}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Hồ sơ năng lực
                             </Link>

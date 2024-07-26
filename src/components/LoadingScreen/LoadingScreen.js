@@ -9,7 +9,7 @@ const LoadingScreen = () => {
                 <div className={styles.dot2}></div>
                 <div className={styles.dot3}></div>
             </div>
-            <div className={styles.loadingText}>Loading</div>
+            <div className={styles.loadingText}>Đang tải</div>
         </div>
     );
 };

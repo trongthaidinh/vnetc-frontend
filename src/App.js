@@ -6,6 +6,7 @@ import LoadingScreen from '~/components/LoadingScreen';
 import { AuthProvider, useAuth } from '~/hooks/useAuth';
 import Login from '~/pages/Admin/Login';
 import ScrollToTop from '~/components/ScrollToTop';
+import Error404 from './pages/Error404';
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -71,6 +72,7 @@ function App() {
                         })}
 
                         <Route path="/login" element={<Login />} />
+                        <Route path="*" element={<Error404 />} />
                     </Routes>
                 </div>
             </AuthProvider>
