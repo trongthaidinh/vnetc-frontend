@@ -5,7 +5,7 @@ import { getDepartments, getDepartmentMembers } from '~/services/teamService';
 import classNames from 'classnames/bind';
 import styles from './Teams.module.scss';
 import LoadingScreen from '~/components/LoadingScreen';
-import TeamModal from '~/components/TeamModal'; // Import your modal component
+import TeamModal from '~/components/TeamModal';
 
 const cx = classNames.bind(styles);
 
@@ -13,7 +13,7 @@ const TeamPage = () => {
     const [departments, setDepartments] = useState([]);
     const [members, setMembers] = useState({});
     const [loading, setLoading] = useState(true);
-    const [selectedTeam, setSelectedTeam] = useState(null); // Trạng thái modal
+    const [selectedTeam, setSelectedTeam] = useState(null);
 
     useEffect(() => {
         const fetchDepartments = async () => {
@@ -25,6 +25,7 @@ const TeamPage = () => {
                 await Promise.all(
                     data.map(async (department) => {
                         const departmentMembers = await getDepartmentMembers(department._id);
+                        departmentMembers.sort((a, b) => b.name.localeCompare(a.name));
                         membersData[department._id] = departmentMembers;
                     }),
                 );

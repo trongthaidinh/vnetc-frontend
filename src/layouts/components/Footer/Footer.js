@@ -8,6 +8,7 @@ import boCongThuongLogo from '~/assets/images/bocongthuong.png';
 import styles from './Footer.module.scss';
 import classNames from 'classnames/bind';
 import io from 'socket.io-client';
+import routes from '~/config/routes';
 
 const cx = classNames.bind(styles);
 
@@ -68,7 +69,7 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className={cx('socialIcons')}>
-                        <Link to="https://facebook.com">
+                        <Link to="https://www.facebook.com/thinghiemcodien.vnetc/">
                             <FontAwesomeIcon icon={faFacebookF} />
                         </Link>
                         <Link to="https://twitter.com">
@@ -86,31 +87,31 @@ const Footer = () => {
                     <h4>Thông tin doanh nghiệp</h4>
                     <ul>
                         <li>
-                            <Link to="/about">
+                            <Link to={routes.about}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Tổng quan về VNETC
                             </Link>
                         </li>
                         <li>
-                            <Link to="/about/vision-mission-values">
+                            <Link to={`${routes.about}/tam-nhin-su-menh-gia-tri`}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Tầm nhìn - Sứ mệnh - Giá trị
                             </Link>
                         </li>
                         <li>
-                            <Link to="/about/organizational">
+                            <Link to={`${routes.about}/so-do-to-chuc`}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Sơ đồ tổ chức
                             </Link>
                         </li>
                         <li>
-                            <Link to="/about/quality-goals">
+                            <Link to={routes.abo}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Mục tiêu chất lượng
                             </Link>
                         </li>
                         <li>
-                            <Link to="/about/capacity-profile">
+                            <Link to={`${routes.about}/muc-tieu-chat-luong`}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Hồ sơ năng lực
                             </Link>
@@ -121,25 +122,25 @@ const Footer = () => {
                     <h4>Lĩnh vực hoạt động</h4>
                     <ul>
                         <li>
-                            <Link to="/products">
+                            <Link to={routes.products}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Sản phẩm
                             </Link>
                         </li>
                         <li>
-                            <Link to="/services">
+                            <Link to={routes.services}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Dịch vụ
                             </Link>
                         </li>
                         <li>
-                            <Link to="/projects">
+                            <Link to={routes.projects}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Dự án
                             </Link>
                         </li>
                         <li>
-                            <Link to="/contact">
+                            <Link to={routes.contact}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Hợp tác
                             </Link>
@@ -156,13 +157,7 @@ const Footer = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/">
-                                <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
-                                Tri ân khách hàng
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/contact">
+                            <Link to={routes.contact}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Liên hệ với chúng tôi
                             </Link>
