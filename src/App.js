@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from '~/routes';
 import DefaultLayout from '~/layouts/DefaultLayout';
@@ -9,20 +9,6 @@ import ScrollToTop from '~/components/ScrollToTop';
 import Error404 from './pages/Error404';
 
 function App() {
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    if (isLoading) {
-        return <LoadingScreen />;
-    }
-
     return (
         <Router>
             <AuthProvider>
