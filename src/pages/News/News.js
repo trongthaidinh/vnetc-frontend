@@ -58,6 +58,11 @@ const News = () => {
         setSelectedSuggestion(index);
     };
 
+    const getCategorySlug = (categoryId) => {
+        const category = categories.find((category) => categoryId === category._id);
+        return category ? category.slug : '';
+    };
+
     if (error) {
         const errorMessage = error.response ? error.response.data.message : 'Network Error';
         return <PushNotification message={errorMessage} />;
@@ -115,7 +120,7 @@ const News = () => {
                     <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-items')}>
                         {filteredNewsItems.map((item, index) => (
-                            <Link key={index} to={`/news/${item._id}`}>
+                            <Link key={index} to={`${routes.news}/${getCategorySlug(item.categoryId)}/${item._id}`}>
                                 <SuggestCard
                                     title={item.title}
                                     summary={item.summary}

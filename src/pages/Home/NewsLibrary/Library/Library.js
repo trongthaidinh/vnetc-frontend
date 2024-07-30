@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import styles from './Library.module.scss';
 import { getImagesPagination, getVideos } from '~/services/libraryService';
 import Title from '~/components/Title';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import Modal from './ModalLibrary';
+import { Autoplay, Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/autoplay';
+import 'swiper/css/navigation';
+import styles from './Library.module.scss';
 import ButtonGroup from '~/components/ButtonGroup';
 
 const cx = classNames.bind(styles);
@@ -14,30 +18,22 @@ function Library() {
     const [images, setImages] = useState([]);
     const [activeVideo, setActiveVideo] = useState(null);
     const [activeImage, setActiveImage] = useState(null);
-    const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const videoSliderRef = useRef(null);
-    const imageSliderRef = useRef(null);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [, setModalContentType] = useState(null);
 
     const extractVideoId = (url) => {
         const urlObj = new URL(url);
         return urlObj.searchParams.get('v');
     };
 
-    const getThumbnailUrl = (videoId) => {
-        return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-    };
-
     useEffect(() => {
         const loadLibrary = async () => {
             try {
                 const [videoData, imageData] = await Promise.all([getVideos(), getImagesPagination()]);
-
                 const updatedVideos = videoData.map((item) => ({
                     ...item,
                     link: extractVideoId(item.video),
                 }));
-
                 setVideos(updatedVideos);
                 setImages(imageData);
                 setActiveVideo(updatedVideos[0]?.link);
@@ -50,74 +46,24 @@ function Library() {
         loadLibrary();
     }, []);
 
-    useEffect(() => {
-        const videoInterval = setInterval(() => {
-            setCurrentVideoIndex((prevIndex) => {
-                const totalItems = videos.length;
-                if (prevIndex >= totalItems) {
-                    videoSliderRef.current.style.transition = 'none';
-                    return 0;
-                }
-                videoSliderRef.current.style.transition = 'transform 0.5s ease-in-out';
-                return prevIndex + 1;
-            });
-        }, 3000);
-
-        return () => clearInterval(videoInterval);
-    }, [videos.length]);
-
-    useEffect(() => {
-        const imageInterval = setInterval(() => {
-            setCurrentImageIndex((prevIndex) => {
-                const totalItems = images.length;
-                if (prevIndex >= totalItems) {
-                    imageSliderRef.current.style.transition = 'none';
-                    return 0;
-                }
-                imageSliderRef.current.style.transition = 'transform 0.5s ease-in-out';
-                return prevIndex + 1;
-            });
-        }, 3000);
-
-        return () => clearInterval(imageInterval);
-    }, [images.length]);
-
-    const handleThumbnailClick = (link) => {
-        setActiveVideo(link);
+    const getThumbnailUrl = (videoId) => {
+        return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
     };
 
-    const handleImageClick = (image) => {
-        setActiveImage(image);
+    const handleVideoClick = (videoLink) => {
+        setActiveVideo(videoLink);
     };
 
-    const handlePrevVideoClick = () => {
-        const totalItems = videos.length;
-        setCurrentVideoIndex((prevIndex) => (prevIndex === 0 ? totalItems - 1 : prevIndex - 1));
+    const handleImageClick = (imageSrc) => {
+        setActiveImage(imageSrc);
+        setModalContentType('image');
     };
-
-    const handleNextVideoClick = () => {
-        const totalItems = videos.length;
-        setCurrentVideoIndex((prevIndex) => (prevIndex === totalItems - 1 ? 0 : prevIndex + 1));
-    };
-
-    const handlePrevImageClick = () => {
-        const totalItems = images.length;
-        setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? totalItems - 1 : prevIndex - 1));
-    };
-
-    const handleNextImageClick = () => {
-        const totalItems = images.length;
-        setCurrentImageIndex((prevIndex) => (prevIndex === totalItems - 1 ? 0 : prevIndex + 1));
-    };
-
-    const visibleVideoThumbnails = [...videos, ...videos.slice(0, 4)];
-    const visibleImageThumbnails = [...images, ...images.slice(0, 4)];
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Title text="Thư viện" />
-                <ButtonGroup buttons={['Video']} />
+                <ButtonGroup buttons={['Video']} isStatic={true} />
                 <div className={cx('library')}>
                     {activeVideo && (
                         <div className={cx('main-video')}>
@@ -130,86 +76,77 @@ function Library() {
                             />
                         </div>
                     )}
-                    <div className={cx('thumbnails-wrapper')}>
-                        <FontAwesomeIcon
-                            icon={faChevronLeft}
-                            className={cx('chevron', 'left')}
-                            onClick={handlePrevVideoClick}
-                        />
-                        <div
-                            className={cx('thumbnails')}
-                            ref={videoSliderRef}
-                            style={{
-                                transform: `translateX(-${
-                                    (currentVideoIndex % (visibleVideoThumbnails.length + 4)) * (100 / 4)
-                                }%)`,
-                            }}
-                        >
-                            {visibleVideoThumbnails.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className={cx('thumbnail')}
-                                    onClick={() => handleThumbnailClick(item.link)}
-                                >
-                                    <img
-                                        src={getThumbnailUrl(item.link)}
-                                        alt={item.title}
-                                        className={cx('thumbnail-image')}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                        <FontAwesomeIcon
-                            icon={faChevronRight}
-                            className={cx('chevron', 'right')}
-                            onClick={handleNextVideoClick}
-                        />
-                    </div>
+                    <Swiper
+                        spaceBetween={10}
+                        slidesPerView={4}
+                        loop={true}
+                        modules={[Navigation, Autoplay]}
+                        navigation
+                        autoplay={{
+                            delay: 2000,
+                            disableOnInteraction: false,
+                        }}
+                    >
+                        {videos.map((item, index) => (
+                            <SwiperSlide
+                                key={index}
+                                className={cx('thumbnail')}
+                                onClick={() => handleVideoClick(item.link)}
+                            >
+                                <img
+                                    src={getThumbnailUrl(item.link)}
+                                    alt={item.title}
+                                    className={cx('thumbnail-image')}
+                                />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
                 </div>
-                <ButtonGroup buttons={['Hình ảnh']} />
+                <ButtonGroup buttons={['Hình ảnh']} isStatic={true} />
                 <div className={cx('library')}>
                     {activeImage && (
                         <div className={cx('main-image')}>
-                            <img src={activeImage} alt="Main" className={cx('main-image-content')} />
+                            <img
+                                src={activeImage}
+                                alt="Main"
+                                className={cx('main-image-content')}
+                                onClick={() => {
+                                    setModalContentType('image');
+                                    setModalOpen(true);
+                                }}
+                            />
                         </div>
                     )}
-                    <div className={cx('thumbnails-wrapper')}>
-                        <FontAwesomeIcon
-                            icon={faChevronLeft}
-                            className={cx('chevron', 'left')}
-                            onClick={handlePrevImageClick}
-                        />
-                        <div
-                            className={cx('thumbnails')}
-                            ref={imageSliderRef}
-                            style={{
-                                transform: `translateX(-${
-                                    (currentImageIndex % (visibleImageThumbnails.length + 4)) * (100 / 4)
-                                }%)`,
-                            }}
-                        >
-                            {visibleImageThumbnails.map((image, index) => (
-                                <div
-                                    key={index}
-                                    className={cx('thumbnail')}
-                                    onClick={() => handleImageClick(image.image)}
-                                >
-                                    <img
-                                        src={image.image}
-                                        alt={`Thumbnail ${index + 1}`}
-                                        className={cx('thumbnail-image')}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                        <FontAwesomeIcon
-                            icon={faChevronRight}
-                            className={cx('chevron', 'right')}
-                            onClick={handleNextImageClick}
-                        />
-                    </div>
+                    <Swiper
+                        spaceBetween={10}
+                        slidesPerView={4}
+                        loop={true}
+                        modules={[Navigation, Autoplay]}
+                        navigation
+                        autoplay={{
+                            delay: 2000,
+                            disableOnInteraction: false,
+                        }}
+                    >
+                        {images.map((image, index) => (
+                            <SwiperSlide
+                                key={index}
+                                className={cx('thumbnail')}
+                                onClick={() => handleImageClick(image.image)}
+                            >
+                                <img
+                                    src={image.image}
+                                    alt={`Thumbnail ${index + 1}`}
+                                    className={cx('thumbnail-image')}
+                                />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
                 </div>
             </div>
+            <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+                <img src={activeImage} alt="Modal" className={cx('modal-image')} />
+            </Modal>
         </div>
     );
 }
