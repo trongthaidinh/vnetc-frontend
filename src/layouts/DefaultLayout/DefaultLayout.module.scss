@@ -14,6 +14,11 @@
     display: grid;
     grid-template-columns: 25% 75%;
 
+    @include respond-to(lg) {
+        margin-top: 0px;
+        grid-template-columns: 100%;
+    }
+
     @include respond-to(sm) {
         margin-top: 0px;
         grid-template-columns: 100%;

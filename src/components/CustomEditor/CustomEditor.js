@@ -10,12 +10,22 @@ const CustomEditor = ({ onChange, initialValue }) => {
     };
 
     const handleInit = (evt, editor) => {
-        editorRef.current = editor;
-        setIsEditorReady(true);
+        if (editor) {
+            editorRef.current = editor;
+            setIsEditorReady(true);
+        }
     };
 
     useEffect(() => {
-        if (editorRef.current && isEditorReady) {
+        return () => {
+            if (editorRef.current) {
+                editorRef.current.remove();
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (editorRef.current && isEditorReady && initialValue) {
             editorRef.current.setContent(initialValue, { format: 'html' });
         }
     }, [initialValue, isEditorReady]);
@@ -24,6 +34,7 @@ const CustomEditor = ({ onChange, initialValue }) => {
         <Editor
             apiKey={process.env.REACT_APP_TINY_MCE}
             init={{
+                height: 700,
                 plugins:
                     'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
                 toolbar:

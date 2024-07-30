@@ -66,7 +66,13 @@ const UpdateNews = () => {
 
         formData.append('title', values.title);
         formData.append('summary', values.summary);
-        formData.append('images', values.image);
+
+        if (values.image) {
+            formData.append('images', values.image);
+        } else {
+            formData.append('images', initialValues.image);
+        }
+
         formData.append('categoryId', values.categoryId);
         formData.append('content', values.content);
         formData.append('isFeatured', values.isFeatured);
