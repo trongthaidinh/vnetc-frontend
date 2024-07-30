@@ -16,7 +16,6 @@
 .container {
     width: 100%;
     max-width: 100%;
-    display: flex;
 
     @include respond-to(lg) {
         display: block;
@@ -24,9 +23,7 @@
 }
 
 .content {
-    flex: 1;
-    display: flex;
-    justify-content: center;
+    margin: 0 auto;
     @include respond-to(lg) {
         display: block;
     }
