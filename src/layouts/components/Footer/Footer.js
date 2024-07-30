@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope, faChevronRight, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faInstagram, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import companyLogo from '~/assets/images/logo_vnetc.png';
-import boCongThuongLogo from '~/assets/images/bocongthuong.png';
 import styles from './Footer.module.scss';
 import classNames from 'classnames/bind';
 import io from 'socket.io-client';
@@ -54,9 +53,6 @@ const Footer = () => {
                             <FontAwesomeIcon className={cx('footer-icon-dot')} icon={faCircle} />
                             Tổng số lượt truy cập: <span className={cx('online-access')}>{stats.total}</span>
                         </span>
-                    </div>
-                    <div className={cx('boCongThuong')}>
-                        <img src={boCongThuongLogo} alt="Bộ Công Thương" />
                     </div>
                     <div className={cx('contactInfo')}>
                         <div className={cx('contactItem')}>

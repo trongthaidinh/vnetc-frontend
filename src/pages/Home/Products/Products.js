@@ -7,6 +7,11 @@ import styles from './Products.module.scss';
 import Title from '~/components/Title';
 import LoadingScreen from '~/components/LoadingScreen';
 import PushNotification from '~/components/PushNotification';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/autoplay';
+import routes from '~/config/routes';
 
 const cx = classNames.bind(styles);
 
@@ -50,18 +55,34 @@ function Products() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Title text="Sản phẩm nổi bật" />
-                <div className={cx('product-list')}>
+                <Title text="Sản phẩm" showSeeAll={true} slug={`${routes.products}`} />
+                <Swiper
+                    spaceBetween={20}
+                    slidesPerView={4}
+                    breakpoints={{
+                        1280: { slidesPerView: 4 },
+                        1024: { slidesPerView: 3 },
+                        768: { slidesPerView: 2 },
+                        0: { slidesPerView: 1 },
+                    }}
+                    loop={true}
+                    modules={[Autoplay]}
+                    autoplay={{
+                        delay: 2000,
+                        disableOnInteraction: false,
+                    }}
+                >
                     {products.map((product) => (
-                        <Product
-                            key={product._id}
-                            image={product.image[0]}
-                            name={product.name}
-                            productId={product._id}
-                            category={getCategorySlug(product.category_id)}
-                        />
+                        <SwiperSlide key={product._id} className={cx('slide')}>
+                            <Product
+                                image={product.image[0]}
+                                name={product.name}
+                                productId={product._id}
+                                category={getCategorySlug(product.category_id)}
+                            />
+                        </SwiperSlide>
                     ))}
-                </div>
+                </Swiper>
             </div>
         </div>
     );

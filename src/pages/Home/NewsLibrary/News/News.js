@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './News.module.scss';
 import classNames from 'classnames/bind';
-import { getNews } from '~/services/newsService';
+import { getNewsPagination } from '~/services/newsService';
 import { getCategories } from '~/services/categoryService';
 import CardContent from '~/components/CardContent';
 import ButtonGroup from '~/components/ButtonGroup';
@@ -23,7 +23,7 @@ function News() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const [newsData, categoryData] = await Promise.all([getNews(), getCategories()]);
+                const [newsData, categoryData] = await Promise.all([getNewsPagination(), getCategories()]);
                 setNews(newsData);
                 setCategories(categoryData);
             } catch (error) {
@@ -70,7 +70,7 @@ function News() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Title text="Tin tức" />
+                <Title text="Tin tức" showSeeAll={true} slug={`${routes.news}`} />
                 <ButtonGroup
                     buttons={['Nổi bật', 'Mới nhất', 'Ngẫu nhiên']}
                     onButtonClick={handleButtonClick}

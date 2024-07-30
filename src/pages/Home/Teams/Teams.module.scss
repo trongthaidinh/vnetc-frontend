@@ -2,9 +2,6 @@
 @import '../../../styles/variables';
 
 .wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
     margin-top: 60px;
     padding: 0 20px;
 
@@ -21,91 +18,71 @@
 
 .inner {
     width: var(--default-layout-width);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    margin: 0 auto;
 
     @include respond-to(lg) {
         width: 100%;
     }
 }
 
-.department-section {
-    margin-bottom: 40px;
-}
-
-.slide-container {
-    width: 100%;
-    display: flex;
-    overflow: hidden;
-    position: relative;
-}
-
 .slide-wrapper {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-
-.slide {
-    flex: 0 0 calc(100% / 4);
-    padding: 10px;
-
-    @include respond-to(lg) {
-        flex: 0 0 calc(100% / 3);
+    margin-top: 20px;
+    .slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.3s ease-in-out;
+        margin-top: 20px;
+        &:hover {
+            transform: scale(1.05);
+        }
     }
 
-    @include respond-to(md) {
-        flex: 0 0 calc(100% / 2);
+    .team-card {
+        background-color: white;
+        overflow: hidden;
+        text-align: center;
+        width: 100%;
+        max-width: 300px;
+        min-width: 300px;
+        border-radius: 8px;
     }
 
-    @include respond-to(sm) {
-        flex: 0 0 100%;
-    }
-}
-
-.team-card {
-    background-color: white;
-    overflow: hidden;
-    text-align: center;
-    width: 100%;
-    max-width: 300px;
-    min-width: 300px;
-    border-radius: 8px;
-}
-
-.team-image {
-    width: 100%;
-    height: 300px;
-    max-width: 100%;
-    border-radius: 8px;
-    max-width: 250px;
-    object-fit: cover;
-
-    @include respond-to(lg) {
+    .team-image {
+        width: 100%;
+        height: 300px;
         max-width: 100%;
-        min-height: 380px;
+        border-radius: 8px;
+        max-width: 250px;
+        object-fit: cover;
+
+        @include respond-to(lg) {
+            max-width: 100%;
+            min-height: 380px;
+        }
     }
-}
 
-.team-info {
-    padding: 12px;
-}
-
-.team-name {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin: 10px 0 5px;
-
-    @include respond-to(sm) {
-        font-size: 2.4rem;
+    .team-info {
+        padding: 12px;
     }
-}
 
-.team-position {
-    font-size: 1.6rem;
-    color: gray;
+    .team-name {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin: 10px 0 5px;
 
-    @include respond-to(sm) {
+        @include respond-to(sm) {
+            font-size: 2.4rem;
+        }
+    }
+
+    .team-position {
         font-size: 1.6rem;
+        color: gray;
+
+        @include respond-to(sm) {
+            font-size: 1.6rem;
+        }
     }
 }

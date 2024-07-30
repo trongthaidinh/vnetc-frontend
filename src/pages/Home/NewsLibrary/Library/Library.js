@@ -110,8 +110,8 @@ function Library() {
         setCurrentImageIndex((prevIndex) => (prevIndex === totalItems - 1 ? 0 : prevIndex + 1));
     };
 
-    const visibleVideoThumbnails = [...videos, ...videos.slice(0, 3)];
-    const visibleImageThumbnails = [...images, ...images.slice(0, 3)];
+    const visibleVideoThumbnails = [...videos, ...videos.slice(0, 4)];
+    const visibleImageThumbnails = [...images, ...images.slice(0, 4)];
 
     return (
         <div className={cx('wrapper')}>
@@ -122,8 +122,6 @@ function Library() {
                     {activeVideo && (
                         <div className={cx('main-video')}>
                             <iframe
-                                width="390"
-                                height="200"
                                 src={`https://www.youtube.com/embed/${activeVideo}`}
                                 frameBorder="0"
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -143,7 +141,7 @@ function Library() {
                             ref={videoSliderRef}
                             style={{
                                 transform: `translateX(-${
-                                    (currentVideoIndex % (visibleVideoThumbnails.length + 3)) * (100 / 3)
+                                    (currentVideoIndex % (visibleVideoThumbnails.length + 4)) * (100 / 4)
                                 }%)`,
                             }}
                         >
@@ -186,7 +184,7 @@ function Library() {
                             ref={imageSliderRef}
                             style={{
                                 transform: `translateX(-${
-                                    (currentImageIndex % (visibleImageThumbnails.length + 3)) * (100 / 3)
+                                    (currentImageIndex % (visibleImageThumbnails.length + 4)) * (100 / 4)
                                 }%)`,
                             }}
                         >

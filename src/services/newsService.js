@@ -1,8 +1,18 @@
 import httpRequest from '~/utils/httpRequest';
 
-export const getNews = async (page = 1, limit = 6) => {
+export const getNewsPagination = async (page = 1, limit = 4) => {
     try {
         const response = await httpRequest.get(`/news?page=${page}&limit=${limit}`);
+        return response.data.data;
+    } catch (error) {
+        console.error('Error fetching news', error);
+        throw error;
+    }
+};
+
+export const getNews = async () => {
+    try {
+        const response = await httpRequest.get(`/news`);
         return response.data.data;
     } catch (error) {
         console.error('Error fetching news', error);
