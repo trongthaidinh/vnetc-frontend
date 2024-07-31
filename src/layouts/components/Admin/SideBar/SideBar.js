@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import styles from './SideBar.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -23,6 +23,7 @@ import {
     faListAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import routes from '~/config/routes';
+import companyLogo from '~/assets/images/logo_vnetc.png';
 
 const SideBar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -53,8 +54,10 @@ const SideBar = () => {
 
     return (
         <div className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : styles.expanded}`}>
-            <div className={styles.logo}>
-                <strong>VNETC</strong>
+            <div className={styles.logoWrapper}>
+                <Link to={routes.admin}>
+                    <img src={companyLogo} alt="Company Logo" className={styles.logo} />
+                </Link>
                 <FontAwesomeIcon
                     icon={isCollapsed ? faCaretRight : faCaretLeft}
                     onClick={toggleSidebar}

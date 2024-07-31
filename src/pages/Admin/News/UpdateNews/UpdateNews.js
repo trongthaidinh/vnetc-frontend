@@ -9,6 +9,7 @@ import styles from './UpdateNews.module.scss';
 import { useParams, useNavigate } from 'react-router-dom';
 import LoadingScreen from '~/components/LoadingScreen';
 import routes from '~/config/routes';
+import Title from '~/components/Title';
 
 const UpdateNews = () => {
     const { id } = useParams();
@@ -96,11 +97,11 @@ const UpdateNews = () => {
 
     return (
         <div className={styles.editNews}>
-            <h2>Chỉnh Sửa Tin Tức</h2>
+            <Title text="Cập nhật tin tức" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label htmlFor="title">Tiêu Đề</label>
                             <Field name="title" type="text" className={styles.input} />

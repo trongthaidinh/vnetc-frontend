@@ -76,6 +76,8 @@ const ProductList = () => {
                         <tr>
                             <th>Tên sản phẩm</th>
                             <th>Hình ảnh</th>
+                            <th>Ngày tạo</th>
+                            <th>Tạo bởi</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -87,6 +89,8 @@ const ProductList = () => {
                                     <td>
                                         <img src={prod.image[0]} alt={prod.name} className={styles.productImage} />
                                     </td>
+                                    <td>{new Date(prod.createdAt).toLocaleDateString()}</td>
+                                    <td>{prod.createdBy}</td>
                                     <td>
                                         <Link to={`/admin/edit-product/${prod._id}`} className={styles.editButton}>
                                             <FontAwesomeIcon icon={faEdit} /> Sửa
@@ -99,7 +103,7 @@ const ProductList = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="3">Không có dữ liệu</td>
+                                <td colSpan="5">Không có dữ liệu</td>
                             </tr>
                         )}
                     </tbody>

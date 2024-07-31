@@ -8,6 +8,7 @@ import CustomEditor from '~/components/CustomEditor';
 import PushNotification from '~/components/PushNotification';
 import styles from './EditProduct.module.scss';
 import routes from '~/config/routes';
+import Title from '~/components/Title';
 
 const EditProduct = () => {
     const { id } = useParams();
@@ -108,12 +109,12 @@ const EditProduct = () => {
 
     return (
         <div className={styles.editProduct}>
-            <h2>Chỉnh Sửa Sản Phẩm</h2>
+            <Title text="Cập nhật sản phẩm" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             {product && (
                 <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                     {({ isSubmitting, setFieldValue, values }) => (
-                        <Form>
+                        <Form className={styles.form}>
                             <div className={styles.formGroup}>
                                 <label htmlFor="updateName">Tên Sản Phẩm</label>
                                 <Field name="updateName" type="text" className={styles.input} />

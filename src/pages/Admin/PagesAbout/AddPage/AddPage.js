@@ -7,6 +7,7 @@ import PushNotification from '~/components/PushNotification';
 import styles from './AddPage.module.scss';
 import routes from '~/config/routes';
 import { useNavigate } from 'react-router-dom';
+import Title from '~/components/Title';
 
 const validationSchema = Yup.object({
     title: Yup.string().required('Hãy nhập tên trang'),
@@ -40,11 +41,11 @@ const AddPage = () => {
 
     return (
         <div className={styles.addPage}>
-            <h2>Thêm mới Trang</h2>
+            <Title text="Thêm mới trang" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label htmlFor="title">Title</label>
                             <Field name="title" type="text" className={styles.input} />

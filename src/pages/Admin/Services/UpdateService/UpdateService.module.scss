@@ -1,13 +1,11 @@
 .updateService {
     padding: 20px;
-    background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin: 20px;
 
-    h2 {
-        margin-bottom: 20px;
-        color: #333;
+    .form {
+        margin-top: 40px;
     }
 
     .formGroup {
@@ -49,7 +47,7 @@
 
     .submitButton {
         padding: 10px 15px;
-        background-color: #28a745;
+        background-color: var(--primary);
         color: white;
         border: none;
         border-radius: 4px;

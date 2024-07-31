@@ -6,6 +6,7 @@ import { createVideo } from '~/services/libraryService';
 import PushNotification from '~/components/PushNotification';
 import styles from './AddVideo.module.scss';
 import routes from '~/config/routes';
+import Title from '~/components/Title';
 
 const AddVideo = () => {
     const navigate = useNavigate();
@@ -46,11 +47,11 @@ const AddVideo = () => {
 
     return (
         <div className={styles.addVideo}>
-            <h2>Thêm Video</h2>
+            <Title text="Thêm Video" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label>URL Video</label>
                             <Field type="text" name="videoUrl" className={styles.inputField} />

@@ -78,7 +78,7 @@ const MessageList = () => {
                             <th>Số điện thoại</th>
                             <th>Chủ đề</th>
                             <th>Nội dung</th>
-                            <th>Ngày tạo</th>
+                            <th>Ngày gửi</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>

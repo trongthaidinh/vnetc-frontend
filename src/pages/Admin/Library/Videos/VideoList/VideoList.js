@@ -77,7 +77,6 @@ const VideoList = () => {
                             <th>Ngày tạo</th>
                             <th>Ngày cập nhật</th>
                             <th>Người tạo</th>
-                            <th>Người cập nhật</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -93,7 +92,6 @@ const VideoList = () => {
                                     <td>{new Date(video.createdAt).toLocaleDateString()}</td>
                                     <td>{new Date(video.updatedAt).toLocaleDateString()}</td>
                                     <td>{video.createdBy}</td>
-                                    <td>{video.updatedBy}</td>
                                     <td>
                                         <button onClick={() => handleDelete(video._id)} className={styles.deleteButton}>
                                             <FontAwesomeIcon icon={faTrash} /> Xóa

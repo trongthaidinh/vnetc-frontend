@@ -8,6 +8,7 @@ import CustomEditor from '~/components/CustomEditor';
 import PushNotification from '~/components/PushNotification';
 import styles from './AddProject.module.scss';
 import routes from '~/config/routes';
+import Title from '~/components/Title';
 
 const AddProject = () => {
     const navigate = useNavigate();
@@ -72,11 +73,11 @@ const AddProject = () => {
 
     return (
         <div className={styles.addProject}>
-            <h2>Thêm Dự án</h2>
+            <Title text="Thêm mới dự án" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label htmlFor="name">Tên Dự án</label>
                             <Field name="name" type="text" className={styles.input} />

@@ -74,7 +74,7 @@
 .submitButton {
     width: 100%;
     padding: 12px;
-    background-color: var(--primary); // Màu chủ đạo cho nút submit
+    background-color: var(--primary);
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -82,12 +82,17 @@
     transition: background-color 0.3s, transform 0.3s;
 
     &:hover {
-        background-color: var(--primary); // Tối màu khi hover
+        background-color: var(--primary);
         transform: translateY(-2px);
     }
 
     &:disabled {
-        background-color: #ccc; // Màu khi nút bị disabled
+        background-color: #ccc;
         cursor: not-allowed;
+    }
+
+    .logo {
+        max-width: 100px;
+        margin-bottom: 20px;
     }
 }

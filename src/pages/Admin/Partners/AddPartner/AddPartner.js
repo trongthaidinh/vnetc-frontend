@@ -6,6 +6,7 @@ import { createPartner } from '~/services/partnerService';
 import PushNotification from '~/components/PushNotification';
 import styles from './AddPartner.module.scss';
 import routes from '~/config/routes';
+import Title from '~/components/Title';
 
 const AddPartner = () => {
     const navigate = useNavigate();
@@ -45,11 +46,11 @@ const AddPartner = () => {
 
     return (
         <div className={styles.addPartner}>
-            <h2>Thêm Đối tác</h2>
+            <Title text="Thêm đối tác" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label>Chọn Logo</label>
                             <input

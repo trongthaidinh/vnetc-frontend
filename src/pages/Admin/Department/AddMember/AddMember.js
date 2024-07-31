@@ -6,6 +6,7 @@ import { addMember, getDepartments } from '~/services/teamService';
 import PushNotification from '~/components/PushNotification';
 import styles from './AddMember.module.scss';
 import routes from '~/config/routes';
+import Title from '~/components/Title';
 
 const AddMember = () => {
     const navigate = useNavigate();
@@ -84,11 +85,11 @@ const AddMember = () => {
 
     return (
         <div className={styles.addMember}>
-            <h2>Thêm Thành viên</h2>
+            <Title text="Thêm thành viên" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label htmlFor="name">Tên Thành viên</label>
                             <Field name="name" type="text" className={styles.input} />

@@ -55,7 +55,7 @@ const ImageList = () => {
 
     return (
         <div className={styles.imageContainer}>
-            <Title className={styles.pageTitle} text="Danh sách Image" />
+            <Title className={styles.pageTitle} text="Danh sách hình ảnh" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <div className={styles.actionsContainer}>
                 <input
@@ -78,7 +78,6 @@ const ImageList = () => {
                             <th>Ngày tạo</th>
                             <th>Ngày cập nhật</th>
                             <th>Người tạo</th>
-                            <th>Người cập nhật</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -94,7 +93,6 @@ const ImageList = () => {
                                     <td>{new Date(image.createdAt).toLocaleDateString()}</td>
                                     <td>{new Date(image.updatedAt).toLocaleDateString()}</td>
                                     <td>{image.createdBy}</td>
-                                    <td>{image.updatedBy}</td>
                                     <td>
                                         <button onClick={() => handleDelete(image._id)} className={styles.deleteButton}>
                                             <FontAwesomeIcon icon={faTrash} /> Xóa

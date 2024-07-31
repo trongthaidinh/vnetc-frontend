@@ -8,6 +8,7 @@ import PushNotification from '~/components/PushNotification';
 import styles from './AddNews.module.scss';
 import routes from '~/config/routes';
 import { useNavigate } from 'react-router-dom';
+import Title from '~/components/Title';
 
 const AddNews = () => {
     const [categories, setCategories] = useState([]);
@@ -76,11 +77,11 @@ const AddNews = () => {
 
     return (
         <div className={styles.addNews}>
-            <h2>Thêm Tin Tức Mới</h2>
+            <Title text="Thêm mới tin tức" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label htmlFor="title">Tiêu Đề</label>
                             <Field name="title" type="text" className={styles.input} />

@@ -11,13 +11,16 @@
     &.collapsed {
         width: 80px;
 
-        .logo {
-            justify-content: center;
+        .logoWrapper {
             padding: 10px;
         }
 
+        .logo {
+            max-width: 60px;
+        }
+
         .toggleIcon {
-            margin-left: 10px;
+            margin-left: 0px;
         }
 
         .menuItem {
@@ -39,7 +42,7 @@
     }
 }
 
-.logo {
+.logoWrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -7,6 +7,7 @@ import PushNotification from '~/components/PushNotification';
 import styles from './AddCategory.module.scss';
 import routes from '~/config/routes';
 import CATEGORY_TYPES from '~/constants/CategoryType/CategoryType';
+import Title from '~/components/Title';
 
 const AddCategory = () => {
     const navigate = useNavigate();
@@ -46,13 +47,13 @@ const AddCategory = () => {
 
     return (
         <div className={styles.addCategory}>
-            <h2>Thêm Danh mục</h2>
+            <Title text="Thêm Danh Mục"></Title>
             {notificationMessage && (
                 <PushNotification message={notificationMessage} type={isError ? 'error' : 'success'} />
             )}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (
-                    <Form>
+                    <Form className={styles.addForm}>
                         <div className={styles.formGroup}>
                             <label htmlFor="name">Tên Danh mục</label>
                             <Field name="name" type="text" className={styles.input} />

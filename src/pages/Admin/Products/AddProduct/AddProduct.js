@@ -5,13 +5,16 @@ import { createProduct } from '~/services/productService';
 import { getCategoriesByType } from '~/services/categoryService';
 import CustomEditor from '~/components/CustomEditor';
 import PushNotification from '~/components/PushNotification';
+import { useDropzone } from 'react-dropzone';
 import styles from './AddProduct.module.scss';
 import { useNavigate } from 'react-router-dom';
 import routes from '~/config/routes';
+import Title from '~/components/Title';
 
 const AddProduct = () => {
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const [files, setFiles] = useState([]);
     const navigate = useNavigate();
 
     const initialValues = {
@@ -50,16 +53,18 @@ const AddProduct = () => {
         fetchCategories();
     }, []);
 
-    const handleImageUpload = (event, setFieldValue) => {
-        const files = Array.from(event.target.files);
-        setFieldValue('images', files);
-    };
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop: (acceptedFiles) => {
+            setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+        },
+        accept: 'image/*',
+    });
 
     const handleSubmit = async (values, { resetForm }) => {
         const formData = new FormData();
 
         formData.append('name', values.name);
-        values.images.forEach((image) => {
+        files.forEach((image) => {
             formData.append('images', image);
         });
         formData.append('brand', values.brand);
@@ -74,6 +79,7 @@ const AddProduct = () => {
             await createProduct(formData);
             setNotification({ message: 'Thêm sản phẩm thành công!', type: 'success' });
             resetForm();
+            setFiles([]);
             setTimeout(() => {
                 navigate(routes.productList);
             }, 1000);
@@ -83,13 +89,17 @@ const AddProduct = () => {
         }
     };
 
+    const removeFile = (index) => {
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    };
+
     return (
         <div className={styles.addProduct}>
-            <h2>Thêm Sản Phẩm Mới</h2>
+            <Title text="Thêm sản phẩm mới" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label htmlFor="name">Tên Sản Phẩm</label>
                             <Field name="name" type="text" className={styles.input} />
@@ -97,22 +107,28 @@ const AddProduct = () => {
                         </div>
                         <div className={styles.formGroup}>
                             <label>Chọn Hình Ảnh</label>
-                            <input
-                                type="file"
-                                multiple
-                                accept="image/*"
-                                onChange={(event) => handleImageUpload(event, setFieldValue)}
-                            />
+                            <div {...getRootProps()} className={styles.dropzone}>
+                                <input {...getInputProps()} />
+                                <p>Kéo thả file vào đây, hoặc nhấn để chọn file</p>
+                            </div>
                             <ErrorMessage name="images" component="div" className={styles.error} />
                         </div>
                         <div className={styles.imagesPreview}>
-                            {values.images.map((img, index) => (
-                                <img
-                                    key={index}
-                                    src={URL.createObjectURL(img)}
-                                    alt={`Product ${index}`}
-                                    className={styles.productImage}
-                                />
+                            {files.map((img, index) => (
+                                <div key={index} className={styles.imageContainer}>
+                                    <img
+                                        src={URL.createObjectURL(img)}
+                                        alt={`Product ${index}`}
+                                        className={styles.productImage}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFile(index)}
+                                        className={styles.removeButton}
+                                    >
+                                        X
+                                    </button>
+                                </div>
                             ))}
                         </div>
                         <div className={styles.formGroup}>

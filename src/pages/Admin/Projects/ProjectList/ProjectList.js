@@ -50,17 +50,17 @@ const ProjectList = () => {
 
     return (
         <div className={styles.projectContainer}>
-            <Title className={styles.pageTitle} text="Danh sách Dịch vụ" />
+            <Title className={styles.pageTitle} text="Danh sách Dư án" />
             <div className={styles.actionsContainer}>
                 <input
                     type="text"
-                    placeholder="Tìm kiếm Dịch vụ..."
+                    placeholder="Tìm kiếm Dự án..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={styles.searchInput}
                 />
                 <Link to={routes.addProject} className={styles.addButton}>
-                    <FontAwesomeIcon icon={faPlus} /> Thêm mới Dịch vụ
+                    <FontAwesomeIcon icon={faPlus} /> Thêm mới Dự án
                 </Link>
             </div>
 

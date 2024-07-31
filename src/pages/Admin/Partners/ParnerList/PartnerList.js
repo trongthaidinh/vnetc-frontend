@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEdit, faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { getPartners, deletePartner } from '~/services/partnerService';
 import styles from './PartnerList.module.scss';
 import Title from '~/components/Title';
@@ -71,6 +71,7 @@ const PartnerList = () => {
                         <tr>
                             <th>Số thứ tự</th>
                             <th>Logo</th>
+
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -86,10 +87,8 @@ const PartnerList = () => {
                                             className={styles.partnerImage}
                                         />
                                     </td>
+
                                     <td>
-                                        <Link to={`/admin/update-partner/${partner._id}`} className={styles.editButton}>
-                                            <FontAwesomeIcon icon={faEdit} /> Sửa
-                                        </Link>
                                         <button
                                             onClick={() => handleDelete(partner._id)}
                                             className={styles.deleteButton}

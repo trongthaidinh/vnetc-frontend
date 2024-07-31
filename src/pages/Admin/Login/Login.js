@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useAuth } from '~/hooks/useAuth';
 import styles from './Login.module.scss';
+import companyLogo from '~/assets/images/logo_vnetc.png';
 
 const Login = () => {
     const { signin } = useAuth();
@@ -19,6 +20,7 @@ const Login = () => {
     return (
         <div className={styles.loginContainer}>
             <div className={styles.loginBox}>
+                <img src={companyLogo} alt="Company Logo" className={styles.logo} />
                 <h1>Đăng Nhập</h1>
                 <Formik
                     initialValues={{ email: '', password: '' }}

@@ -4,12 +4,17 @@ import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { createImage } from '~/services/libraryService';
 import PushNotification from '~/components/PushNotification';
+import { useDropzone } from 'react-dropzone';
 import styles from './AddImage.module.scss';
 import routes from '~/config/routes';
+import Title from '~/components/Title';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 const AddImage = () => {
     const navigate = useNavigate();
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const [files, setFiles] = useState([]);
 
     const initialValues = {
         image: [],
@@ -19,22 +24,29 @@ const AddImage = () => {
         image: Yup.array().required('Logo là bắt buộc'),
     });
 
-    const handleLogoUpload = (event, setFieldValue) => {
-        const files = Array.from(event.target.files);
-        setFieldValue('image', files);
-    };
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop: (acceptedFiles) => {
+            setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+        },
+        accept: 'image/*',
+    });
 
     const handleSubmit = async (values, { resetForm }) => {
+        if (files.length === 0) {
+            setNotification({ message: 'Vui lòng chọn ảnh!', type: 'error' });
+            return;
+        }
+
         const formData = new FormData();
-        values.image.forEach((image) => {
+        files.forEach((image) => {
             formData.append('image', image);
         });
-        // formData.append('createdBy', 'admin');
 
         try {
             await createImage(formData);
             setNotification({ message: 'Thêm ảnh thành công!', type: 'success' });
             resetForm();
+            setFiles([]);
             setTimeout(() => {
                 navigate(routes.imagesList);
             }, 1000);
@@ -44,30 +56,38 @@ const AddImage = () => {
         }
     };
 
+    const removeFile = (index) => {
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    };
+
     return (
         <div className={styles.addImage}>
-            <h2>Thêm ảnh</h2>
+            <Title text="Thêm hình ảnh" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-                {({ isSubmitting, setFieldValue, values }) => (
-                    <Form>
-                        <div className={styles.formGroup}>
-                            <label>Chọn Logo</label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(event) => handleLogoUpload(event, setFieldValue)}
-                            />
-                            <ErrorMessage name="image" component="div" className={styles.error} />
+                {({ isSubmitting }) => (
+                    <Form className={styles.form}>
+                        <div {...getRootProps()} className={styles.dropzone}>
+                            <input {...getInputProps()} />
+                            <p>Kéo thả file vào đây, hoặc nhấn để chọn file</p>
                         </div>
+                        <ErrorMessage name="image" component="div" className={styles.error} />
                         <div className={styles.imagePreview}>
-                            {values.image.map((img, index) => (
-                                <img
-                                    key={index}
-                                    src={URL.createObjectURL(img)}
-                                    alt={`Logo ${index}`}
-                                    className={styles.imageLogo}
-                                />
+                            {files.map((img, index) => (
+                                <div key={index} className={styles.imageContainer}>
+                                    <img
+                                        src={URL.createObjectURL(img)}
+                                        alt={`Logo ${index}`}
+                                        className={styles.imageLogo}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFile(index)}
+                                        className={styles.removeButton}
+                                    >
+                                        <FontAwesomeIcon icon={faClose} />
+                                    </button>
+                                </div>
                             ))}
                         </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>

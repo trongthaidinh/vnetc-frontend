@@ -50,7 +50,8 @@
 
 .actionsContainer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 16px;
     margin-top: 20px;
 }
 
@@ -74,7 +75,7 @@
     padding: 10px 20px;
     background-color: #dc3545;
     color: #fff;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 4px;
     text-decoration: none;
     transition: all 0.3s ease-in-out;

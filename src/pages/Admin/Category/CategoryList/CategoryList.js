@@ -80,10 +80,8 @@ const CategoryList = () => {
                     <thead>
                         <tr>
                             <th>Tên danh mục</th>
-                            <th>Loại</th>
-                            <th>Người tạo</th>
+                            <th>Thuộc danh mục</th>
                             <th>Ngày tạo</th>
-                            <th>Người cập nhật</th>
                             <th>Ngày cập nhật</th>
                             <th>Hành động</th>
                         </tr>
@@ -94,9 +92,7 @@ const CategoryList = () => {
                                 <tr key={category._id}>
                                     <td>{category.name}</td>
                                     <td>{CATEGORY_TYPES[category.type]}</td>
-                                    <td>{category.createBy}</td>
                                     <td>{new Date(category.createdAt).toLocaleString()}</td>
-                                    <td>{category.updateBy}</td>
                                     <td>{new Date(category.updatedAt).toLocaleString()}</td>
                                     <td>
                                         <button
@@ -117,7 +113,6 @@ const CategoryList = () => {
                 </table>
             </div>
 
-            {/* Items per page selection */}
             <div className={styles.itemsPerPageContainer}>
                 <label htmlFor="itemsPerPage">Số mục mỗi trang:</label>
                 <select
@@ -136,7 +131,6 @@ const CategoryList = () => {
                 </select>
             </div>
 
-            {/* Pagination */}
             <div className={styles.pagination}>
                 <span>
                     Hiện {indexOfFirstCategory + 1} đến {Math.min(indexOfLastCategory, filteredCategories.length)} của{' '}

@@ -7,6 +7,7 @@ import CustomEditor from '~/components/CustomEditor';
 import PushNotification from '~/components/PushNotification';
 import styles from './UpdatePage.module.scss';
 import routes from '~/config/routes';
+import Title from '~/components/Title';
 
 const UpdatePageSchema = Yup.object({
     name: Yup.string().required('Tên không được để trống'),
@@ -59,7 +60,7 @@ const UpdatePage = () => {
 
     return (
         <div className={styles.updatePage}>
-            <h2>Cập nhật Trang</h2>
+            <Title text="Cập nhật trang" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik
                 initialValues={initialValues}

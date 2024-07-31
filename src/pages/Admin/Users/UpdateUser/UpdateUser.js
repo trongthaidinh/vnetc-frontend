@@ -7,6 +7,7 @@ import styles from './UpdateUser.module.scss';
 import routes from '~/config/routes';
 import LoadingScreen from '~/components/LoadingScreen';
 import PushNotification from '~/components/PushNotification';
+import Title from '~/components/Title';
 
 const UpdateUser = () => {
     const navigate = useNavigate();
@@ -56,11 +57,11 @@ const UpdateUser = () => {
 
     return (
         <div className={styles.updateUser}>
-            <h2>Chỉnh sửa thông tin người dùng</h2>
+            <Title text="Chỉnh sửa thông tin người dùng" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <Field readOnly hidden name="accountId" type="text" className={styles.input} />
                             <ErrorMessage name="accountId" component="div" className={styles.error} />

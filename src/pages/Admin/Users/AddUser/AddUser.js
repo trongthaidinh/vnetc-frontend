@@ -6,6 +6,7 @@ import { addUser } from '~/services/userService';
 import styles from './AddUser.module.scss';
 import routes from '~/config/routes';
 import PushNotification from '~/components/PushNotification';
+import Title from '~/components/Title';
 
 const AddUser = () => {
     const navigate = useNavigate();
@@ -20,9 +21,9 @@ const AddUser = () => {
     };
 
     const validationSchema = Yup.object({
-        username: Yup.string().required('Tên đăng nhập là bắt buộc'),
-        email: Yup.string().email('Email không hợp lệ').required('Email là bắt buộc'),
-        fullName: Yup.string().required('Họ và tên là bắt buộc'),
+        username: Yup.string().required('Vui lòng nhập tên đăng nhập'),
+        email: Yup.string().email('Email không hợp lệ').required('Vui lòng nhập Email'),
+        fullName: Yup.string().required('Vui lòng nhập Họ và Tên người dùng'),
         password: Yup.string().required('Mật khẩu là bắt buộc').min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
     });
 
@@ -51,13 +52,13 @@ const AddUser = () => {
 
     return (
         <div className={styles.addUser}>
-            <h2>Thêm Người dùng</h2>
+            <Title text="Thêm mới người dùng"></Title>
             {notificationMessage && (
                 <PushNotification message={notificationMessage} type={isError ? 'error' : 'success'} />
             )}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label htmlFor="username">Tên đăng nhập</label>
                             <Field name="username" type="text" className={styles.input} />

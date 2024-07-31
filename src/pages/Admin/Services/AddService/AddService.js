@@ -8,6 +8,7 @@ import CustomEditor from '~/components/CustomEditor';
 import PushNotification from '~/components/PushNotification';
 import styles from './AddService.module.scss';
 import routes from '~/config/routes';
+import Title from '~/components/Title';
 
 const AddService = () => {
     const navigate = useNavigate();
@@ -72,11 +73,11 @@ const AddService = () => {
 
     return (
         <div className={styles.addService}>
-            <h2>Thêm Dịch vụ</h2>
+            <Title text="Thêm dịch vụ" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label htmlFor="name">Tên Dịch vụ</label>
                             <Field name="name" type="text" className={styles.input} />

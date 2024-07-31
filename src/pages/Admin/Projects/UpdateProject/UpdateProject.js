@@ -9,6 +9,7 @@ import PushNotification from '~/components/PushNotification';
 import styles from './UpdateProject.module.scss';
 import routes from '~/config/routes';
 import LoadingScreen from '~/components/LoadingScreen';
+import Title from '~/components/Title';
 
 const UpdateProject = () => {
     const navigate = useNavigate();
@@ -84,11 +85,11 @@ const UpdateProject = () => {
 
     return (
         <div className={styles.updateProject}>
-            <h2>Cập Nhật Dịch Vụ</h2>
+            <Title text="Cập nhật dự án" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
-                    <Form>
+                    <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label htmlFor="name">Tên Dự án</label>
                             <Field name="name" type="text" className={styles.input} />
