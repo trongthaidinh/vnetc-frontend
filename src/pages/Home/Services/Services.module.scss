@@ -14,18 +14,19 @@
 
 .inner {
     width: var(--default-layout-width);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 0 auto;
     @include respond-to(lg) {
         width: 100%;
     }
 }
 
-.service-list {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+.slide-wrapper {
     margin-top: 40px;
+}
+
+.service-list {
+    // display: grid;
+    // grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 
     @include respond-to(lg) {
