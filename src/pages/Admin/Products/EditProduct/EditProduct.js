@@ -6,9 +6,12 @@ import { updateProduct, getProductById } from '~/services/productService';
 import { getCategoriesByType } from '~/services/categoryService';
 import CustomEditor from '~/components/CustomEditor';
 import PushNotification from '~/components/PushNotification';
+import { useDropzone } from 'react-dropzone';
 import styles from './EditProduct.module.scss';
 import routes from '~/config/routes';
 import Title from '~/components/Title';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 const EditProduct = () => {
     const { id } = useParams();
@@ -16,9 +19,11 @@ const EditProduct = () => {
     const [categories, setCategories] = useState([]);
     const [product, setProduct] = useState(null);
     const [notification, setNotification] = useState({ message: '', type: '' });
+
+    const [files, setFiles] = useState([]);
+
     const [initialValues, setInitialValues] = useState({
         updateName: '',
-        updateImage: [],
         brand: '',
         wattage: '',
         size: '',
@@ -30,7 +35,6 @@ const EditProduct = () => {
 
     const validationSchema = Yup.object({
         updateName: Yup.string().required('Tên sản phẩm là bắt buộc'),
-        updateImage: Yup.array().required('Hình ảnh là bắt buộc'),
         brand: Yup.string().required('Thương hiệu là bắt buộc'),
         wattage: Yup.string().required('Công suất là bắt buộc'),
         size: Yup.string().required('Kích thước là bắt buộc'),
@@ -54,17 +58,15 @@ const EditProduct = () => {
             try {
                 const productData = await getProductById(id);
                 setProduct(productData);
-                setInitialValues({
-                    updateName: productData.name,
-                    updateImage: productData.image || [],
-                    brand: productData.detail[0].brand,
-                    wattage: productData.detail[0].wattage,
-                    size: productData.detail[0].size,
-                    weight: productData.detail[0].weight,
-                    warranty: productData.detail[0].warranty,
-                    content: productData.detail[0].content,
-                    updateCate: productData.category_id,
-                });
+                initialValues.updateName = productData.name;
+                initialValues.brand = productData.detail[0].brand;
+                initialValues.wattage = productData.detail[0].wattage;
+                initialValues.size = productData.detail[0].size;
+                initialValues.weight = productData.detail[0].weight;
+                initialValues.warranty = productData.detail[0].warranty;
+                initialValues.content = productData.detail[0].content;
+                initialValues.updateCate = productData.category_id;
+                setFiles(productData.image || []);
             } catch (error) {
                 console.error('Lỗi khi tải sản phẩm:', error);
             }
@@ -72,18 +74,20 @@ const EditProduct = () => {
 
         fetchCategories();
         fetchProduct();
-    }, [id]);
+    }, [id, initialValues]);
 
-    const handleImageUpload = (event, setFieldValue) => {
-        const files = Array.from(event.target.files);
-        setFieldValue('updateImage', files);
-    };
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop: (acceptedFiles) => {
+            setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+        },
+        accept: 'image/*',
+    });
 
     const handleSubmit = async (values, { resetForm }) => {
         const formData = new FormData();
 
         formData.append('updateName', values.updateName);
-        values.updateImage.forEach((image) => {
+        files.forEach((image) => {
             formData.append('updateImage', image);
         });
         formData.append('brand', values.brand);
@@ -98,6 +102,7 @@ const EditProduct = () => {
             await updateProduct(id, formData);
             setNotification({ message: 'Cập nhật sản phẩm thành công!', type: 'success' });
             resetForm();
+            setFiles([]);
             setTimeout(() => {
                 navigate(routes.productList);
             }, 1000);
@@ -105,6 +110,10 @@ const EditProduct = () => {
             setNotification({ message: 'Lỗi khi cập nhật sản phẩm.', type: 'error' });
             console.error('Lỗi khi cập nhật sản phẩm:', error);
         }
+    };
+
+    const removeFile = (index) => {
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     };
 
     return (
@@ -122,26 +131,29 @@ const EditProduct = () => {
                             </div>
                             <div className={styles.formGroup}>
                                 <label>Chọn Hình Ảnh</label>
-                                <input
-                                    type="file"
-                                    multiple
-                                    accept="image/*"
-                                    onChange={(event) => handleImageUpload(event, setFieldValue)}
-                                />
+                                <div {...getRootProps()} className={styles.dropzone}>
+                                    <input {...getInputProps()} />
+                                    <p>Kéo thả file vào đây, hoặc nhấn để chọn file</p>
+                                </div>
                                 <ErrorMessage name="updateImage" component="div" className={styles.error} />
                             </div>
                             <div className={styles.imagesPreview}>
-                                {values.updateImage.map((img, index) => {
-                                    const imgSrc = typeof img === 'string' ? img : URL.createObjectURL(img);
-                                    return (
+                                {files.map((img, index) => (
+                                    <div key={index} className={styles.imageContainer}>
                                         <img
-                                            key={index}
-                                            src={imgSrc}
+                                            src={typeof img === 'string' ? img : URL.createObjectURL(img)}
                                             alt={`Product ${index}`}
                                             className={styles.productImage}
                                         />
-                                    );
-                                })}
+                                        <button
+                                            type="button"
+                                            onClick={() => removeFile(index)}
+                                            className={styles.removeButton}
+                                        >
+                                            <FontAwesomeIcon icon={faClose} />
+                                        </button>
+                                    </div>
+                                ))}
                             </div>
                             <div className={styles.formGroup}>
                                 <label htmlFor="updateCate">Danh Mục</label>

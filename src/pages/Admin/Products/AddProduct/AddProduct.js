@@ -10,6 +10,8 @@ import styles from './AddProduct.module.scss';
 import { useNavigate } from 'react-router-dom';
 import routes from '~/config/routes';
 import Title from '~/components/Title';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 const AddProduct = () => {
     const [categories, setCategories] = useState([]);
@@ -126,7 +128,7 @@ const AddProduct = () => {
                                         onClick={() => removeFile(index)}
                                         className={styles.removeButton}
                                     >
-                                        X
+                                        <FontAwesomeIcon icon={faClose} />
                                     </button>
                                 </div>
                             ))}
