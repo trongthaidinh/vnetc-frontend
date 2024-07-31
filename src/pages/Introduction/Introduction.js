@@ -51,8 +51,10 @@ const Introduction = () => {
 
     return (
         <article className={cx('wrapper')}>
-            <Title text={pageContent.name} />
-            <div className={cx('content')} dangerouslySetInnerHTML={{ __html: pageContent.content }} />
+            <div className={cx('inner')}>
+                <Title text={pageContent.name} />
+                <div className={cx('content')} dangerouslySetInnerHTML={{ __html: pageContent.content }} />
+            </div>
         </article>
     );
 };

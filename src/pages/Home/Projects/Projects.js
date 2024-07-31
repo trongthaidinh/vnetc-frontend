@@ -58,9 +58,9 @@ function Projects() {
                 <Title text="Dự án và năng lực" showSeeAll={true} slug={`${routes.projects}`} />
                 <Swiper
                     spaceBetween={10}
-                    slidesPerView={4}
+                    slidesPerView={3}
                     breakpoints={{
-                        1280: { slidesPerView: 4 },
+                        1280: { slidesPerView: 3 },
                         1024: { slidesPerView: 3 },
                         768: { slidesPerView: 2 },
                         0: { slidesPerView: 1 },

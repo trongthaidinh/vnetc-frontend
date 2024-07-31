@@ -33,6 +33,7 @@ function Teams() {
                 const allTeams = {};
                 for (const department of departments) {
                     const members = await getDepartmentMembers(department._id);
+                    members.sort((a, b) => b.name.localeCompare(a.name));
                     allTeams[department._id] = members;
                 }
                 if (departments.length > 0) {

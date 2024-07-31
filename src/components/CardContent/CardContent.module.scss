@@ -22,7 +22,11 @@
     }
 
     @include respond-to(lg) {
-        height: 200px;
+        height: 280px;
+    }
+
+    @include respond-to(md) {
+        height: 220px;
     }
 }
 
