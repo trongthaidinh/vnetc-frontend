@@ -7,6 +7,7 @@ import { getCategoriesByType } from '~/services/categoryService';
 import Title from '~/components/Title';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
+import routes from '~/config/routes';
 
 const cx = classNames.bind(styles);
 
@@ -19,10 +20,7 @@ const Services = () => {
     useEffect(() => {
         const fetchServicesAndCategories = async () => {
             try {
-                const [serviceData, categoriesData] = await Promise.all([
-                    getServices(),
-                    getCategoriesByType(3), // Adjust the type as needed
-                ]);
+                const [serviceData, categoriesData] = await Promise.all([getServices(), getCategoriesByType(3)]);
 
                 setServices(serviceData);
                 setCategories(categoriesData);
@@ -45,7 +43,6 @@ const Services = () => {
         return <LoadingScreen />;
     }
 
-    // Map each category to its respective services
     const categoryToServiceMap = categories.reduce((acc, category, indexCategory) => {
         const categoryServices = services.filter((service) => service.serviceType === indexCategory);
         if (categoryServices.length > 0) {
@@ -60,7 +57,7 @@ const Services = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Title text="Dịch vụ" />
+                <Title text="Dịch vụ" showSeeAll={true} slug={routes.services} />
                 <div className={cx('service-list')}>
                     {categoryToServiceMap.map((category) => (
                         <ServiceItem
