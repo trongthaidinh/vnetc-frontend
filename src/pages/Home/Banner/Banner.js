@@ -56,8 +56,8 @@ const Banner = () => {
                     className={cx('swiper')}
                 >
                     {slides.map((slide, index) => (
-                        <SwiperSlide key={index}>
-                            <div className={cx('imageCard')}>
+                        <SwiperSlide key={index} className={cx('slide')}>
+                            <div className={cx('image-card')}>
                                 <img src={slide.image_url} alt={slide.title} className={cx('image')} />
                                 <div className={cx('contentContainer', slide.position)}>
                                     <div className={cx('textWrapper')}>

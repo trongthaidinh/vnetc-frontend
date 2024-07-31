@@ -14,6 +14,16 @@
         height: 100%;
         z-index: 1;
 
+        .slide {
+            @include respond-to(lg) {
+                height: 200px;
+            }
+
+            @include respond-to(sm) {
+                height: 100%;
+            }
+        }
+
         .swiper-button-prev,
         .swiper-button-next {
             position: absolute;
@@ -58,27 +68,15 @@
         }
     }
 
-    .slidesContainer {
-        display: flex;
-        transition: transform 1s ease-in-out;
-    }
-
-    .partner-card {
+    .image-card {
         width: 100%;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        transition: transform 0.3s ease-in-out;
-
-        &:hover {
-            transform: translateY(-5px);
-        }
+        height: 100%;
     }
 
     .image {
         width: 100%;
         height: 100%;
+        object-fit: cover;
     }
 
     .contentContainer {
@@ -103,9 +101,10 @@
         }
 
         @include respond-to(sm) {
+            clip-path: polygon(30px 0, 100% 0, calc(100% - 30px) 100%, 0 100%);
             max-height: 80px;
-            width: 50%;
-            padding: 10px 45px;
+            width: 45%;
+            padding: 10px 30px;
         }
     }
 
