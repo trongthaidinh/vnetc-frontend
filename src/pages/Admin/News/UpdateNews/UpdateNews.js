@@ -130,7 +130,7 @@ const UpdateNews = () => {
                                             : URL.createObjectURL(values.image)
                                     }
                                     alt="News"
-                                    className={styles.productImage}
+                                    className={styles.newsImage}
                                 />
                             </div>
                         )}

@@ -91,6 +91,7 @@ const MemberList = () => {
                             <th>Ban</th>
                             <th>Năm sinh</th>
                             <th>Vị trí</th>
+                            <th>Kinh Nghiệm</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -105,6 +106,7 @@ const MemberList = () => {
                                     <td>{member.position === 0 ? 'Ban lãnh đạo' : 'Đội công trình'}</td>
                                     <td>{member.yearOfBirth}</td>
                                     <td>{member.qualification}</td>
+                                    <td>{member.seniority} năm</td> {/* Hiển thị năm kinh nghiệm */}
                                     <td>
                                         <Link
                                             to={`/admin/update-member/${member._id}/${member.departmentId}`}
@@ -123,7 +125,7 @@ const MemberList = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="6">Không có dữ liệu</td>
+                                <td colSpan="7">Không có dữ liệu</td>
                             </tr>
                         )}
                     </tbody>

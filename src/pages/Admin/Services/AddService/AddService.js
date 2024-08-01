@@ -9,16 +9,17 @@ import PushNotification from '~/components/PushNotification';
 import styles from './AddService.module.scss';
 import routes from '~/config/routes';
 import Title from '~/components/Title';
+import { useDropzone } from 'react-dropzone';
 
 const AddService = () => {
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const [files, setFiles] = useState([]);
 
     const initialValues = {
         name: '',
         summary: '',
-        image: [],
         serviceType: '',
         content: '',
     };
@@ -26,7 +27,6 @@ const AddService = () => {
     const validationSchema = Yup.object({
         name: Yup.string().required('Tên dịch vụ là bắt buộc'),
         summary: Yup.string().required('Tóm tắt là bắt buộc'),
-        image: Yup.array().required('Hình ảnh là bắt buộc'),
         serviceType: Yup.string().required('Loại dịch vụ là bắt buộc'),
         content: Yup.string().required('Nội dung là bắt buộc'),
     });
@@ -43,17 +43,19 @@ const AddService = () => {
         fetchCategories();
     }, []);
 
-    const handleImageUpload = (event, setFieldValue) => {
-        const files = Array.from(event.target.files);
-        setFieldValue('image', files);
-    };
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop: (acceptedFiles) => {
+            setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+        },
+        accept: 'image/*',
+    });
 
     const handleSubmit = async (values, { resetForm }) => {
         const formData = new FormData();
 
         formData.append('name', values.name);
         formData.append('summary', values.summary);
-        values.image.forEach((image) => {
+        files.forEach((image) => {
             formData.append('image', image);
         });
         formData.append('serviceType', values.serviceType);
@@ -64,11 +66,18 @@ const AddService = () => {
             await addService(formData);
             setNotification({ message: 'Thêm dịch vụ thành công!', type: 'success' });
             resetForm();
-            navigate(routes.serviceList);
+            setFiles([]);
+            setTimeout(() => {
+                navigate(routes.serviceList);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi thêm dịch vụ.', type: 'error' });
             console.error('Lỗi khi tạo dịch vụ:', error);
         }
+    };
+
+    const removeFile = (index) => {
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     };
 
     return (
@@ -90,22 +99,28 @@ const AddService = () => {
                         </div>
                         <div className={styles.formGroup}>
                             <label>Chọn Hình Ảnh</label>
-                            <input
-                                type="file"
-                                multiple
-                                accept="image/*"
-                                onChange={(event) => handleImageUpload(event, setFieldValue)}
-                            />
+                            <div {...getRootProps()} className={styles.dropzone}>
+                                <input {...getInputProps()} />
+                                <p>Kéo thả file vào đây, hoặc nhấn để chọn file</p>
+                            </div>
                             <ErrorMessage name="image" component="div" className={styles.error} />
                         </div>
                         <div className={styles.imagePreview}>
-                            {values.image.map((img, index) => (
-                                <img
-                                    key={index}
-                                    src={URL.createObjectURL(img)}
-                                    alt={`Service ${index}`}
-                                    className={styles.productImage}
-                                />
+                            {files.map((img, index) => (
+                                <div key={index} className={styles.imageContainer}>
+                                    <img
+                                        src={URL.createObjectURL(img)}
+                                        alt={`Service ${index}`}
+                                        className={styles.productImage}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFile(index)}
+                                        className={styles.removeButton}
+                                    >
+                                        X
+                                    </button>
+                                </div>
                             ))}
                         </div>
                         <div className={styles.formGroup}>

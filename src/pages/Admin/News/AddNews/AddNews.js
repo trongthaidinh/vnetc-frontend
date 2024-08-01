@@ -9,10 +9,12 @@ import styles from './AddNews.module.scss';
 import routes from '~/config/routes';
 import { useNavigate } from 'react-router-dom';
 import Title from '~/components/Title';
+import { useDropzone } from 'react-dropzone';
 
 const AddNews = () => {
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const [files, setFiles] = useState([]);
     const navigate = useNavigate();
 
     const initialValues = {
@@ -44,28 +46,30 @@ const AddNews = () => {
         fetchCategories();
     }, []);
 
-    const handleImageUpload = (event, setFieldValue) => {
-        const files = Array.from(event.target.files);
-        setFieldValue('images', files);
-    };
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop: (acceptedFiles) => {
+            setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+        },
+        accept: 'image/*',
+    });
 
     const handleSubmit = async (values, { resetForm }) => {
         const formData = new FormData();
 
         formData.append('title', values.title);
         formData.append('summary', values.summary);
-        values.images.forEach((image) => {
+        files.forEach((image) => {
             formData.append('images', image);
         });
         formData.append('categoryId', values.categoryId);
         formData.append('content', values.content);
-        console.log(values);
         formData.append('isFeatured', values.isFeatured);
 
         try {
             await createNews(formData);
             setNotification({ message: 'Thêm tin tức thành công!', type: 'success' });
             resetForm();
+            setFiles([]);
             setTimeout(() => {
                 navigate(routes.newsList);
             }, 1000);
@@ -73,6 +77,10 @@ const AddNews = () => {
             setNotification({ message: 'Lỗi khi thêm tin tức.', type: 'error' });
             console.error('Lỗi khi tạo tin tức:', error);
         }
+    };
+
+    const removeFile = (index) => {
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     };
 
     return (
@@ -94,22 +102,28 @@ const AddNews = () => {
                         </div>
                         <div className={styles.formGroup}>
                             <label>Chọn Hình Ảnh</label>
-                            <input
-                                type="file"
-                                multiple
-                                accept="image/*"
-                                onChange={(event) => handleImageUpload(event, setFieldValue)}
-                            />
+                            <div {...getRootProps()} className={styles.dropzone}>
+                                <input {...getInputProps()} />
+                                <p>Kéo thả file vào đây, hoặc nhấn để chọn file</p>
+                            </div>
                             <ErrorMessage name="images" component="div" className={styles.error} />
                         </div>
                         <div className={styles.imagesPreview}>
-                            {values.images.map((img, index) => (
-                                <img
-                                    key={index}
-                                    src={URL.createObjectURL(img)}
-                                    alt={`News ${index}`}
-                                    className={styles.productImage}
-                                />
+                            {files.map((img, index) => (
+                                <div key={index} className={styles.imageContainer}>
+                                    <img
+                                        src={URL.createObjectURL(img)}
+                                        alt={`News ${index}`}
+                                        className={styles.productImage}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFile(index)}
+                                        className={styles.removeButton}
+                                    >
+                                        X
+                                    </button>
+                                </div>
                             ))}
                         </div>
                         <div className={styles.formGroup}>

@@ -6,12 +6,14 @@ import { getProjects, deleteProject } from '~/services/projectService';
 import styles from './ProjectList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
+import PushNotification from '~/components/PushNotification';
 
 const ProjectList = () => {
     const [projects, setProjects] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -19,7 +21,7 @@ const ProjectList = () => {
             if (data) {
                 setProjects(data);
             } else {
-                alert('Failed to fetch projects.');
+                setNotification({ message: 'Failed to fetch projects.', type: 'error' });
             }
         };
 
@@ -27,14 +29,14 @@ const ProjectList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this project?')) {
+        if (window.confirm('Bạn có chắc chắn muốn xóa dự án này không?')) {
             try {
                 await deleteProject(id);
                 setProjects(projects.filter((project) => project._id !== id));
-                alert('Project deleted successfully!');
+                setNotification({ message: 'Xóa dự án thành công!', type: 'success' });
             } catch (error) {
                 console.error('Error deleting project:', error);
-                alert('There was an error deleting the project.');
+                setNotification({ message: 'Đã xảy ra lỗi khi xóa dự án.', type: 'error' });
             }
         }
     };
@@ -50,7 +52,8 @@ const ProjectList = () => {
 
     return (
         <div className={styles.projectContainer}>
-            <Title className={styles.pageTitle} text="Danh sách Dư án" />
+            <Title className={styles.pageTitle} text="Danh sách Dự án" />
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <div className={styles.actionsContainer}>
                 <input
                     type="text"
@@ -100,7 +103,7 @@ const ProjectList = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="6">Không có dữ liệu</td>
+                                <td colSpan="5">Không có dữ liệu</td>
                             </tr>
                         )}
                     </tbody>

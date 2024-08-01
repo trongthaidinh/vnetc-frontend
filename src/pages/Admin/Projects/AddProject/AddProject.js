@@ -9,16 +9,17 @@ import PushNotification from '~/components/PushNotification';
 import styles from './AddProject.module.scss';
 import routes from '~/config/routes';
 import Title from '~/components/Title';
+import { useDropzone } from 'react-dropzone';
 
 const AddProject = () => {
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const [files, setFiles] = useState([]);
 
     const initialValues = {
         name: '',
         summary: '',
-        image: [],
         projectType: '',
         content: '',
     };
@@ -26,7 +27,6 @@ const AddProject = () => {
     const validationSchema = Yup.object({
         name: Yup.string().required('Tên dự án là bắt buộc'),
         summary: Yup.string().required('Tóm tắt là bắt buộc'),
-        image: Yup.array().required('Hình ảnh là bắt buộc'),
         projectType: Yup.string().required('Loại dự án là bắt buộc'),
         content: Yup.string().required('Nội dung là bắt buộc'),
     });
@@ -43,17 +43,19 @@ const AddProject = () => {
         fetchCategories();
     }, []);
 
-    const handleImageUpload = (event, setFieldValue) => {
-        const files = Array.from(event.target.files);
-        setFieldValue('image', files);
-    };
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop: (acceptedFiles) => {
+            setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+        },
+        accept: 'image/*',
+    });
 
     const handleSubmit = async (values, { resetForm }) => {
         const formData = new FormData();
 
         formData.append('name', values.name);
         formData.append('summary', values.summary);
-        values.image.forEach((image) => {
+        files.forEach((image) => {
             formData.append('image', image);
         });
         formData.append('projectType', values.projectType);
@@ -64,11 +66,18 @@ const AddProject = () => {
             await addProject(formData);
             setNotification({ message: 'Thêm dự án thành công!', type: 'success' });
             resetForm();
-            navigate(routes.projectList);
+            setFiles([]);
+            setTimeout(() => {
+                navigate(routes.projectList);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi thêm dự án.', type: 'error' });
             console.error('Lỗi khi tạo dự án:', error);
         }
+    };
+
+    const removeFile = (index) => {
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     };
 
     return (
@@ -90,22 +99,28 @@ const AddProject = () => {
                         </div>
                         <div className={styles.formGroup}>
                             <label>Chọn Hình Ảnh</label>
-                            <input
-                                type="file"
-                                multiple
-                                accept="image/*"
-                                onChange={(event) => handleImageUpload(event, setFieldValue)}
-                            />
+                            <div {...getRootProps()} className={styles.dropzone}>
+                                <input {...getInputProps()} />
+                                <p>Kéo thả file vào đây, hoặc nhấn để chọn file</p>
+                            </div>
                             <ErrorMessage name="image" component="div" className={styles.error} />
                         </div>
                         <div className={styles.imagePreview}>
-                            {values.image.map((img, index) => (
-                                <img
-                                    key={index}
-                                    src={URL.createObjectURL(img)}
-                                    alt={`Project ${index}`}
-                                    className={styles.projectImage}
-                                />
+                            {files.map((img, index) => (
+                                <div key={index} className={styles.imageContainer}>
+                                    <img
+                                        src={URL.createObjectURL(img)}
+                                        alt={`Project ${index}`}
+                                        className={styles.projectImage}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFile(index)}
+                                        className={styles.removeButton}
+                                    >
+                                        X
+                                    </button>
+                                </div>
                             ))}
                         </div>
                         <div className={styles.formGroup}>

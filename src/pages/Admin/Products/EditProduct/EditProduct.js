@@ -22,7 +22,7 @@ const EditProduct = () => {
 
     const [files, setFiles] = useState([]);
 
-    const [initialValues, setInitialValues] = useState({
+    const [initialValues] = useState({
         updateName: '',
         brand: '',
         wattage: '',

@@ -7,11 +7,13 @@ import PushNotification from '~/components/PushNotification';
 import styles from './AddMember.module.scss';
 import routes from '~/config/routes';
 import Title from '~/components/Title';
+import { useDropzone } from 'react-dropzone';
 
 const AddMember = () => {
     const navigate = useNavigate();
     const [departments, setDepartments] = useState([]);
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const [files, setFiles] = useState([]);
 
     const initialValues = {
         name: '',
@@ -19,7 +21,6 @@ const AddMember = () => {
         yearOfBirth: '',
         qualification: '',
         seniority: '',
-        image: null,
     };
 
     const validationSchema = Yup.object({
@@ -33,8 +34,7 @@ const AddMember = () => {
             .min(1900, 'Năm sinh không hợp lệ')
             .max(new Date().getFullYear(), 'Năm sinh không hợp lệ'),
         qualification: Yup.string().required('Vị trí là bắt buộc'),
-        seniority: Yup.number().required('Thâm niên là bắt buộc').min(0, 'Thâm niên không hợp lệ'),
-        image: Yup.mixed().required('Hình ảnh là bắt buộc'),
+        seniority: Yup.number().required('Kinh nghiệm là bắt buộc').min(0, 'Kinh nghiệm không hợp lệ'),
     });
 
     useEffect(() => {
@@ -53,9 +53,8 @@ const AddMember = () => {
         fetchDepartments();
     }, []);
 
-    const handleImageUpload = (event, setFieldValue) => {
-        const file = event.target.files[0];
-        setFieldValue('image', file);
+    const handleImageUpload = (acceptedFiles) => {
+        setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
     };
 
     const handleSubmit = async (values, { resetForm }) => {
@@ -67,15 +66,19 @@ const AddMember = () => {
         formData.append('yearOfBirth', values.yearOfBirth);
         formData.append('qualification', values.qualification);
         formData.append('seniority', values.seniority);
-        formData.append('image', values.image);
+
+        if (files.length > 0) {
+            formData.append('image', files[0]);
+        }
 
         try {
             await addMember(formData, values.positionDetails.departmentId);
             resetForm();
+            setFiles([]);
             setNotification({ message: 'Thêm thành viên thành công!', type: 'success' });
 
             setTimeout(() => {
-                navigate(routes.teamList);
+                navigate(routes.memberList);
             }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi thêm thành viên.', type: 'error' });
@@ -83,12 +86,21 @@ const AddMember = () => {
         }
     };
 
+    const removeFile = (index) => {
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    };
+
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop: handleImageUpload,
+        accept: 'image/*',
+    });
+
     return (
         <div className={styles.addMember}>
             <Title text="Thêm thành viên" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-                {({ isSubmitting, setFieldValue, values }) => (
+                {({ isSubmitting, setFieldValue }) => (
                     <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label htmlFor="name">Tên Thành viên</label>
@@ -133,28 +145,36 @@ const AddMember = () => {
                             <ErrorMessage name="yearOfBirth" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
-                            <label htmlFor="seniority">Thâm niên</label>
+                            <label htmlFor="seniority">Kinh nghiệm</label>
                             <Field name="seniority" type="number" className={styles.input} />
                             <ErrorMessage name="seniority" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
                             <label>Chọn Hình Ảnh</label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(event) => handleImageUpload(event, setFieldValue)}
-                            />
+                            <div {...getRootProps()} className={styles.dropzone}>
+                                <input {...getInputProps()} />
+                                <p>Kéo thả file vào đây, hoặc nhấn để chọn file</p>
+                            </div>
                             <ErrorMessage name="image" component="div" className={styles.error} />
                         </div>
-                        {values.image && (
-                            <div className={styles.imagePreview}>
-                                <img
-                                    src={URL.createObjectURL(values.image)}
-                                    alt="Member"
-                                    className={styles.memberImage}
-                                />
-                            </div>
-                        )}
+                        <div className={styles.imagePreview}>
+                            {files.map((file, index) => (
+                                <div key={index} className={styles.imageContainer}>
+                                    <img
+                                        src={URL.createObjectURL(file)}
+                                        alt={`Member ${index}`}
+                                        className={styles.memberImage}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFile(index)}
+                                        className={styles.removeButton}
+                                    >
+                                        X
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
                             Thêm Thành viên
                         </button>

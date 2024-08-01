@@ -6,12 +6,14 @@ import { getServices, deleteService } from '~/services/serviceService';
 import styles from './ServiceList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
+import PushNotification from '~/components/PushNotification';
 
 const ServiceList = () => {
     const [services, setServices] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         const fetchServices = async () => {
@@ -27,14 +29,14 @@ const ServiceList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this service?')) {
+        if (window.confirm('Bạn có chắc chắn muốn xóa dịch vụ này?')) {
             try {
                 await deleteService(id);
                 setServices(services.filter((service) => service._id !== id));
-                alert('Service deleted successfully!');
+                setNotification({ message: 'Dịch vụ đã được xóa thành công!', type: 'success' });
             } catch (error) {
                 console.error('Error deleting service:', error);
-                alert('There was an error deleting the service.');
+                setNotification({ message: 'Đã xảy ra lỗi khi xóa dịch vụ!', type: 'error' });
             }
         }
     };
@@ -51,6 +53,7 @@ const ServiceList = () => {
     return (
         <div className={styles.serviceContainer}>
             <Title className={styles.pageTitle} text="Danh sách Dịch vụ" />
+            {notification.message && <PushNotification message={notification.message} type={notification.type} />}{' '}
             <div className={styles.actionsContainer}>
                 <input
                     type="text"
@@ -63,14 +66,12 @@ const ServiceList = () => {
                     <FontAwesomeIcon icon={faPlus} /> Thêm mới Dịch vụ
                 </Link>
             </div>
-
             <div className={styles.serviceList}>
                 <table className={styles.table}>
                     <thead>
                         <tr>
                             <th>Tên dịch vụ</th>
                             <th>Tóm tắt</th>
-                            <th>Số lượt xem</th>
                             <th>Hình ảnh</th>
                             <th>Hành động</th>
                         </tr>
@@ -81,7 +82,6 @@ const ServiceList = () => {
                                 <tr key={service._id}>
                                     <td>{service.name}</td>
                                     <td>{service.summary}</td>
-                                    <td>{service.views}</td>
                                     <td>
                                         <img src={service.image} alt={service.name} className={styles.serviceImage} />
                                     </td>
@@ -100,13 +100,12 @@ const ServiceList = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="6">Không có dữ liệu</td>
+                                <td colSpan="5">Không có dữ liệu</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
             </div>
-
             {/* Items per page selection */}
             <div className={styles.itemsPerPageContainer}>
                 <label htmlFor="itemsPerPage">Số mục mỗi trang:</label>
@@ -125,7 +124,6 @@ const ServiceList = () => {
                     <option value={100}>100</option>
                 </select>
             </div>
-
             {/* Pagination */}
             <div className={styles.pagination}>
                 <span>

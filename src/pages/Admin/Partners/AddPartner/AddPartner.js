@@ -7,10 +7,12 @@ import PushNotification from '~/components/PushNotification';
 import styles from './AddPartner.module.scss';
 import routes from '~/config/routes';
 import Title from '~/components/Title';
+import { useDropzone } from 'react-dropzone';
 
 const AddPartner = () => {
     const navigate = useNavigate();
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const [files, setFiles] = useState([]);
 
     const initialValues = {
         image: [],
@@ -20,14 +22,13 @@ const AddPartner = () => {
         image: Yup.array().required('Logo là bắt buộc'),
     });
 
-    const handleLogoUpload = (event, setFieldValue) => {
-        const files = Array.from(event.target.files);
-        setFieldValue('image', files);
+    const onDrop = (acceptedFiles) => {
+        setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
     };
 
     const handleSubmit = async (values, { resetForm }) => {
         const formData = new FormData();
-        values.image.forEach((image) => {
+        files.forEach((image) => {
             formData.append('image', image);
         });
 
@@ -35,6 +36,7 @@ const AddPartner = () => {
             await createPartner(formData);
             setNotification({ message: 'Thêm đối tác thành công!', type: 'success' });
             resetForm();
+            setFiles([]);
             setTimeout(() => {
                 navigate(routes.partnerList);
             }, 1000);
@@ -44,30 +46,46 @@ const AddPartner = () => {
         }
     };
 
+    const removeFile = (index) => {
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    };
+
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop,
+        accept: 'image/*',
+    });
+
     return (
         <div className={styles.addPartner}>
             <Title text="Thêm đối tác" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-                {({ isSubmitting, setFieldValue, values }) => (
+                {({ isSubmitting }) => (
                     <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label>Chọn Logo</label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(event) => handleLogoUpload(event, setFieldValue)}
-                            />
+                            <div {...getRootProps()} className={styles.dropzone}>
+                                <input {...getInputProps()} />
+                                <p>Kéo thả file vào đây, hoặc nhấn để chọn file</p>
+                            </div>
                             <ErrorMessage name="image" component="div" className={styles.error} />
                         </div>
                         <div className={styles.imagePreview}>
-                            {values.image.map((img, index) => (
-                                <img
-                                    key={index}
-                                    src={URL.createObjectURL(img)}
-                                    alt={`Logo ${index}`}
-                                    className={styles.partnerLogo}
-                                />
+                            {files.map((img, index) => (
+                                <div key={index} className={styles.imageContainer}>
+                                    <img
+                                        src={URL.createObjectURL(img)}
+                                        alt={`Logo ${index}`}
+                                        className={styles.partnerLogo}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFile(index)}
+                                        className={styles.removeButton}
+                                    >
+                                        X
+                                    </button>
+                                </div>
                             ))}
                         </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>

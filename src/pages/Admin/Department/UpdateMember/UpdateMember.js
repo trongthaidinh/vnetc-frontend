@@ -26,6 +26,8 @@ const UpdateMember = () => {
             .required('Năm sinh là bắt buộc')
             .min(1900, 'Năm sinh không hợp lệ')
             .max(new Date().getFullYear(), 'Năm sinh không hợp lệ'),
+        qualification: Yup.string().required('Vị trí là bắt buộc'),
+        seniority: Yup.number().required('Kinh nghiệm là bắt buộc').min(0, 'Kinh nghiệm không hợp lệ'),
         image: Yup.mixed(),
     });
 
@@ -50,6 +52,7 @@ const UpdateMember = () => {
                     },
                     qualification: member.qualification,
                     yearOfBirth: member.yearOfBirth,
+                    seniority: member.seniority || '', // Thêm trường seniority
                     image: member.image || null,
                 });
             } catch (error) {
@@ -73,6 +76,7 @@ const UpdateMember = () => {
         formData.append('departmentId', values.positionDetails.departmentId);
         formData.append('qualification', values.qualification);
         formData.append('yearOfBirth', values.yearOfBirth);
+        formData.append('seniority', values.seniority);
         if (values.image) {
             formData.append('image', values.image);
         }
@@ -82,7 +86,7 @@ const UpdateMember = () => {
             setNotification({ message: 'Cập nhật thành viên thành công!', type: 'success' });
             resetForm();
             setTimeout(() => {
-                navigate(routes.teamList);
+                navigate(routes.memberList);
             }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi cập nhật thành viên.', type: 'error' });
@@ -123,13 +127,11 @@ const UpdateMember = () => {
                                 }}
                             >
                                 <option value="">Chọn ban</option>
-                                {departments.map((department, index) => {
-                                    return (
-                                        <option key={department._id} value={index}>
-                                            {department.name}
-                                        </option>
-                                    );
-                                })}
+                                {departments.map((department, index) => (
+                                    <option key={department._id} value={index}>
+                                        {department.name}
+                                    </option>
+                                ))}
                             </Field>
                             <ErrorMessage name="positionDetails.position" component="div" className={styles.error} />
                         </div>
@@ -142,6 +144,11 @@ const UpdateMember = () => {
                             <label htmlFor="yearOfBirth">Năm Sinh</label>
                             <Field name="yearOfBirth" type="number" className={styles.input} />
                             <ErrorMessage name="yearOfBirth" component="div" className={styles.error} />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="seniority">Kinh nghiệm</label>
+                            <Field name="seniority" type="number" className={styles.input} />
+                            <ErrorMessage name="seniority" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
                             <label>Chọn Hình Ảnh</label>
@@ -169,7 +176,6 @@ const UpdateMember = () => {
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
                             Cập Nhật Thành Viên
                         </button>
-                        {isSubmitting && <div>Đang gửi dữ liệu...</div>}
                     </Form>
                 )}
             </Formik>
