@@ -8,6 +8,10 @@ import LoadingScreen from '~/components/LoadingScreen';
 import routes from '~/config/routes';
 import { getCategoriesByType } from '~/services/categoryService';
 import Product from '~/components/Product';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/autoplay';
 
 const cx = classNames.bind(styles);
 
@@ -29,7 +33,6 @@ const Products = () => {
                 await Promise.all(
                     categoriesData.map(async (category) => {
                         const productsData = await getProductsByCategory(category._id);
-                        console.log(productsData);
                         groupedProductsMap[category._id] = productsData.map((item) => ({
                             ...item,
                         }));
@@ -68,28 +71,53 @@ const Products = () => {
             <div className={cx('products-section')}>
                 <div className={cx('products-column')}>
                     <h2 className={cx('products-title')}>Sản Phẩm</h2>
-                    {categories.map((category) => (
-                        <div key={category._id} className={cx('products-category')}>
-                            <Title
-                                text={category.name || 'Loading...'}
-                                showSeeAll={true}
-                                slug={`${routes.products}/${category.slug}`}
-                                categoryId={category._id}
-                            />
-                            <div className={cx('products-items')}>
-                                {groupedProducts[category._id]?.slice(0, 6).map((item) => (
-                                    <Product
-                                        name={item.name}
-                                        image={item.image[0]}
-                                        price={item.price}
-                                        views={item.views}
-                                        productId={item._id}
-                                        category={getCategorySlug(item.category_id)}
-                                    />
-                                ))}
+                    {categories.map((category) => {
+                        const productsInCategory = groupedProducts[category._id];
+
+                        if (!productsInCategory || productsInCategory.length === 0) {
+                            return null;
+                        }
+
+                        return (
+                            <div key={category._id} className={cx('products-category')}>
+                                <Title
+                                    text={category.name || 'Loading...'}
+                                    showSeeAll={true}
+                                    slug={`${routes.products}/${category.slug}`}
+                                    categoryId={category._id}
+                                />
+                                <Swiper
+                                    spaceBetween={10}
+                                    slidesPerView={4}
+                                    breakpoints={{
+                                        1280: { slidesPerView: 4 },
+                                        1024: { slidesPerView: 3 },
+                                        768: { slidesPerView: 2 },
+                                        0: { slidesPerView: 1 },
+                                    }}
+                                    loop={true}
+                                    modules={[Autoplay]}
+                                    autoplay={{
+                                        delay: 2000,
+                                        disableOnInteraction: false,
+                                    }}
+                                >
+                                    {productsInCategory.slice(0, 6).map((item) => (
+                                        <SwiperSlide key={item._id} className={cx('slide')}>
+                                            <Product
+                                                name={item.name}
+                                                image={item.image[0]}
+                                                price={item.price}
+                                                views={item.views}
+                                                productId={item._id}
+                                                category={getCategorySlug(item.category_id)}
+                                            />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </article>

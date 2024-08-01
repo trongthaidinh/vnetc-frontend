@@ -19,37 +19,27 @@
 
 .news-section {
     width: var(--default-layout-width);
+    display: grid;
+    grid-template-columns: calc(75% - 10px) calc(25% - 10px);
     gap: 20px;
-    display: flex;
 
     @include respond-to(lg) {
         width: 100%;
-        flex-direction: column;
-    }
-
-    @include respond-to(sm) {
+        grid-template-columns: 100%;
     }
 }
 
-.news-column {
-    flex: 3;
+.slide {
+    margin: 20px 0 10px 0;
+}
 
+.news-column {
     .news-category {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
         margin-bottom: 40px;
     }
 
     .news-items {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        justify-content: space-between;
-        gap: 20px;
         margin-top: 20px;
-        @include respond-to(sm) {
-            grid-template-columns: repeat(1, 1fr);
-        }
     }
 
     .news-title {

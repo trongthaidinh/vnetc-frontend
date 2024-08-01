@@ -7,6 +7,7 @@
     text-align: center;
     box-shadow: 2px 4px 12px #00000014;
     transition: box-shadow 0.3s ease-in-out;
+    margin: 0 8px;
 
     &:hover {
         box-shadow: 2px 4px 16px #00000029;
@@ -24,8 +25,8 @@
         object-fit: contain;
         transition: all ease-in-out 0.3s;
         @include respond-to(sm) {
-            min-height: 100px;
-            max-height: 120px;
+            min-height: 120px;
+            max-height: 200px;
         }
     }
 

@@ -57,7 +57,7 @@ function Products() {
             <div className={cx('inner')}>
                 <Title text="Sản phẩm" showSeeAll={true} slug={`${routes.products}`} />
                 <Swiper
-                    spaceBetween={20}
+                    spaceBetween={10}
                     slidesPerView={4}
                     breakpoints={{
                         1280: { slidesPerView: 4 },

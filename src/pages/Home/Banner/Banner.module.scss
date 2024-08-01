@@ -52,6 +52,11 @@
                     opacity: 1;
                 }
             }
+
+            @include respond-to(sm) {
+                width: 28px;
+                height: 28px;
+            }
         }
         .swiper-button-prev {
             left: 10px;

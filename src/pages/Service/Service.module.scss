@@ -12,50 +12,34 @@
     }
 
     @include respond-to(sm) {
-        padding: 10px;
         margin-top: 20px;
+        padding: 10px;
     }
 }
 
 .service-section {
     width: var(--default-layout-width);
+    display: grid;
+    grid-template-columns: calc(75% - 10px) calc(25% - 10px);
     gap: 20px;
-    display: flex;
+
     @include respond-to(lg) {
         width: 100%;
-        flex-direction: column;
-    }
-
-    @include respond-to(sm) {
+        grid-template-columns: 100%;
     }
 }
 
+.slide {
+    margin: 20px 0 10px 0;
+}
+
 .service-column {
-    flex: 3;
-
-    .service-accreditation,
-    .service-test,
-    .service-calibration {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 40px;
-    }
-
     .service-category {
         margin-bottom: 40px;
     }
 
     .service-items {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        justify-content: space-between;
-        gap: 20px;
         margin-top: 20px;
-
-        @include respond-to(sm) {
-            grid-template-columns: repeat(1, 1fr);
-        }
     }
 
     .service-title {
@@ -78,8 +62,8 @@
         display: grid;
         grid-template-columns: repeat(1, 1fr);
         justify-content: space-between;
-        margin-top: 10px;
         gap: 20px;
+        margin-top: 10px;
 
         .card {
             flex: 1;
@@ -97,4 +81,8 @@
         text-align: center;
         margin-bottom: 20px;
     }
+}
+
+.service-items a {
+    text-decoration: none;
 }

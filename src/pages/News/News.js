@@ -11,6 +11,10 @@ import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
 import routes from '~/config/routes';
 import { getCategoriesByType } from '~/services/categoryService';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/autoplay';
 
 const cx = classNames.bind(styles);
 
@@ -98,19 +102,36 @@ const News = () => {
                                     slug={`${routes.news}/${category.slug}`}
                                     categoryId={category._id}
                                 />
-                                <div className={cx('news-items')}>
+                                <Swiper
+                                    spaceBetween={10}
+                                    slidesPerView={3}
+                                    breakpoints={{
+                                        1280: { slidesPerView: 3 },
+                                        1024: { slidesPerView: 3 },
+                                        768: { slidesPerView: 2 },
+                                        0: { slidesPerView: 1 },
+                                    }}
+                                    loop={true}
+                                    modules={[Autoplay]}
+                                    autoplay={{
+                                        delay: 2000,
+                                        disableOnInteraction: false,
+                                    }}
+                                >
                                     {groupedNews[category._id]?.slice(0, 6).map((item, index) => (
-                                        <Link key={index} to={`${routes.news}/${category.slug}/${item._id}`}>
-                                            <Card
-                                                title={item.title}
-                                                summary={item.summary}
-                                                image={item.images}
-                                                createdAt={new Date(item.createdAt).getTime()}
-                                                views={item.views}
-                                            />
-                                        </Link>
+                                        <SwiperSlide key={index} className={cx('slide')}>
+                                            <Link to={`${routes.news}/${category.slug}/${item._id}`}>
+                                                <Card
+                                                    title={item.title}
+                                                    summary={item.summary}
+                                                    image={item.images}
+                                                    createdAt={new Date(item.createdAt).getTime()}
+                                                    views={item.views}
+                                                />
+                                            </Link>
+                                        </SwiperSlide>
                                     ))}
-                                </div>
+                                </Swiper>
                             </div>
                         );
                     })}
