@@ -32,7 +32,7 @@ SuggestCard.propTypes = {
     title: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
     summary: PropTypes.string.isRequired,
-    createdAt: PropTypes.number.isRequired,
+    createdAt: PropTypes.string.isRequired,
 };
 
 export default SuggestCard;

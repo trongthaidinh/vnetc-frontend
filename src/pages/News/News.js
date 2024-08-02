@@ -41,7 +41,6 @@ const News = () => {
                         groupedNewsMap[category._id] = newsData.map((item) => ({
                             ...item,
                             image: item.images,
-                            createdAt: new Date(item.createdAt).getTime(),
                         }));
                     }),
                 );
@@ -100,6 +99,9 @@ const News = () => {
                 <div className={cx('news-column')}>
                     <h2 className={cx('news-title')}>Tin Tức</h2>
                     {categories.map((category) => {
+                        const slides = groupedNews[category._id]?.slice(0, 6) || [];
+                        const shouldLoop = slides.length > 3;
+
                         return (
                             <div key={category._id} className={cx('news-category')}>
                                 <Title
@@ -117,7 +119,7 @@ const News = () => {
                                         768: { slidesPerView: 2 },
                                         0: { slidesPerView: 1 },
                                     }}
-                                    loop={true}
+                                    loop={shouldLoop}
                                     modules={[Autoplay]}
                                     autoplay={{
                                         delay: 2000,
@@ -131,7 +133,7 @@ const News = () => {
                                                     title={item.title}
                                                     summary={item.summary}
                                                     image={item.images}
-                                                    createdAt={new Date(item.createdAt).getTime()}
+                                                    createdAt={item.createdAt}
                                                     views={item.views}
                                                 />
                                             </Link>

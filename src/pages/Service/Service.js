@@ -44,7 +44,6 @@ const Service = () => {
                     groupedServiceMap[serviceType].push({
                         ...item,
                         image: item.image,
-                        createdAt: new Date(item.createdAt).getTime(),
                     });
                 });
 
@@ -108,6 +107,10 @@ const Service = () => {
                     {Object.keys(groupedService).map((serviceType) => {
                         const category = categories[serviceType];
                         if (!category) return null;
+
+                        const servicesInCategory = groupedService[serviceType];
+                        const shouldLoop = servicesInCategory.length > 3;
+
                         return (
                             <div key={serviceType} className={cx('service-category')}>
                                 <Title
@@ -125,7 +128,7 @@ const Service = () => {
                                         768: { slidesPerView: 2 },
                                         0: { slidesPerView: 1 },
                                     }}
-                                    loop={true}
+                                    loop={shouldLoop}
                                     modules={[Autoplay]}
                                     autoplay={{
                                         delay: 2000,

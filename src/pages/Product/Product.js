@@ -84,6 +84,8 @@ const Products = () => {
                             return null;
                         }
 
+                        const shouldLoop = productsInCategory.length > 3;
+
                         return (
                             <div key={category._id} className={cx('products-category')}>
                                 <Title
@@ -101,7 +103,7 @@ const Products = () => {
                                         768: { slidesPerView: 2 },
                                         0: { slidesPerView: 1 },
                                     }}
-                                    loop={true}
+                                    loop={shouldLoop}
                                     modules={[Autoplay]}
                                     autoplay={{
                                         delay: 2000,

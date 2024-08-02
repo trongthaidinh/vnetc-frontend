@@ -44,7 +44,6 @@ function Project() {
                     groupedProjectMap[projectType].push({
                         ...item,
                         image: item.image,
-                        createdAt: new Date(item.createdAt).getTime(),
                     });
                 });
 
@@ -107,6 +106,10 @@ function Project() {
                     {Object.keys(groupedProject).map((projectType) => {
                         const category = categories[projectType];
                         if (!category) return null;
+
+                        const projectsInCategory = groupedProject[projectType];
+                        const shouldLoop = projectsInCategory.length > 3;
+
                         return (
                             <div key={projectType} className={cx('project-category')}>
                                 <Title
@@ -124,14 +127,14 @@ function Project() {
                                         768: { slidesPerView: 2 },
                                         0: { slidesPerView: 1 },
                                     }}
-                                    loop={true}
+                                    loop={shouldLoop}
                                     modules={[Autoplay]}
                                     autoplay={{
                                         delay: 2000,
                                         disableOnInteraction: false,
                                     }}
                                 >
-                                    {groupedProject[projectType]?.slice(0, 6).map((item, index) => (
+                                    {projectsInCategory?.slice(0, 6).map((item, index) => (
                                         <SwiperSlide key={index} className={cx('slide')}>
                                             <Link to={`${routes.projects}/${category.slug}/${item._id}`}>
                                                 <Card

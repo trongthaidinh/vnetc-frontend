@@ -31,7 +31,7 @@ Card.propTypes = {
     title: PropTypes.string.isRequired,
     summary: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
-    createdAt: PropTypes.number.isRequired,
+    createdAt: PropTypes.string.isRequired,
     views: PropTypes.number.isRequired,
 };
 
