@@ -19,7 +19,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     justify-content: space-between;
-    gap: 22px;
+    gap: 24px 10px;
 
     @include respond-to(sm) {
         grid-template-columns: repeat(1, 1fr);
