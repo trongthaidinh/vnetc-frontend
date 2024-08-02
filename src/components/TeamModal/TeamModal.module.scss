@@ -75,7 +75,7 @@
     }
     @include respond-to(sm) {
         padding-left: 0px;
-        gap: 10px;
+        gap: 4px;
     }
 }
 
@@ -113,6 +113,7 @@
 
     @include respond-to(sm) {
         font-size: 2rem;
+        margin-bottom: 0px;
     }
 }
 
@@ -127,7 +128,8 @@
     }
 
     @include respond-to(sm) {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
+        margin-bottom: 0px;
     }
 }
 
