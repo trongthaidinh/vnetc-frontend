@@ -3,13 +3,14 @@ import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { getServiceByType } from '~/services/serviceService'; // Cập nhật hàm này để lấy dịch vụ theo type
+import { getServiceByType } from '~/services/serviceService';
 import Title from '~/components/Title';
 import styles from './ServiceCategory.module.scss';
 import { Link } from 'react-router-dom';
 import Card from '~/components/CardContent/CardContent';
 import { getCategoriesByType } from '~/services/categoryService';
 import routes from '~/config/routes';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -111,6 +112,14 @@ function ServiceCategory() {
 
     return (
         <div className={cx('container')}>
+            <Helmet>
+                <title>{`${categoryName} | VNETC`}</title>
+                <meta
+                    name="description"
+                    content={`Khám phá dịch vụ ${categoryName} mà chúng tôi cung cấp tại VNETC.`}
+                />
+                <meta name="keywords" content={`dịch vụ, ${categoryName}, VNETC`} />
+            </Helmet>
             <Title text={categoryName} />
             <div className={cx('serviceGrid')}>{renderServiceCategory()}</div>
             {renderPagination()}

@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 import styles from './Teams.module.scss';
 import LoadingScreen from '~/components/LoadingScreen';
 import TeamModal from '~/components/TeamModal';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -54,6 +55,14 @@ const TeamPage = () => {
 
     return (
         <div className={cx('teamPage')}>
+            <Helmet>
+                <title>Đội Ngũ | VNETC</title>
+                <meta
+                    name="description"
+                    content="Tìm hiểu về đội ngũ của chúng tôi và những thành viên trong các phòng ban."
+                />
+                <meta name="keywords" content="đội ngũ, thành viên, phòng ban, VNETC" />
+            </Helmet>
             {departments.map((department) => (
                 <React.Fragment key={department._id}>
                     <Title text={department.name} />

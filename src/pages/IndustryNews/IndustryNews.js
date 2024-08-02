@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import Card from '~/components/CardContent/CardContent';
 import { getCategoriesByType } from '~/services/categoryService';
 import routes from '~/config/routes';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -113,6 +114,11 @@ function NewsCategory() {
 
     return (
         <div className={cx('container')}>
+            <Helmet>
+                <title>{categoryName} | VNETC</title>
+                <meta name="description" content={`Xem các tin tức liên quan đến ${categoryName} trên VNETC.`} />
+                <meta name="keywords" content={`${categoryName}, tin tức, VNETC`} />
+            </Helmet>
             <Title text={categoryName} />
             <div className={cx('newsGrid')}>{renderNewsCategory()}</div>
             {renderPagination()}

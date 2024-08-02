@@ -15,6 +15,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -96,6 +97,11 @@ const Service = () => {
 
     return (
         <article className={cx('wrapper')}>
+            <Helmet>
+                <title>Dịch vụ | VNETC</title>
+                <meta name="description" content="Khám phá các dịch vụ mà chúng tôi cung cấp tại VNETC." />
+                <meta name="keywords" content="dịch vụ, VNETC" />
+            </Helmet>
             <div className={cx('service-section')}>
                 <div className={cx('service-column')}>
                     <h2 className={cx('service-title')}>Dịch vụ</h2>

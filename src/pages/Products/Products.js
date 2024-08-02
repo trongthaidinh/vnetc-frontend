@@ -8,6 +8,7 @@ import Product from '~/components/Product';
 import { getProductsByCategory } from '~/services/productService';
 import { getCategoriesByType } from '~/services/categoryService';
 import Title from '~/components/Title';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -115,6 +116,11 @@ function Products() {
 
     return (
         <div className={cx('container')}>
+            <Helmet>
+                <title>Sản Phẩm: {categoryName} | VNETC</title>
+                <meta name="description" content={`Khám phá các sản phẩm trong danh mục ${categoryName} tại VNETC.`} />
+                <meta name="keywords" content={`sản phẩm, ${categoryName}, VNETC`} />
+            </Helmet>
             <Title text={categoryName} />
             <div className={cx('productGrid')}>{renderProducts()}</div>
             {renderPagination()}

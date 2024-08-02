@@ -17,6 +17,7 @@ import {
 import Button from '~/components/Button';
 import { createMessage } from '~/services/contactService';
 import PushNotification from '~/components/PushNotification';
+import { Helmet } from 'react-helmet';
 import styles from './Contact.module.scss';
 
 const cx = classNames.bind(styles);
@@ -53,6 +54,15 @@ const ContactPage = () => {
 
     return (
         <div className={cx('contactPage')}>
+            <Helmet>
+                <title>Liên Hệ | VNETC</title>
+                <meta
+                    name="description"
+                    content="Trang Liên Hệ của VNETC. Hãy gửi tin nhắn cho chúng tôi nếu bạn có bất kỳ câu hỏi nào."
+                />
+                <meta name="keywords" content="liên hệ, VNETC, gửi tin nhắn" />
+                <meta name="author" content="CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM - VNETC" />
+            </Helmet>
             <div className={cx('mapContainer')}>
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d243.27342674958496!2d108.052657970545!3d12.688940890483984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3171f7d7415f7d55%3A0x5a3cd6dc81a8de0d!2sVietnam%20Electromechanical%20Testing%20Joint%20Stock%20Company!5e0!3m2!1sen!2s!4v1721701975769!5m2!1sen!2s"
@@ -186,13 +196,18 @@ const ContactPage = () => {
                                         <ErrorMessage name="subject" component="div" className={cx('error')} />
                                     </div>
                                     <div className={cx('formGroup')}>
-                                        <label htmlFor="message">Nội dung tin nhắn</label>
-                                        <Field as="textarea" id="message" name="message" className={cx('textarea')} />
+                                        <label htmlFor="message">Nội dung</label>
+                                        <Field
+                                            as="textarea"
+                                            id="message"
+                                            name="message"
+                                            className={cx('input', 'textarea')}
+                                        />
                                         <ErrorMessage name="message" component="div" className={cx('error')} />
                                     </div>
-                                    <div className={cx('buttonContainer')}>
-                                        <Button primary type="submit" disabled={isSubmitting}>
-                                            Gửi tin nhắn
+                                    <div className={cx('formActions')}>
+                                        <Button type="submit" disabled={isSubmitting}>
+                                            Gửi
                                         </Button>
                                     </div>
                                 </Form>
@@ -201,7 +216,7 @@ const ContactPage = () => {
                     </div>
                 </div>
             </div>
-            <PushNotification message={notification.message} type={notification.type} />
+            <PushNotification notification={notification} setNotification={setNotification} />
         </div>
     );
 };

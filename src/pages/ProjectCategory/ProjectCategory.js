@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import Card from '~/components/CardContent/CardContent';
 import { getCategoriesByType } from '~/services/categoryService';
 import routes from '~/config/routes';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -111,6 +112,10 @@ function ProjectCategory() {
 
     return (
         <div className={cx('container')}>
+            <Helmet>
+                <title>{`${categoryName} | VNETC`}</title>
+                <meta name="description" content={`Khám phá các dự án trong danh mục ${categoryName}.`} />
+            </Helmet>
             <Title text={categoryName} />
             <div className={cx('projectGrid')}>{renderProjectCategory()}</div>
             {renderPagination()}

@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -68,6 +69,11 @@ const Products = () => {
 
     return (
         <article className={cx('wrapper')}>
+            <Helmet>
+                <title>Sản Phẩm | VNETC</title>
+                <meta name="description" content="Xem các sản phẩm điện lực chất lượng cao tại VNETC." />
+                <meta name="keywords" content="sản phẩm điện lực, kiểm thử, VNETC, chất lượng cao" />
+            </Helmet>
             <div className={cx('products-section')}>
                 <div className={cx('products-column')}>
                     <h2 className={cx('products-title')}>Sản Phẩm</h2>

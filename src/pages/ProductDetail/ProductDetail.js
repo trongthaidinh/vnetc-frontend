@@ -9,6 +9,7 @@ import Button from '~/components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faChevronDown, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { getProductById } from '~/services/productService';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -75,6 +76,11 @@ const ProductDetail = () => {
 
     return (
         <article className={cx('wrapper')}>
+            <Helmet>
+                <title>{productDetail.name} | VNETC</title>
+                <meta name="description" content={`Chi tiết về sản phẩm: ${productDetail.name}.`} />
+                <meta name="keywords" content={`sản phẩm, ${productDetail.name}, VNETC`} />
+            </Helmet>
             <div className={cx('product-section')}>
                 <div className={cx('thumbnails')}>
                     {thumbnailStartIndex > 0 && (
@@ -90,9 +96,8 @@ const ProductDetail = () => {
                         style={{ transform: `translateY(-${thumbnailStartIndex * 155}px)` }}
                     >
                         {productDetail.image.slice(thumbnailStartIndex, thumbnailStartIndex + 4).map((image, index) => (
-                            <div className={cx('thumbnail-item')}>
+                            <div key={thumbnailStartIndex + index} className={cx('thumbnail-item')}>
                                 <img
-                                    key={thumbnailStartIndex + index}
                                     className={cx('thumbnail-image')}
                                     src={image}
                                     alt={`${productDetail.name} thumbnail ${thumbnailStartIndex + index + 1}`}

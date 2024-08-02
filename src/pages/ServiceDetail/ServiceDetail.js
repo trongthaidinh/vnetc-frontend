@@ -7,6 +7,7 @@ import PushNotification from '~/components/PushNotification';
 import DateTime from '~/components/DateTime';
 import Title from '~/components/Title';
 import { getServiceById } from '~/services/serviceService';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -20,7 +21,6 @@ const ServiceDetail = () => {
         const fetchServiceDetail = async () => {
             try {
                 const data = await getServiceById(id);
-                console.log(data);
                 setServiceDetail(data);
             } catch (error) {
                 setError(error);
@@ -44,6 +44,11 @@ const ServiceDetail = () => {
 
     return (
         <article className={cx('wrapper')}>
+            <Helmet>
+                <title>{`${serviceDetail.name} | VNETC`}</title>
+                <meta name="description" content={serviceDetail.summary} />
+                <meta name="keywords" content={`dịch vụ, ${serviceDetail.name}, VNETC`} />
+            </Helmet>
             <div className={cx('header')}>
                 <Title text={`${serviceDetail.name}`} className={cx('title')} />
             </div>

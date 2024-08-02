@@ -7,6 +7,7 @@ import PushNotification from '~/components/PushNotification';
 import DateTime from '~/components/DateTime';
 import Title from '~/components/Title';
 import { getNewsById } from '~/services/newsService';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -43,6 +44,11 @@ const NewsDetail = () => {
 
     return (
         <article className={cx('wrapper')}>
+            <Helmet>
+                <title>{newsDetail.title} | VNETC</title>
+                <meta name="description" content={newsDetail.summary} />
+                <meta name="keywords" content="tin tức, VNETC, chi tiết tin tức" />
+            </Helmet>
             <div className={cx('header')}>
                 <Title text={`${newsDetail.title}`} className={cx('title')} />
             </div>

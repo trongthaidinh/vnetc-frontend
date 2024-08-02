@@ -10,11 +10,6 @@ import Home from '~/pages/Home';
 import About from '~/pages/About';
 import News from '~/pages/News';
 import Service from '~/pages/Service';
-import History from '~/pages/History';
-import Organizational from '~/pages/Organizational';
-import Vision from '~/pages/Vission';
-import Capacity from '~/pages/Capacity';
-import Quality from '~/pages/Quality';
 import Search from '~/pages/Search';
 import Products from '~/pages/Products';
 import Error404 from '~/pages/Error404';
@@ -83,16 +78,6 @@ const publicRoutes = [
         layout: OnlyHeaderLayout,
     },
     {
-        path: config.routes.history,
-        component: History,
-        layout: OnlyHeaderLayout,
-    },
-    {
-        path: config.routes.vision,
-        component: Vision,
-        layout: OnlyHeaderLayout,
-    },
-    {
         path: config.routes.productCategory,
         component: Products,
         layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.products} categoryType={1} />,
@@ -113,21 +98,6 @@ const publicRoutes = [
     {
         path: config.routes.introduction,
         component: Introduction,
-        layout: OnlyHeaderLayout,
-    },
-    {
-        path: config.routes.capacityProfile,
-        component: Capacity,
-        layout: OnlyHeaderLayout,
-    },
-    {
-        path: config.routes.organizational,
-        component: Organizational,
-        layout: OnlyHeaderLayout,
-    },
-    {
-        path: config.routes.qualityGoals,
-        component: Quality,
         layout: OnlyHeaderLayout,
     },
     {

@@ -7,6 +7,7 @@ import PushNotification from '~/components/PushNotification';
 import DateTime from '~/components/DateTime';
 import Title from '~/components/Title';
 import { getProjectById } from '~/services/projectService';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -44,6 +45,11 @@ const ProjectDetail = () => {
 
     return (
         <article className={cx('wrapper')}>
+            <Helmet>
+                <title>{`${projectDetail.name} | VNETC`}</title>
+                <meta name="description" content={projectDetail.summary || 'Chi tiết dự án của chúng tôi.'} />
+                <meta name="keywords" content={`${projectDetail.name}, dự án, VNETC`} />
+            </Helmet>
             <div className={cx('header')}>
                 <Title text={`${projectDetail.name}`} className={cx('title')} />
             </div>
