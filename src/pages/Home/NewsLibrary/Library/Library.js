@@ -3,8 +3,8 @@ import classNames from 'classnames/bind';
 import { getImagesPagination, getVideos } from '~/services/libraryService';
 import Title from '~/components/Title';
 import Modal from './ModalLibrary';
-import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import 'swiper/css/navigation';
@@ -79,13 +79,13 @@ function Library() {
                     <Swiper
                         spaceBetween={10}
                         slidesPerView={4}
-                        loop={true}
                         modules={[Navigation, Autoplay]}
                         navigation
                         autoplay={{
                             delay: 2000,
                             disableOnInteraction: false,
                         }}
+                        loop={true}
                     >
                         {videos.map((item, index) => (
                             <SwiperSlide
@@ -120,13 +120,13 @@ function Library() {
                     <Swiper
                         spaceBetween={10}
                         slidesPerView={4}
-                        loop={true}
                         modules={[Navigation, Autoplay]}
                         navigation
                         autoplay={{
                             delay: 2000,
                             disableOnInteraction: false,
                         }}
+                        loop={true}
                     >
                         {images.map((image, index) => (
                             <SwiperSlide
