@@ -84,7 +84,6 @@ function Library() {
                             delay: 1500,
                             disableOnInteraction: false,
                         }}
-                        loop={true}
                     >
                         {videos.map((item, index) => (
                             <SwiperSlide
