@@ -81,7 +81,7 @@ function Library() {
                         slidesPerView={4}
                         modules={[Autoplay]}
                         autoplay={{
-                            delay: 2000,
+                            delay: 1500,
                             disableOnInteraction: false,
                         }}
                         loop={true}
@@ -121,7 +121,7 @@ function Library() {
                         slidesPerView={4}
                         modules={[Autoplay]}
                         autoplay={{
-                            delay: 2000,
+                            delay: 1500,
                             disableOnInteraction: false,
                         }}
                         loop={true}
