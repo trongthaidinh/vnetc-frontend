@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import { getImagesPagination, getVideos } from '~/services/libraryService';
+import { getImages, getVideos } from '~/services/libraryService';
 import Title from '~/components/Title';
 import Modal from './ModalLibrary';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -29,7 +29,7 @@ function Library() {
     useEffect(() => {
         const loadLibrary = async () => {
             try {
-                const [videoData, imageData] = await Promise.all([getVideos(), getImagesPagination()]);
+                const [videoData, imageData] = await Promise.all([getVideos(), getImages()]);
                 const updatedVideos = videoData.map((item) => ({
                     ...item,
                     link: extractVideoId(item.video),
