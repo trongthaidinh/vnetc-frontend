@@ -70,48 +70,12 @@
             height: 100%;
             object-fit: cover;
         }
-
-        .thumbnails-wrapper {
-            overflow: hidden;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-        .chevron {
-            cursor: pointer;
-            font-size: 1.8rem;
-            color: #333;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            padding: 4px;
-            background-color: rgba($color: #fff, $alpha: 0.4);
-            border-radius: 4px;
-
-            &.left {
-                left: 8px;
-                z-index: 1;
-            }
-
-            &.right {
-                right: 8px;
-            }
-
-            @include respond-to(lg) {
-                font-size: 48px;
-            }
-
-            @include respond-to(sm) {
-                font-size: 32px;
-            }
-        }
     }
 
     .thumbnail {
         margin-top: 10px;
         height: 66px;
+        padding: 4px;
         @include respond-to(lg) {
             height: 100px;
         }

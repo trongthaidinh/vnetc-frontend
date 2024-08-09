@@ -3,11 +3,9 @@ import classNames from 'classnames/bind';
 import { getImages, getVideos } from '~/services/libraryService';
 import Title from '~/components/Title';
 import Modal from './ModalLibrary';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/autoplay';
-import 'swiper/css/navigation';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import styles from './Library.module.scss';
 import ButtonGroup from '~/components/ButtonGroup';
 
@@ -59,6 +57,28 @@ function Library() {
         setModalContentType('image');
     };
 
+    const videoSettings = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 1500,
+        cssEase: 'ease-in-out',
+    };
+
+    const imageSettings = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 1500,
+        cssEase: 'ease-in-out',
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -76,29 +96,17 @@ function Library() {
                             />
                         </div>
                     )}
-                    <Swiper
-                        spaceBetween={10}
-                        slidesPerView={4}
-                        modules={[Autoplay]}
-                        autoplay={{
-                            delay: 1500,
-                            disableOnInteraction: false,
-                        }}
-                    >
+                    <Slider {...videoSettings}>
                         {videos.map((item, index) => (
-                            <SwiperSlide
-                                key={index}
-                                className={cx('thumbnail')}
-                                onClick={() => handleVideoClick(item.link)}
-                            >
+                            <div key={index} className={cx('thumbnail')} onClick={() => handleVideoClick(item.link)}>
                                 <img
                                     src={getThumbnailUrl(item.link)}
                                     alt={item.title}
                                     className={cx('thumbnail-image')}
                                 />
-                            </SwiperSlide>
+                            </div>
                         ))}
-                    </Swiper>
+                    </Slider>
                 </div>
                 <ButtonGroup buttons={['Hình ảnh']} isStatic={true} />
                 <div className={cx('library')}>
@@ -115,29 +123,17 @@ function Library() {
                             />
                         </div>
                     )}
-                    <Swiper
-                        spaceBetween={10}
-                        slidesPerView={4}
-                        modules={[Autoplay]}
-                        autoplay={{
-                            delay: 1500,
-                            disableOnInteraction: false,
-                        }}
-                    >
+                    <Slider {...imageSettings}>
                         {images.map((image, index) => (
-                            <SwiperSlide
-                                key={index}
-                                className={cx('thumbnail')}
-                                onClick={() => handleImageClick(image.image)}
-                            >
+                            <div key={index} className={cx('thumbnail')} onClick={() => handleImageClick(image.image)}>
                                 <img
                                     src={image.image}
                                     alt={`Thumbnail ${index + 1}`}
                                     className={cx('thumbnail-image')}
                                 />
-                            </SwiperSlide>
+                            </div>
                         ))}
-                    </Swiper>
+                    </Slider>
                 </div>
             </div>
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
