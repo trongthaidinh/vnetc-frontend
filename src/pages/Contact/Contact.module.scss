@@ -146,10 +146,19 @@
         flex-direction: column;
 
         li {
+            display: flex;
+            align-items: center;
             list-style-type: none;
             margin-left: 16px;
             margin-top: 8px;
             font-size: 1.4rem;
+            line-height: 1.7;
+
+            &:hover {
+                span {
+                    text-decoration: underline;
+                }
+            }
         }
     }
 
@@ -161,6 +170,11 @@
 
         a {
             color: var(--white);
+            &:hover {
+                span {
+                    text-decoration: underline;
+                }
+            }
         }
     }
 

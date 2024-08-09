@@ -84,7 +84,9 @@ const ContactPage = () => {
                         <div className={cx('infoDetails')}>
                             <div className={cx('infoItem')}>
                                 <FontAwesomeIcon icon={faPhone} className={cx('icon')} />
-                                <a href="tel:02623977171">Số điện thoại: 026 2397 7171 (Văn phòng công ty)</a>
+                                <a href="tel:02623977171">
+                                    Số điện thoại: <span>026 2397 7171</span> (Văn phòng công ty)
+                                </a>
                             </div>
                             <div className={cx('infoItem')}>
                                 <span>
@@ -93,25 +95,37 @@ const ContactPage = () => {
                                     <ul className={cx('contact-list')}>
                                         <li>
                                             <FontAwesomeIcon icon={faWrench} className={cx('icon')} />
-                                            <a href="tel:0931951140">Thí nghiệm điện: 093 1951 140 (Mr. Phi)</a>
+                                            <a href="tel:0931951140">
+                                                Đội Thí nghiệm - Kiểm định, thí nghiệm lần đầu thiết bị điện; QLVH ĐD &
+                                                TBA: <span>093 1951 140</span> (Mr. Phi)
+                                            </a>
                                         </li>
                                         <li>
                                             <FontAwesomeIcon icon={faCogs} className={cx('icon')} />
                                             <a href="tel:0911711933">
-                                                QLVH và xử lý sự cố lưới điện: 091 1711 933 (Mr. Phước)
+                                                Đội Dịch vụ - Xử lý sự cố điện và Thí nghiệm; Kiểm định định kỳ các TBA:{' '}
+                                                <span>091 1711 933</span> (Mr. Phước)
                                             </a>
                                         </li>
                                         <li>
                                             <FontAwesomeIcon icon={faChartLine} className={cx('icon')} />
-                                            <a href="tel:0982064747">Lập dự toán kinh doanh: 098 2064 747 (Ms. Ngọc)</a>
+                                            <a href="tel:0982064747">
+                                                Phòng Kinh doanh - Lập dự toán thí nghiệm: <span>098 2064 747</span>{' '}
+                                                (Ms. Ngọc)
+                                            </a>
                                         </li>
                                         <li>
                                             <FontAwesomeIcon icon={faFileAlt} className={cx('icon')} />
-                                            <a href="tel:0932585866">Tài chính - Tổng hợp: 093 2585 866 (Ms. Mai)</a>
+                                            <a href="tel:0932585866">
+                                                {' '}
+                                                Phòng Tài chính - Tổng hợp: <span>093 2585 866</span> (Ms. Mai)
+                                            </a>
                                         </li>
                                         <li>
                                             <FontAwesomeIcon icon={faFileAlt} className={cx('icon')} />
-                                            <a href="tel:0971787996">Hồ sơ pháp lý kỹ thuật: 097 1787 996 (Mr. Kiệt)</a>
+                                            <a href="tel:0971787996">
+                                                Bộ phần Hồ sơ pháp lý kỹ thuật: <span>097 1787 996</span> (Mr. Kiệt)
+                                            </a>
                                         </li>
                                     </ul>
                                 </span>
