@@ -124,7 +124,7 @@ const ContactPage = () => {
                                         <li>
                                             <FontAwesomeIcon icon={faFileAlt} className={cx('icon')} />
                                             <a href="tel:0971787996">
-                                                Bộ phần Hồ sơ pháp lý kỹ thuật: <span>097 1787 996</span> (Mr. Kiệt)
+                                                Bộ phận Hồ sơ pháp lý kỹ thuật: <span>097 1787 996</span> (Mr. Kiệt)
                                             </a>
                                         </li>
                                     </ul>
