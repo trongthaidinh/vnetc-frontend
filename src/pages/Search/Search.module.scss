@@ -34,18 +34,26 @@
 
     .search-items {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(1, 1fr);
         justify-content: space-between;
         gap: 20px;
         margin-top: 20px;
 
         @include respond-to(lg) {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(1, 1fr);
         }
 
         @include respond-to(sm) {
             grid-template-columns: repeat(1, 1fr);
         }
+    }
+
+    .news-result,
+    .service-result,
+    .product-result,
+    .project-result {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .search-title {
@@ -113,7 +121,7 @@
         font-weight: normal;
 
         &.active {
-            background-color: #007bff;
+            background-color: var(--primary);
             color: white;
             font-weight: bold;
         }

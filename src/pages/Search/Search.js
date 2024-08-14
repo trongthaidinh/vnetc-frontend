@@ -3,28 +3,46 @@ import { Link, useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Card from '~/components/CardContent';
 import SuggestCard from '~/components/SuggestCard';
-import { searchItems } from '~/services/searchService';
+import { getSearchNews, getSearchProduct, getSearchProject, getSearchService } from '~/services/searchService';
 import styles from './Search.module.scss';
 import ButtonGroup from '~/components/ButtonGroup';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
 import routes from '~/config/routes';
-import { getNews } from '~/services/newsService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { getCategories } from '~/services/categoryService';
+import { getCategories, getCategoriesByType } from '~/services/categoryService';
+import Title from '~/components/Title';
+import Product from '~/components/Product';
 
 const cx = classNames.bind(styles);
 
 const Search = () => {
-    const [searchResults, setSearchResults] = useState([]);
-    const [news, setNews] = useState([]);
+    const [searchResults, setSearchResults] = useState({
+        news: [],
+        products: [],
+        projects: [],
+        services: [],
+    });
+
     const [categories, setCategories] = useState([]);
+    const [categoriesService, setCategoriesService] = useState([]);
+    const [categoriesProject, setCategoriesProject] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedSuggestion, setSelectedSuggestion] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
+    const [currentPages, setCurrentPages] = useState({
+        news: 1,
+        products: 1,
+        projects: 1,
+        services: 1,
+    });
+    const [totalPages, setTotalPages] = useState({
+        news: 1,
+        products: 1,
+        projects: 1,
+        services: 1,
+    });
     const location = useLocation();
 
     const query = new URLSearchParams(location.search).get('q');
@@ -34,13 +52,40 @@ const Search = () => {
         const fetchSearchResults = async () => {
             try {
                 setLoading(true);
-                const searchData = await searchItems(query, resultsPerPage, currentPage);
-                const [newsData, categoryData] = await Promise.all([getNews(), getCategories()]);
-                setSearchResults(searchData.results);
-                setNews(newsData);
-                setCurrentPage(searchData.currentPage);
+
+                const [
+                    newsData,
+                    productData,
+                    projectData,
+                    serviceData,
+                    categoryData,
+                    categoryService,
+                    categoryProject,
+                ] = await Promise.all([
+                    getSearchNews(query, resultsPerPage, currentPages.news),
+                    getSearchProduct(query, resultsPerPage, currentPages.products),
+                    getSearchProject(query, resultsPerPage, currentPages.projects),
+                    getSearchService(query, resultsPerPage, currentPages.services),
+                    getCategories(),
+                    getCategoriesByType(3),
+                    getCategoriesByType(4),
+                ]);
+
+                setSearchResults({
+                    news: newsData.results,
+                    products: productData.products,
+                    projects: projectData.results,
+                    services: serviceData.results,
+                });
                 setCategories(categoryData);
-                setTotalPages(searchData.totalPages);
+                setCategoriesService(categoryService);
+                setCategoriesProject(categoryProject);
+                setTotalPages({
+                    news: newsData.totalPages,
+                    products: productData.totalPages,
+                    projects: projectData.totalPages,
+                    services: serviceData.totalPages,
+                });
             } catch (error) {
                 setError(error);
                 console.error('Error fetching search results:', error);
@@ -52,10 +97,25 @@ const Search = () => {
         if (query) {
             fetchSearchResults();
         }
-    }, [query, currentPage]);
+    }, [query, currentPages]);
 
-    const getCategorySlug = (news) => {
-        const category = categories.find((cat) => cat._id === news.categoryId);
+    const getCategorySlug = (item) => {
+        const category = categories.find((cat) => cat._id === item.categoryId);
+        return category ? category.slug : '';
+    };
+
+    const getProductCategorySlug = (item) => {
+        const category = categories.find((cat) => cat._id === item.category_id);
+        return category ? category.slug : '';
+    };
+
+    const getProjectCategorySlug = (item) => {
+        const category = categoriesProject.find((cat, index) => index === item.projectType);
+        return category ? category.slug : '';
+    };
+
+    const getServiceCategorySlug = (item) => {
+        const category = categoriesService.find((cat, index) => index === item.serviceType);
         return category ? category.slug : '';
     };
 
@@ -63,11 +123,45 @@ const Search = () => {
         setSelectedSuggestion(index);
     };
 
-    const handlePageChange = (pageNumber) => {
-        if (pageNumber >= 1 && pageNumber <= totalPages) {
-            console.log(pageNumber);
-            setCurrentPage(pageNumber);
+    const handlePageChange = (section, pageNumber) => {
+        if (pageNumber >= 1 && pageNumber <= totalPages[section]) {
+            setCurrentPages((prevPages) => ({
+                ...prevPages,
+                [section]: pageNumber,
+            }));
         }
+    };
+
+    const renderPagination = (section) => {
+        const pages = [];
+        for (let i = 1; i <= totalPages[section]; i++) {
+            pages.push(
+                <div
+                    key={i}
+                    className={cx('pageButton', { active: currentPages[section] === i })}
+                    onClick={() => handlePageChange(section, i)}
+                >
+                    {i}
+                </div>,
+            );
+        }
+        return (
+            <div className={cx('pagination')}>
+                <div
+                    className={cx('pageButton', { disabled: currentPages[section] === 1 })}
+                    onClick={() => handlePageChange(section, currentPages[section] - 1)}
+                >
+                    <FontAwesomeIcon icon={faArrowLeft} />
+                </div>
+                {pages}
+                <div
+                    className={cx('pageButton', { disabled: currentPages[section] === totalPages[section] })}
+                    onClick={() => handlePageChange(section, currentPages[section] + 1)}
+                >
+                    <FontAwesomeIcon icon={faArrowRight} />
+                </div>
+            </div>
+        );
     };
 
     if (error) {
@@ -79,7 +173,7 @@ const Search = () => {
         return <LoadingScreen />;
     }
 
-    const filteredNews = news
+    const filteredNews = searchResults.news
         .filter((item) => {
             if (selectedSuggestion === 0) {
                 return item.isFeatured;
@@ -89,51 +183,99 @@ const Search = () => {
             }
             return true;
         })
+        .sort(() => Math.random() - 0.5)
         .slice(0, 5);
 
     const renderSearchResults = () => {
-        return searchResults.map((item, index) => (
-            <Link key={index} to={`${routes.news}/${getCategorySlug(item)}/${item._id}`}>
-                <Card
-                    title={item.title}
-                    summary={item.summary}
-                    image={item.images}
-                    createdAt={new Date(item.createdAt).getTime()}
-                    views={item.views}
-                />
-            </Link>
-        ));
-    };
+        const hasResults =
+            searchResults.news.length > 0 ||
+            searchResults.products.length > 0 ||
+            searchResults.projects.length > 0 ||
+            searchResults.services.length > 0;
 
-    const renderPagination = () => {
-        const pages = [];
-        for (let i = 1; i <= totalPages; i++) {
-            pages.push(
-                <div
-                    key={i}
-                    className={cx('pageButton', { active: currentPage === i })}
-                    onClick={() => handlePageChange(i)}
-                >
-                    {i}
-                </div>,
+        if (!hasResults) {
+            return (
+                <p>
+                    Không có kết quả nào để hiển thị với từ khóa <strong>"{query}"</strong>
+                </p>
             );
         }
         return (
-            <div className={cx('pagination')}>
-                <div
-                    className={cx('pageButton', { disabled: currentPage === 1 })}
-                    onClick={() => handlePageChange(currentPage - 1)}
-                >
-                    <FontAwesomeIcon icon={faArrowLeft} />
-                </div>
-                {pages}
-                <div
-                    className={cx('pageButton', { disabled: currentPage === totalPages })}
-                    onClick={() => handlePageChange(currentPage + 1)}
-                >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                </div>
-            </div>
+            <>
+                {searchResults.news && searchResults.news.length > 0 && (
+                    <>
+                        <Title text="Tin tức" />
+                        <div className={cx('news-result')}>
+                            {searchResults.news.map((item, index) => (
+                                <Link key={index} to={`${routes.news}/${getCategorySlug(item)}/${item._id}`}>
+                                    <Card
+                                        title={item.title}
+                                        summary={item.summary}
+                                        image={item.images}
+                                        createdAt={new Date(item.createdAt).getTime()}
+                                        views={item.views}
+                                    />
+                                </Link>
+                            ))}
+                        </div>
+                        {renderPagination('news')}
+                    </>
+                )}
+
+                {searchResults.products && searchResults.products.length > 0 && (
+                    <>
+                        <Title text="Sản phẩm" />
+                        <div className={cx('product-result')}>
+                            {searchResults.products.map((item, index) => (
+                                <Link key={index} to={`${routes.products}/${getProductCategorySlug(item)}/${item.id}`}>
+                                    <Product name={item.name} image={item.image} />
+                                </Link>
+                            ))}
+                        </div>
+                        {renderPagination('products')}
+                    </>
+                )}
+
+                {searchResults.projects && searchResults.projects.length > 0 && (
+                    <>
+                        <Title text="Dự án" />
+                        <div className={cx('project-result')}>
+                            {searchResults.projects.map((item, index) => (
+                                <Link key={index} to={`${routes.projects}/${getProjectCategorySlug(item)}/${item._id}`}>
+                                    <Card
+                                        title={item.name}
+                                        summary={item.summary}
+                                        image={item.image}
+                                        createdAt={new Date(item.createdAt).getTime()}
+                                        views={item.views}
+                                    />
+                                </Link>
+                            ))}
+                        </div>
+                        {renderPagination('projects')}
+                    </>
+                )}
+
+                {searchResults.services && searchResults.services.length > 0 && (
+                    <>
+                        <Title text="Dịch vụ" />
+                        <div className={cx('project-result')}>
+                            {searchResults.services.map((item, index) => (
+                                <Link key={index} to={`${routes.services}/${getServiceCategorySlug(item)}/${item._id}`}>
+                                    <Card
+                                        title={item.name}
+                                        summary={item.summary}
+                                        image={item.image}
+                                        createdAt={new Date(item.createdAt).getTime()}
+                                        views={item.views}
+                                    />
+                                </Link>
+                            ))}
+                        </div>
+                        {renderPagination('services')}
+                    </>
+                )}
+            </>
         );
     };
 
@@ -143,24 +285,19 @@ const Search = () => {
                 <div className={cx('search-column')}>
                     <h2 className={cx('search-title')}>Kết Quả Tìm Kiếm</h2>
                     <div className={cx('search-items')}>{renderSearchResults()}</div>
-                    {renderPagination()}
                 </div>
                 <div className={cx('suggest')}>
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
-                    <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} onButtonClick={handleButtonClick} />
-                    <div className={cx('suggest-items')}>
-                        {filteredNews &&
-                            filteredNews.map((item, index) => (
-                                <Link key={index} to={`/news/${item._id}`}>
-                                    <SuggestCard
-                                        title={item.title}
-                                        summary={item.summary}
-                                        image={item.images}
-                                        createdAt={new Date(item.createdAt).getTime()}
-                                        views={item.views}
-                                    />
-                                </Link>
-                            ))}
+                    <ButtonGroup buttons={['Nổi bật', 'Xem nhiều', 'Ngẫu nhiên']} onButtonClick={handleButtonClick} />
+                    <div className={cx('suggest-list')}>
+                        {filteredNews.map((item, index) => (
+                            <SuggestCard
+                                key={index}
+                                title={item.title}
+                                image={item.images}
+                                createdAt={new Date(item.createdAt).getTime()}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>
