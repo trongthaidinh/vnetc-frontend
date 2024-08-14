@@ -46,10 +46,10 @@
     .project-result {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
 
         @include respond-to(lg) {
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
         }
 
         @include respond-to(sm) {
@@ -73,7 +73,7 @@
 .suggest {
     flex: 1;
 
-    .suggest-items {
+    .suggest-list {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
         justify-content: space-between;

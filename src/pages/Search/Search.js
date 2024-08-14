@@ -14,6 +14,7 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { getCategories, getCategoriesByType } from '~/services/categoryService';
 import Title from '~/components/Title';
 import Product from '~/components/Product';
+import { getNewsPagination } from '~/services/newsService';
 
 const cx = classNames.bind(styles);
 
@@ -25,6 +26,7 @@ const Search = () => {
         services: [],
     });
 
+    const [suggests, setSuggests] = useState([]);
     const [categories, setCategories] = useState([]);
     const [categoriesService, setCategoriesService] = useState([]);
     const [categoriesProject, setCategoriesProject] = useState([]);
@@ -54,6 +56,7 @@ const Search = () => {
                 setLoading(true);
 
                 const [
+                    suggestData,
                     newsData,
                     productData,
                     projectData,
@@ -62,6 +65,7 @@ const Search = () => {
                     categoryService,
                     categoryProject,
                 ] = await Promise.all([
+                    getNewsPagination(),
                     getSearchNews(query, resultsPerPage, currentPages.news),
                     getSearchProduct(query, resultsPerPage, currentPages.products),
                     getSearchProject(query, resultsPerPage, currentPages.projects),
@@ -77,6 +81,8 @@ const Search = () => {
                     projects: projectData.results,
                     services: serviceData.results,
                 });
+
+                setSuggests(suggestData);
                 setCategories(categoryData);
                 setCategoriesService(categoryService);
                 setCategoriesProject(categoryProject);
@@ -173,7 +179,7 @@ const Search = () => {
         return <LoadingScreen />;
     }
 
-    const filteredNews = searchResults.news
+    const filteredNews = suggests
         .filter((item) => {
             if (selectedSuggestion === 0) {
                 return item.isFeatured;
@@ -259,7 +265,7 @@ const Search = () => {
                 {searchResults.services && searchResults.services.length > 0 && (
                     <>
                         <Title text="Dịch vụ" />
-                        <div className={cx('project-result')}>
+                        <div className={cx('service-result')}>
                             {searchResults.services.map((item, index) => (
                                 <Link key={index} to={`${routes.services}/${getServiceCategorySlug(item)}/${item._id}`}>
                                     <Card
@@ -291,12 +297,14 @@ const Search = () => {
                     <ButtonGroup buttons={['Nổi bật', 'Xem nhiều', 'Ngẫu nhiên']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-list')}>
                         {filteredNews.map((item, index) => (
-                            <SuggestCard
-                                key={index}
-                                title={item.title}
-                                image={item.images}
-                                createdAt={new Date(item.createdAt).getTime()}
-                            />
+                            <Link key={index} to={`${routes.news}/${getCategorySlug(item)}/${item._id}`}>
+                                <SuggestCard
+                                    key={index}
+                                    title={item.title}
+                                    image={item.images}
+                                    createdAt={new Date(item.createdAt).getTime()}
+                                />
+                            </Link>
                         ))}
                     </div>
                 </div>
