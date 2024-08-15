@@ -1,5 +1,6 @@
 .loading {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -9,6 +10,26 @@
     left: 0;
     z-index: 9999;
     background-color: #fff;
+    transition: transform 0.8s ease, opacity 0.8s ease;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.slideUp {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+.logo {
+    width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.loadingWrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
 }
 
 .spinnerContainer {
@@ -47,7 +68,7 @@
 
 .loadingText {
     font-size: 1.6rem;
-    margin-left: 10px;
+    margin-left: 8px;
     color: var(--primary);
     font-weight: bold;
 }
