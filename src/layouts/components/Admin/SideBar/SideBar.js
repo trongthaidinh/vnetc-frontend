@@ -23,7 +23,7 @@ import {
     faListAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import routes from '~/config/routes';
-import companyLogo from '~/assets/images/logo_vnetc.png';
+import images from '~/assets/images';
 
 const SideBar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -56,7 +56,7 @@ const SideBar = () => {
         <div className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : styles.expanded}`}>
             <div className={styles.logoWrapper}>
                 <Link to={routes.admin}>
-                    <img src={companyLogo} alt="Company Logo" className={styles.logo} />
+                    <img src={images.logo} alt="Company Logo" className={styles.logo} />
                 </Link>
                 <FontAwesomeIcon
                     icon={isCollapsed ? faCaretRight : faCaretLeft}

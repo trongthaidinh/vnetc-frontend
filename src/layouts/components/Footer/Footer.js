@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope, faChevronRight, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faInstagram, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
-import companyLogo from '~/assets/images/logo_vnetc.png';
+import images from '~/assets/images';
 import styles from './Footer.module.scss';
 import classNames from 'classnames/bind';
 import io from 'socket.io-client';
@@ -39,7 +39,7 @@ const Footer = () => {
             <div className={cx('inner')}>
                 <div className={cx('footerLeft', 'footerColumnWide')}>
                     <Link to="/">
-                        <img src={companyLogo} alt="Company Logo" className={cx('logo')} />
+                        <img src={images.logo} alt="Company Logo" className={cx('logo')} />
                     </Link>
                     <h5>CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM</h5>
                     <p>Số 22 Trần Hữu Dực, tổ 5, Phường Tân Lợi, TP. Buôn Ma Thuột, Tỉnh Đắk Lắk, Việt Nam</p>
