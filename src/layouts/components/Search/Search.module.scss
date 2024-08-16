@@ -19,65 +19,60 @@
     }
 }
 
-.search-container {
-    display: flex;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    width: 300px;
-    background-color: white;
-    border-radius: 4px;
-    box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 4px;
-    padding: 8px;
-    z-index: 1;
+.icon-input {
+    padding: 10px;
+    background-color: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 2rem;
+    color: var(--primary);
+    transition: all ease-in-out 200ms;
+    margin-right: 10px;
 
-    .icon {
-        cursor: pointer;
-        color: var(--black);
-        transition: all ease-in-out 200ms;
+    &:hover {
+        background-color: var(--secondary);
+        color: var(--white);
+    }
+}
 
-        &:hover {
-            background-color: var(--white);
-        }
+.search-modal {
+    .ant-modal-content {
+        background-color: rgba(0, 0, 0, 0.8);
+        box-shadow: none;
+    }
+    .ant-modal-body {
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .search-container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
 .search-input {
-    width: calc(100% - 16px);
-    padding: 8px;
-    font-size: 16px;
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
     border: none;
     outline: none;
-    border-bottom: 1px solid transparent;
     transition: all ease-in-out 200ms;
+    background-color: var(--white);
+    box-shadow: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #ccc;
 
     &:focus {
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid var(--primary);
     }
-}
 
-.search-button {
-    margin-top: 8px;
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.results {
-    margin-top: 8px;
-    list-style: none;
-    padding: 0;
-}
-
-.result-item {
-    padding: 8px;
-    cursor: pointer;
-}
-
-.result-item:hover {
-    background-color: #f0f0f0;
+    &:focus {
+        outline: none;
+        border-bottom: 1px solid var(--primary);
+        box-shadow: none;
+    }
 }

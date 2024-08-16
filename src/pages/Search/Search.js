@@ -15,6 +15,7 @@ import { getCategories, getCategoriesByType } from '~/services/categoryService';
 import Title from '~/components/Title';
 import Product from '~/components/Product';
 import { getNewsPagination } from '~/services/newsService';
+import { Empty } from 'antd';
 
 const cx = classNames.bind(styles);
 
@@ -201,11 +202,16 @@ const Search = () => {
 
         if (!hasResults) {
             return (
-                <p>
-                    Không có kết quả nào để hiển thị với từ khóa <strong>"{query}"</strong>
-                </p>
+                <Empty
+                    description={
+                        <>
+                            Không có kết quả nào để hiển thị với từ khóa <strong>"{query}"</strong>
+                        </>
+                    }
+                ></Empty>
             );
         }
+
         return (
             <>
                 {searchResults.news && searchResults.news.length > 0 && (
