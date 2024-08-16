@@ -181,7 +181,6 @@ const ContactPage = () => {
                                                 id="subject1"
                                                 value="Dịch vụ"
                                                 className={cx('customRadio')}
-                                                checked
                                             />
                                             <label htmlFor="subject1" className={cx('radioLabel')}>
                                                 Dịch vụ
@@ -230,7 +229,7 @@ const ContactPage = () => {
                     </div>
                 </div>
             </div>
-            <PushNotification notification={notification.message} setNotification={notification.type} />
+            <PushNotification message={notification.message} type={notification.type} />
         </div>
     );
 };
