@@ -230,7 +230,7 @@ const ContactPage = () => {
                     </div>
                 </div>
             </div>
-            <PushNotification notification={notification} setNotification={setNotification} />
+            <PushNotification notification={notification.message} setNotification={notification.type} />
         </div>
     );
 };
