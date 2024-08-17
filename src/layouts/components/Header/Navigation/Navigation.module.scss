@@ -50,6 +50,14 @@
         justify-content: space-between;
         align-items: center;
 
+        .logo {
+            height: 60px;
+
+            @include respond-to(sm) {
+                height: 40px;
+            }
+        }
+
         .mobile-menu-icon {
             display: none;
             cursor: pointer;
@@ -66,21 +74,50 @@
             list-style-type: none;
             padding: 0;
             margin: 0;
-            gap: 20px;
 
             li {
                 position: relative;
                 height: var(--nav-height);
+                min-width: 100px;
                 z-index: 1000;
                 justify-content: center;
                 display: flex;
-                flex-direction: column;
                 align-items: center;
+                flex-direction: column;
+                transition: all 0.2s ease-in-out;
+                text-align: center;
+
+                &:hover {
+                    background-color: var(--secondary);
+                }
+
+                @include respond-to(lg) {
+                    min-width: 100%;
+                }
 
                 .menu-item {
                     display: flex;
                     align-items: center;
+                    justify-content: center;
                     width: 100%;
+                    @include respond-to(lg) {
+                        padding: 16px 20px;
+                        justify-content: space-between;
+                    }
+
+                    .item-icon {
+                        display: flex;
+                        gap: 8px;
+                        flex-direction: column;
+                        @include respond-to(lg) {
+                            flex-direction: row;
+                            gap: 20px;
+                        }
+                    }
+
+                    .nav-icon {
+                        font-size: 2rem;
+                    }
                 }
 
                 &.has-children {
@@ -100,31 +137,19 @@
                     .dropdown {
                         display: none;
                     }
-
-                    &:hover .dropdown {
-                        display: flex;
-                        flex-direction: column;
-                        background-color: var(--primary);
-                        transform: translateY(-12px);
-                        opacity: 0;
-                        animation: slideDown 0.3s forwards ease-in-out;
-                    }
                 }
 
                 a {
                     text-decoration: none;
                     color: white;
                     font-weight: bold;
-                    font-size: 16px;
+                    font-size: 1.4rem;
                     padding: 10px;
                     transition: color 0.3s ease;
                     display: flex;
                     align-items: center;
                     height: 100%;
-
-                    &:hover {
-                        color: lightgray;
-                    }
+                    text-transform: uppercase;
                 }
 
                 .dropdown {
@@ -136,6 +161,11 @@
                     border-bottom-left-radius: 8px;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                     overflow: hidden;
+
+                    @include respond-to(lg) {
+                        display: none;
+                        border-radius: 0;
+                    }
 
                     li {
                         height: 40px;
@@ -150,16 +180,53 @@
                             display: flex;
                             align-items: center;
                             transition: all ease-in-out 0.3s;
+                            text-transform: uppercase;
+
+                            @include respond-to(lg) {
+                                padding: 20px 40px;
+                            }
 
                             &:hover {
                                 color: var(--white);
-                                background-color: var(--primary);
+                                background-color: var(--secondary);
                             }
                         }
                     }
 
                     &.open {
-                        display: block;
+                        // Dành cho màn hình nhỏ hơn lg
+                        @media (max-width: 1280px) {
+                            display: flex;
+                            flex-direction: column;
+                            width: 100%;
+                            position: static;
+                            box-shadow: none;
+                            background-color: none;
+
+                            li {
+                                background-color: var(--primary);
+                                height: auto;
+
+                                &:hover {
+                                    background-color: var(--secondary);
+                                }
+
+                                a {
+                                    color: var(--white);
+                                    background-color: transparent;
+                                    font-size: 14px;
+                                }
+                            }
+                        }
+
+                        @media (min-width: 1280px) {
+                            display: flex;
+                            flex-direction: column;
+                            background-color: var(--primary);
+                            transform: translateY(-12px);
+                            opacity: 0;
+                            animation: slideDown 0.3s forwards ease-in-out;
+                        }
                     }
                 }
             }
@@ -194,10 +261,8 @@
                 justify-content: flex-start;
                 align-items: flex-start;
                 z-index: 1000;
-                padding: 0 15px;
 
                 li {
-                    margin: 0 20px;
                     height: auto;
                     align-items: flex-start;
 
@@ -205,26 +270,16 @@
                         height: auto;
                         font-size: 18px;
                     }
-
-                    .dropdown {
-                        position: static;
-                        box-shadow: none;
-                        background-color: none;
-                        li {
-                            height: auto;
-
-                            a {
-                                color: var(--white);
-                                background-color: transparent;
-                                font-size: 14px;
-                                margin-left: 20px;
-                            }
-                        }
-                    }
                 }
 
                 &.open {
                     display: flex;
+                    max-height: calc(100vh - var(--nav-height));
+                    overflow-y: auto;
+                    transition: max-height 0.3s ease;
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
                 }
             }
 

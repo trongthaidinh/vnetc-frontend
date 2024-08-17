@@ -7,7 +7,29 @@ import Search from '~/layouts/components/Search';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import {
+    faBars,
+    faTimes,
+    faChevronRight,
+    faChevronDown,
+    faInfoCircle,
+    faBox,
+    faLayerGroup,
+    faProjectDiagram,
+    faNewspaper,
+    faUsers,
+    faEnvelope,
+} from '@fortawesome/free-solid-svg-icons';
+
+const iconsData = [
+    { position: 1, icon: faInfoCircle },
+    { position: 2, icon: faBox },
+    { position: 3, icon: faLayerGroup },
+    { position: 4, icon: faProjectDiagram },
+    { position: 5, icon: faNewspaper },
+    { position: 6, icon: faUsers },
+    { position: 7, icon: faEnvelope },
+];
 
 const cx = classNames.bind(styles);
 
@@ -22,10 +44,10 @@ function Navigation({ isFixed }) {
         const fetchNavigationLinks = async () => {
             try {
                 const links = await getNavigationLinks();
-                setNavigationLinks(links);
+                const sortedLinks = links.sort((a, b) => a.position - b.position);
+                setNavigationLinks(sortedLinks);
             } catch (error) {
                 setError(error);
-                setLoading(false);
                 console.error('Error fetching navigation links:', error);
             } finally {
                 setLoading(false);
@@ -39,17 +61,37 @@ function Navigation({ isFixed }) {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const handleLinkClick = () => {
+    const handleLinkClick = (id) => {
         if (isMenuOpen) {
             toggleMenu();
         }
     };
 
     const toggleSubMenu = (id) => {
-        setOpenSubMenus((prevState) => ({
-            ...prevState,
-            [id]: !prevState[id],
-        }));
+        if (window.innerWidth < 1280) {
+            setOpenSubMenus((prevState) => ({
+                ...prevState,
+                [id]: !prevState[id],
+            }));
+        }
+    };
+
+    const handleMouseEnter = (id) => {
+        if (window.innerWidth >= 1280) {
+            setOpenSubMenus((prevState) => ({
+                ...prevState,
+                [id]: true,
+            }));
+        }
+    };
+
+    const handleMouseLeave = (id) => {
+        if (window.innerWidth >= 1280) {
+            setOpenSubMenus((prevState) => ({
+                ...prevState,
+                [id]: false,
+            }));
+        }
     };
 
     if (error) {
@@ -67,48 +109,65 @@ function Navigation({ isFixed }) {
                 <div className={cx('mobile-menu-icon')} onClick={toggleMenu}>
                     <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
                 </div>
+
                 <ul className={cx('navigation-links', { open: isMenuOpen })}>
                     <li onClick={handleLinkClick}>
-                        <NavLink end to="/" className={({ isActive }) => cx({ 'active-link': isActive })}>
-                            Trang Chủ
-                        </NavLink>
+                        <div className={cx('menu-item')}>
+                            <NavLink end to="/" className={({ isActive }) => cx({ 'active-link': isActive })}>
+                                <div className={cx('item-icon')}>Trang Chủ</div>
+                            </NavLink>
+                        </div>
                     </li>
-                    {navigationLinks.map((link) => (
-                        <li key={link._id} className={cx({ 'has-children': link.childs.length > 0 })}>
-                            <div className={cx('menu-item')}>
-                                <NavLink
-                                    end
-                                    to={`/${link.slug}`}
-                                    className={({ isActive }) => cx({ 'active-link': isActive })}
-                                    onClick={handleLinkClick}
-                                >
-                                    {link.title}
-                                </NavLink>
+                    {navigationLinks.map((link) => {
+                        const iconData = iconsData.find((icon) => icon.position === link.position);
+                        const sortedChilds = link.childs.sort((a, b) => a.position - b.position);
+                        return (
+                            <li
+                                key={link._id}
+                                className={cx({ 'has-children': link.childs.length > 0 })}
+                                onMouseEnter={() => handleMouseEnter(link._id)} // Hover event
+                                onMouseLeave={() => handleMouseLeave(link._id)} // Leave event
+                                onClick={() => toggleSubMenu(link._id)} // Click event for mobile
+                            >
+                                <div className={cx('menu-item')}>
+                                    <NavLink
+                                        end
+                                        to={`/${link.slug}`}
+                                        className={({ isActive }) => cx({ 'active-link': isActive })}
+                                        onClick={handleLinkClick}
+                                    >
+                                        <div className={cx('item-icon')}>
+                                            {iconData && (
+                                                <FontAwesomeIcon icon={iconData.icon} className={cx('nav-icon')} />
+                                            )}
+                                            {link.title}
+                                        </div>
+                                    </NavLink>
+                                    {link.childs.length > 0 && (
+                                        <FontAwesomeIcon
+                                            icon={openSubMenus[link._id] ? faChevronDown : faChevronRight}
+                                            className={cx('submenu-icon')}
+                                        />
+                                    )}
+                                </div>
                                 {link.childs.length > 0 && (
-                                    <FontAwesomeIcon
-                                        icon={openSubMenus[link.id] ? faChevronDown : faChevronRight}
-                                        className={cx('submenu-icon')}
-                                        onClick={() => toggleSubMenu(link._id)}
-                                    />
+                                    <ul className={cx('dropdown', { open: openSubMenus[link._id] })}>
+                                        {sortedChilds.map((childLink) => (
+                                            <li key={childLink._id}>
+                                                <NavLink
+                                                    to={`/${link.slug}/${childLink.slug}`}
+                                                    className={({ isActive }) => cx({ 'active-link': isActive })}
+                                                    onClick={toggleMenu}
+                                                >
+                                                    {childLink.title}
+                                                </NavLink>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 )}
-                            </div>
-                            {link.childs.length > 0 && (
-                                <ul className={cx('dropdown', { open: openSubMenus[link._id] })}>
-                                    {link.childs.map((childLink) => (
-                                        <li key={childLink._id} onClick={handleLinkClick}>
-                                            <NavLink
-                                                to={`/${link.slug}/${childLink.slug}`}
-                                                className={({ isActive }) => cx({ 'active-link': isActive })}
-                                                onClick={toggleMenu}
-                                            >
-                                                {childLink.title}
-                                            </NavLink>
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </li>
-                    ))}
+                            </li>
+                        );
+                    })}
                 </ul>
                 <Search />
             </div>
