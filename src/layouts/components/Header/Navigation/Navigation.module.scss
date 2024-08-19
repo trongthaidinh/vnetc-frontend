@@ -156,11 +156,8 @@
                     position: absolute;
                     top: 100%;
                     left: 0;
-                    background-color: white;
-                    border-bottom-right-radius: 8px;
-                    border-bottom-left-radius: 8px;
+
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    overflow: hidden;
 
                     @include respond-to(lg) {
                         display: none;
@@ -168,28 +165,31 @@
                     }
 
                     li {
+                        width: 100%;
                         height: 40px;
                         margin: 0;
                         white-space: nowrap;
+                        position: relative;
+                        background-color: white;
 
                         a {
                             width: 100%;
                             min-width: 200px;
                             padding: 8px 16px;
                             color: black;
-                            background-color: white;
                             display: flex;
-                            align-items: center;
-                            transition: all ease-in-out 0.3s;
+                            transition: all ease-in-out 0.2s;
                             text-transform: uppercase;
-
-                            @include respond-to(lg) {
-                                padding: 20px 40px;
-                            }
 
                             &:hover {
                                 color: var(--white);
-                                background-color: var(--secondary);
+                            }
+                        }
+                        &:hover {
+                            background-color: var(--secondary);
+
+                            div > a {
+                                color: white;
                             }
                         }
                     }
@@ -215,6 +215,15 @@
                                     color: var(--white);
                                     background-color: transparent;
                                     font-size: 14px;
+                                }
+                            }
+
+                            .sub-link-wrapper {
+                                @include respond-to(lg) {
+                                    padding: 20px 40px;
+                                    width: 100%;
+                                    align-items: center;
+                                    display: flex;
                                 }
                             }
                         }
@@ -286,6 +295,83 @@
             .search-button {
                 margin-right: 15px;
             }
+        }
+    }
+}
+
+.dropdown-second-level {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background-color: white;
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    @include respond-to(lg) {
+        display: none;
+        border-radius: 0;
+    }
+
+    li {
+        height: 40px;
+        margin: 0;
+        white-space: nowrap;
+
+        a {
+            width: 100%;
+            min-width: 200px;
+            padding: 8px 16px;
+            color: black;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            transition: all ease-in-out 0.3s;
+            text-transform: uppercase;
+
+            @include respond-to(lg) {
+                padding: 20px 40px;
+            }
+
+            &:hover {
+                color: var(--white);
+                background-color: var(--secondary);
+            }
+        }
+    }
+
+    &.open {
+        @media (max-width: 1280px) {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            position: static;
+            box-shadow: none;
+            background-color: none;
+
+            li {
+                background-color: var(--primary);
+                height: auto;
+                padding: 12px 0 0 60px;
+                &:hover {
+                    background-color: var(--secondary);
+                }
+
+                a {
+                    color: var(--white);
+                    background-color: transparent;
+                    font-size: 14px;
+                }
+            }
+        }
+
+        @media (min-width: 1280px) {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--primary);
+            transform: translateY(-12px);
+            opacity: 0;
+            animation: slideDown 0.3s forwards ease-in-out;
         }
     }
 }
