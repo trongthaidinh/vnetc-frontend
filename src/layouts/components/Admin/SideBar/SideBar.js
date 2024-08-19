@@ -340,6 +340,12 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.teamManagement ? styles.open : ''}`}>
                         <li>
+                            <NavLink to={routes.departmentList}>Danh sách phòng ban</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.addDepartment}>Thêm phòng ban</NavLink>
+                        </li>
+                        <li>
                             <NavLink to={routes.memberList}>Danh sách đội ngũ</NavLink>
                         </li>
                         <li>
