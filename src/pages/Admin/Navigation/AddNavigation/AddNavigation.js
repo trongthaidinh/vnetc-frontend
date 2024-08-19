@@ -57,6 +57,15 @@ const AddNavigation = () => {
         }
     };
 
+    const renderNavigationOptions = (navItems, prefix = '') => {
+        return navItems.map((nav) => (
+            <React.Fragment key={nav._id}>
+                <option value={nav._id}>{`${prefix}${nav.title}`}</option>
+                {nav.childs && renderNavigationOptions(nav.childs, `${prefix}--`)}
+            </React.Fragment>
+        ));
+    };
+
     return (
         <div className={styles.navigationContainer}>
             <div className={styles.formContainer}>
@@ -95,11 +104,7 @@ const AddNavigation = () => {
                                     <label htmlFor="parentNavId">Navigation Cha</label>
                                     <Field as="select" name="parentNavId">
                                         <option value="">Chọn Navigation Cha</option>
-                                        {navigations.map((nav) => (
-                                            <option key={nav._id} value={nav._id}>
-                                                {nav.title}
-                                            </option>
-                                        ))}
+                                        {renderNavigationOptions(navigations)}
                                     </Field>
                                     <ErrorMessage name="parentNavId" component="div" className={styles.errorMessage} />
                                 </div>

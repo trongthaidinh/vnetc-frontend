@@ -13,7 +13,7 @@ const NavigationList = () => {
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10); // Default items per page
+    const [itemsPerPage, setItemsPerPage] = useState(10);
 
     const fetchNavigations = async () => {
         try {
@@ -32,7 +32,7 @@ const NavigationList = () => {
         if (window.confirm('Are you sure you want to delete this navigation?')) {
             try {
                 await deleteNavigationLink(type, id);
-                await fetchNavigations(); // Re-fetch the navigations after deletion
+                await fetchNavigations();
                 setNotification({ message: 'Navigation đã xóa thành công', type: 'success' });
             } catch (error) {
                 console.error('Error deleting navigation:', error);
@@ -41,12 +41,33 @@ const NavigationList = () => {
         }
     };
 
-    const allNavigations = navigations.flatMap((nav) => {
-        return [
-            { ...nav, type: 'Navigation chính', parent: null },
-            ...nav.childs.map((child) => ({ ...child, type: 'Navigation phụ', parent: nav.title })),
-        ];
-    });
+    const flattenNavigations = (navs) => {
+        const result = [];
+
+        const processNav = (nav, parent = null) => {
+            if (!nav) return;
+            if (nav.title) {
+                result.push({
+                    ...nav,
+                    type: parent ? 'Navigation phụ' : 'Navigation chính',
+                    parent: parent ? parent.title : null,
+                });
+            }
+            if (nav.childs) {
+                nav.childs.forEach((child) => {
+                    if (child.child) {
+                        child.child.forEach((subChild) => processNav(subChild, child));
+                    }
+                    return processNav(child, nav);
+                });
+            }
+        };
+
+        navs.forEach((nav) => processNav(nav));
+        return result;
+    };
+
+    const allNavigations = flattenNavigations(navigations);
 
     const filteredNavigations = allNavigations.filter(
         (nav) =>

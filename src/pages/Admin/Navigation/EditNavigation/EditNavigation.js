@@ -1,119 +1,149 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { getNavigationById, updateNavigationLink, getNavigationLinks } from '~/services/navigationService';
+import React, { useEffect, useState } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import styles from './EditNavigation.module.scss';
 import Title from '~/components/Title';
+import { getNavigationLinks, getNavigationById, updateNavigationLink } from '~/services/navigationService';
 import routes from '~/config/routes';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import PushNotification from '~/components/PushNotification';
-import LoadingScreen from '~/components/LoadingScreen';
 
-const EditNavigation = () => {
-    const { id } = useParams();
-    const [, setNavigations] = useState([]);
-    const navigate = useNavigate();
-    const [navigation, setNavigation] = useState(null);
-    const [title, setTitle] = useState('');
-    const [type, setType] = useState(2);
-    const [loading, setLoading] = useState(false);
-    const [notificationMessage, setNotificationMessage] = useState('');
+const UpdateNavigation = () => {
     const [isError, setIsError] = useState(false);
+    const [navigations, setNavigations] = useState([]);
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const [initialValues, setInitialValues] = useState({
+        title: '',
+        type: '',
+        parentNavId: '',
+    });
 
-    useEffect(() => {
-        const fetchNavigation = async () => {
-            setLoading(true);
-            try {
-                const data = await getNavigationById(id);
-                setNavigation(data);
-                setTitle(data.title);
-                setType(data.parentNavId ? 1 : 2);
-            } catch (error) {
-                setIsError(true);
-                setNotificationMessage('Có lỗi xảy ra khi tải dữ liệu!');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchNavigation();
-    }, [id]);
+    const navigate = useNavigate();
+    const { id } = useParams(); // Get the navigation ID from the route params
 
     useEffect(() => {
         const fetchNavigations = async () => {
-            setLoading(true);
-            try {
-                const data = await getNavigationLinks();
-                setNavigations(data);
-            } catch (error) {
-                setIsError(true);
-                setNotificationMessage('Có lỗi khi tải dữ liệu.');
-            } finally {
-                setLoading(false);
+            const data = await getNavigationLinks();
+            setNavigations(data);
+        };
+
+        const fetchNavigation = async () => {
+            if (id) {
+                const data = await getNavigationById(id);
+                setInitialValues({
+                    title: data.title,
+                    type: data.type,
+                    parentNavId: data.parentNavId || '',
+                });
             }
         };
 
         fetchNavigations();
-    }, []);
+        fetchNavigation();
+    }, [id]);
 
-    const handleSave = async (e) => {
-        e.preventDefault();
-        setLoading(true);
+    const validationSchema = Yup.object({
+        title: Yup.string().required('Vui lòng nhập tiêu đề!'),
+        type: Yup.number().required('Vui lòng chọn loại Navigation!').oneOf([1, 2], 'Chọn loại không hợp lệ!'),
+        parentNavId: Yup.string(),
+    });
+
+    const handleSubmit = async (values, { setSubmitting }) => {
         try {
-            await updateNavigationLink(id, { title, type });
-            setIsError(false);
+            const dataToSend = { ...values };
+            if (values.type === 2) {
+                delete dataToSend.parentNavId;
+            }
+
+            await updateNavigationLink(id, dataToSend);
             setTimeout(() => {
                 navigate(routes.navigationList);
             }, 1000);
-            setNotificationMessage('Navigation đã được cập nhật!');
+            setIsError(false);
+            setNotificationMessage('Cập nhật Navigation thành công');
         } catch (error) {
-            console.error('Error updating navigation:', error);
             setIsError(true);
-            setNotificationMessage('Có lỗi xảy ra khi cập nhật!');
+            setNotificationMessage('Có lỗi khi cập nhật Navigation.');
         } finally {
-            setLoading(false);
+            setSubmitting(false);
         }
     };
 
-    if (!navigation) return <LoadingScreen />;
+    const renderNavigationOptions = (navItems, prefix = '') => {
+        return navItems.map((nav) => (
+            <React.Fragment key={nav._id}>
+                <option value={nav._id}>{`${prefix}${nav.title}`}</option>
+                {nav.childs && renderNavigationOptions(nav.childs, `${prefix}--`)}
+            </React.Fragment>
+        ));
+    };
 
     return (
         <div className={styles.navigationContainer}>
-            <Title className={styles.pageTitle} text="Chỉnh sửa Navigation" />
-            <form onSubmit={handleSave}>
-                <div className={styles.formGroup}>
-                    <label htmlFor="title">Tiêu đề</label>
-                    <input
-                        type="text"
-                        id="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                        className={styles.inputField}
-                    />
-                </div>
-                <div className={styles.formGroup}>
-                    <label>Loại Navigation</label>
-                    <input
-                        type="text"
-                        value={type === 2 ? 'Navigation Chính' : 'Navigation Phụ'}
-                        readOnly
-                        className={styles.inputField}
-                    />
-                </div>
-                <div className={styles.actionsContainer}>
-                    <button type="submit" className={styles.saveButton}>
-                        <FontAwesomeIcon icon={faSave} /> Lưu
-                    </button>
-                    <Link to={routes.navigationList} className={styles.backButton}>
-                        <FontAwesomeIcon icon={faArrowLeft} /> Quay lại
-                    </Link>
-                </div>
-            </form>
-            {loading && <LoadingScreen />}
+            <div className={styles.formContainer}>
+                <Title className={styles.pageTitle} text="Cập nhật Navigation" />
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={handleSubmit}
+                    enableReinitialize
+                >
+                    {({ isSubmitting, values, setFieldValue }) => (
+                        <Form className={styles.form}>
+                            <div className={styles.formItem}>
+                                <label htmlFor="title">Tiêu đề</label>
+                                <Field name="title" type="text" />
+                                <ErrorMessage name="title" component="div" className={styles.errorMessage} />
+                            </div>
+
+                            <div className={styles.formItem}>
+                                <label htmlFor="type">Loại Navigation</label>
+                                <Field
+                                    as="select"
+                                    name="type"
+                                    onChange={(e) => {
+                                        const value = parseInt(e.target.value, 10);
+                                        setFieldValue('type', value);
+                                        if (value === 1) {
+                                            setFieldValue('parentNavId', '');
+                                        }
+                                    }}
+                                >
+                                    <option value="">Chọn loại</option>
+                                    <option value="2">Navigation chính</option>
+                                    <option value="1">Navigation phụ</option>
+                                </Field>
+                                <ErrorMessage name="type" component="div" className={styles.errorMessage} />
+                            </div>
+
+                            {values.type === 1 && (
+                                <div className={styles.formItem}>
+                                    <label htmlFor="parentNavId">Navigation Cha</label>
+                                    <Field as="select" name="parentNavId">
+                                        <option value="">Chọn Navigation Cha</option>
+                                        {renderNavigationOptions(navigations)}
+                                    </Field>
+                                    <ErrorMessage name="parentNavId" component="div" className={styles.errorMessage} />
+                                </div>
+                            )}
+
+                            <div className={styles.buttonContainer}>
+                                <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
+                                    {isSubmitting ? 'Đang gửi...' : 'Cập nhật Navigation'}
+                                </button>
+                                <Link to={routes.navigationList} className={styles.backButton}>
+                                    <button type="button" className={styles.cancelButton}>
+                                        Hủy
+                                    </button>
+                                </Link>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+            </div>
             <PushNotification message={notificationMessage} type={isError ? 'error' : 'success'} />
         </div>
     );
 };
 
-export default EditNavigation;
+export default UpdateNavigation;
