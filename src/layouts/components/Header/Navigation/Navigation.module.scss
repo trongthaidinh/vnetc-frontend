@@ -82,7 +82,7 @@
                 z-index: 1000;
                 justify-content: center;
                 display: flex;
-                align-items: center;
+                // align-items: center;
                 flex-direction: column;
                 transition: all 0.2s ease-in-out;
                 text-align: center;
@@ -352,7 +352,7 @@
             li {
                 background-color: var(--primary);
                 height: auto;
-                padding: 12px 0 0 60px;
+                padding: 12px 0 12px 60px;
                 &:hover {
                     background-color: var(--secondary);
                 }
