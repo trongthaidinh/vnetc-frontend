@@ -48,9 +48,9 @@ function News() {
     const filteredNews = (() => {
         switch (activeIndex) {
             case 0:
-                return newsArr.filter((news) => news.isFeatured);
-            case 1:
                 return [...newsArr].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            case 1:
+                return newsArr.filter((news) => news.isFeatured);
             case 2:
                 return newsArr.sort(() => Math.random() - 0.5);
             default:
@@ -72,7 +72,7 @@ function News() {
             <div className={cx('inner')}>
                 <Title text="Tin tức" showSeeAll={true} slug={`${routes.news}`} />
                 <ButtonGroup
-                    buttons={['Nổi bật', 'Mới nhất', 'Ngẫu nhiên']}
+                    buttons={['Mới nhất', 'Nổi bật', 'Ngẫu nhiên']}
                     onButtonClick={handleButtonClick}
                     activeIndex={activeIndex}
                 />

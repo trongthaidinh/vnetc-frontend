@@ -122,6 +122,17 @@ const publicRoutes = [
         component: ServiceCategory,
         layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.services} categoryType={3} />,
     },
+    { path: config.routes.legal, component: Service, layout: OnlyHeaderLayout },
+    {
+        path: config.routes.legalDetail,
+        component: ServiceDetail,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.legal} categoryType={4} />,
+    },
+    {
+        path: config.routes.legalCategory,
+        component: ServiceCategory,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.legal} categoryType={4} />,
+    },
     { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },
     { path: config.routes.error404, component: Error404, layout: NothingLayout },
     { path: config.routes.contact, component: Contact, layout: OnlyHeaderLayout },

@@ -55,7 +55,7 @@ function Products() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Title text="Sản phẩm" showSeeAll={true} slug={`${routes.products}`} />
+                <Title text="Sản phẩm" showSeeAll={true} slug={`${routes.services}`} />
                 <Swiper
                     spaceBetween={10}
                     slidesPerView={4}

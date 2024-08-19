@@ -4,12 +4,13 @@ import classNames from 'classnames/bind';
 import styles from './Product.module.scss';
 import { Link } from 'react-router-dom';
 import Button from '~/components/Button';
+import routes from '~/config/routes';
 
 const cx = classNames.bind(styles);
 
 function Product({ image, name, productId, category }) {
     const getProductLink = (category, productId) => {
-        return `/san-pham/${category}/${productId}`;
+        return `${routes.services}/${category}/${productId}`;
     };
 
     return (

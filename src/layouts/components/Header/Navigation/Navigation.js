@@ -46,11 +46,13 @@ function Navigation({ isFixed }) {
         }
     };
 
-    const toggleSubMenu = (id) => {
-        setOpenSubMenus((prevState) => ({
-            ...prevState,
-            [id]: !prevState[id],
-        }));
+    const toggleSubMenu = (id, fromChild = false) => {
+        if (!fromChild) {
+            setOpenSubMenus((prevState) => ({
+                ...prevState,
+                [id]: !prevState[id],
+            }));
+        }
     };
 
     const toggleSubSubMenu = (parentId, childId) => {
@@ -160,7 +162,10 @@ function Navigation({ isFixed }) {
                                                     })}
                                                     onMouseEnter={() => handleMouseEnterChild(link._id, childLink._id)}
                                                     onMouseLeave={() => handleMouseLeaveChild(link._id, childLink._id)}
-                                                    onClick={() => toggleSubSubMenu(link._id, childLink._id)}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+                                                        toggleSubSubMenu(link._id, childLink._id);
+                                                    }}
                                                 >
                                                     <div className={cx('sub-link-wrapper')}>
                                                         <NavLink
@@ -168,7 +173,10 @@ function Navigation({ isFixed }) {
                                                             className={({ isActive }) =>
                                                                 cx({ 'active-link': isActive })
                                                             }
-                                                            onClick={toggleMenu}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+                                                                handleLinkClick();
+                                                            }}
                                                         >
                                                             {childLink.title}
                                                         </NavLink>
@@ -197,7 +205,10 @@ function Navigation({ isFixed }) {
                                                                             className={({ isActive }) =>
                                                                                 cx({ 'active-link': isActive })
                                                                             }
-                                                                            onClick={toggleMenu}
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+                                                                                handleLinkClick();
+                                                                            }}
                                                                         >
                                                                             {subChildLink.title}
                                                                         </NavLink>
