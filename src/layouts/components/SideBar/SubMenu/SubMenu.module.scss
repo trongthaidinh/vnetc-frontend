@@ -1,0 +1,68 @@
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .menu-item {
+        position: relative; // Đặt position relative để submenu có thể định vị dựa trên nó
+        display: flex;
+        align-items: center;
+        width: 280px;
+        height: 36px; // Chiều cao mặc định
+        padding: 8px;
+        font-size: 1.4rem;
+        font-weight: 700;
+        border-radius: 4px;
+        color: var(--primary);
+        background-color: transparent;
+        transition: background-color ease-in-out 200ms;
+        text-decoration: none;
+
+        &.active {
+            color: #1564e8;
+            background-color: #e7eaf5;
+
+            .icon {
+                color: #e31d1c;
+            }
+        }
+
+        &:hover {
+            background-color: #e7eaf5;
+        }
+    }
+
+    .title {
+        margin-left: 10px;
+    }
+
+    .icon {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(-50%, -50%);
+        display: flex;
+    }
+
+    .submenu {
+        position: absolute; // Đặt submenu để nó trượt xuống từ menu-item
+        top: 100%; // Đặt submenu ngay bên dưới menu-item
+        left: 0;
+        width: 100%; // Đảm bảo submenu rộng bằng menu-item
+        background-color: #fff; // Hoặc màu nền bạn muốn cho submenu
+        border-radius: 0 0 4px 4px; // Viền bo góc dưới
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Thêm bóng cho submenu
+        z-index: 10; // Đảm bảo submenu nằm trên các phần tử khác
+
+        // Thêm padding và margin cho submenu nếu cần thiết
+        .submenu-content {
+            padding: 8px 0;
+        }
+
+        .menu-item {
+            height: 36px; // Đảm bảo chiều cao của submenu item giống như menu item chính
+            padding-left: 40px; // Khoảng cách bên trái của submenu item
+            font-size: 1.2rem; // Font size nhỏ hơn để phân biệt với menu item chính
+        }
+    }
+}

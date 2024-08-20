@@ -34,7 +34,7 @@ const AddProject = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const fetchedCategories = await getCategoriesByType(3);
+                const fetchedCategories = await getCategoriesByType(4);
                 setCategories(fetchedCategories);
             } catch (error) {
                 console.error('Lỗi khi tải danh mục:', error);

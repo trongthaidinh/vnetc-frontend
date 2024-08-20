@@ -14,7 +14,7 @@ import { getNewsPagination } from '~/services/newsService';
 const cx = classNames.bind(styles);
 
 const Tophead = () => {
-    const [hasNewNotification, setHasNewNotification] = useState(false);
+    const [hasNewNotification, setHasNewNotification] = useState(true);
     const [notifications, setNotifications] = useState([]);
     const [categories, setCategories] = useState([]);
     const [newNotifications, setNewNotifications] = useState({});

@@ -98,11 +98,11 @@ function Project() {
         <article className={cx('wrapper')}>
             <Helmet>
                 <title>Dự án và Năng lực | VNETC</title>
-                <meta name="description" content="Khám phá các dự án và năng lực của chúng tôi." />
+                <meta name="description" content="Khám phá các dự án của chúng tôi." />
             </Helmet>
             <div className={cx('project-section')}>
                 <div className={cx('project-column')}>
-                    <h2 className={cx('project-title')}>Dự án và năng lực</h2>
+                    <h2 className={cx('project-title')}>Dự án</h2>
                     {Object.keys(groupedProject).map((projectType) => {
                         const category = categories[projectType];
                         if (!category) return null;

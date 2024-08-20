@@ -1,0 +1,35 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
+.sidebar {
+    padding: 20px;
+    .ant-menu {
+        height: 100%;
+        border-right: 0;
+    }
+
+    .ant-menu-item,
+    .ant-menu-submenu-title {
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--primary);
+
+        &.ant-menu-item-selected,
+        &.ant-menu-item-active {
+            color: #1564e8;
+            background-color: #e7eaf5;
+        }
+
+        &:hover {
+            background-color: #e7eaf5;
+        }
+    }
+
+    .ant-menu-submenu-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+}
