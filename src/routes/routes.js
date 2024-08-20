@@ -129,12 +129,12 @@ const publicRoutes = [
     {
         path: config.routes.legalDetail,
         component: LegalDetail,
-        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.legal} categoryType={5} />,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.legal} categoryType={1} />,
     },
     {
         path: config.routes.legalCategory,
         component: LegalCategory,
-        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.legal} categoryType={5} />,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.legal} categoryType={1} />,
     },
     { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },
     { path: config.routes.error404, component: Error404, layout: NothingLayout },

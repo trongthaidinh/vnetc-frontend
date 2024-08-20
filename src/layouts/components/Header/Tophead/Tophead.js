@@ -1,31 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faPhone } from '@fortawesome/free-solid-svg-icons';
-import vietnamFlag from '~/assets/images/vietnam-flag.png';
-import ukFlag from '~/assets/images/uk-flag.png';
+import { faPhone } from '@fortawesome/free-solid-svg-icons';
+import { BellOutlined } from '@ant-design/icons';
+import io from 'socket.io-client';
 import classNames from 'classnames/bind';
 import styles from './Tophead.module.scss';
+import { Link } from 'react-router-dom';
+import routes from '~/config/routes';
+import { Badge } from 'antd';
 
 const cx = classNames.bind(styles);
 
 const Tophead = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [language, setLanguage] = useState('Tiếng Việt');
+    const [hasNewNotification, setHasNewNotification] = useState(false);
+
+    useEffect(() => {
+        const socket = io(process.env.REACT_APP_HOST);
+
+        socket.on('news', (data) => {
+            console.log(data);
+            setHasNewNotification(true);
+        });
+
+        return () => {
+            socket.off('news');
+            socket.disconnect();
+        };
+    }, []);
 
     const hotlines = [
         { number: '02623977171', name: '' },
         { number: '0931951140', name: '' },
         { number: '0982064747', name: '' },
     ];
-
-    const handleLanguageClick = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const handleLanguageChange = (lang) => {
-        setLanguage(lang);
-        setIsOpen(false);
-    };
 
     return (
         <div className={cx('wrapper')}>
@@ -48,34 +55,12 @@ const Tophead = () => {
                         </div>
                     </div>
                 </div>
-                <button className={cx('language-button')} onClick={handleLanguageClick}>
-                    <img
-                        src={language === 'Tiếng Việt' ? vietnamFlag : ukFlag}
-                        alt={language}
-                        className={cx('flag-icon')}
-                    />
-                    {language}
-                    <FontAwesomeIcon icon={faAngleDown} className={cx('arrow-icon')} />
-                </button>
-                <div className={cx('language-menu', { open: isOpen })}>
-                    <button className={cx('close-button')} onClick={() => setIsOpen(false)}>
-                        &times;
-                    </button>
-                    <ul>
-                        <li>
-                            <button onClick={() => handleLanguageChange('Tiếng Việt')}>
-                                <img src={vietnamFlag} alt="Tiếng Việt" className={cx('flag-icon')} />
-                                Tiếng Việt
-                            </button>
-                        </li>
-                        <li>
-                            <button onClick={() => handleLanguageChange('English')}>
-                                <img src={ukFlag} alt="English" className={cx('flag-icon')} />
-                                English
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+                <Link to={routes.news}>
+                    <Badge offset={[0, 1]} className={cx('notification-badge')}>
+                        <BellOutlined className={cx('notification-icon')} />
+                        {hasNewNotification && <span className={cx('new-badge')}>NEW</span>}
+                    </Badge>
+                </Link>
             </div>
         </div>
     );
