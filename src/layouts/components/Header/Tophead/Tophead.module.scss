@@ -70,7 +70,7 @@
                     @include respond-to(lg) {
                         flex-direction: row;
                         align-items: center;
-                        font-size: 1.2rem;
+                        font-size: 1.1rem;
                         white-space: wrap;
                     }
 
@@ -79,6 +79,9 @@
                         margin-right: 5px;
                         text-decoration: none;
                         font-weight: bold;
+                        @include respond-to(lg) {
+                            margin-right: 0px;
+                        }
                     }
 
                     .separator {
@@ -185,6 +188,9 @@
     border-radius: 100%;
     color: var(--secondary);
     cursor: pointer;
+    @include respond-to(lg) {
+        background-color: var(--secondary);
+    }
 }
 
 .notification-badge {
@@ -197,6 +203,11 @@
     .notification-icon {
         font-size: 24px;
         color: var(--secondary);
+        @include respond-to(lg) {
+            color: var(--white);
+            font-size: 1.4rem;
+            animation: blink 1s infinite;
+        }
     }
 
     .new-label {
@@ -211,6 +222,9 @@
         font-weight: bold;
         white-space: nowrap;
         animation: blink 1s infinite;
+        @include respond-to(lg) {
+            display: none;
+        }
     }
 }
 
@@ -229,6 +243,16 @@
 .news-menu {
     max-width: 400px;
     min-height: 400px;
+    @include respond-to(lg) {
+        min-height: 300px;
+        min-width: 300px;
+        right: 20px;
+    }
+
+    @include respond-to(sm) {
+        min-height: 200px;
+        min-width: 200px;
+    }
 }
 
 .news-item {
@@ -237,6 +261,14 @@
     align-items: center;
     overflow: hidden;
 
+    @include respond-to(lg) {
+        max-width: 340px;
+    }
+
+    @include respond-to(sm) {
+        max-width: 280px;
+    }
+
     .news-image {
         width: 100px;
         height: 100px;
@@ -244,6 +276,15 @@
         margin-right: 10px;
         border-radius: 4px;
         flex-shrink: 0;
+        @include respond-to(lg) {
+            max-width: 80px;
+            height: 80px;
+        }
+
+        @include respond-to(sm) {
+            max-width: 60px;
+            height: 60px;
+        }
     }
 
     .news-info {
@@ -253,6 +294,9 @@
         flex-direction: column;
         justify-content: center;
         overflow: hidden;
+        @include respond-to(lg) {
+            height: 80px;
+        }
 
         .news-title {
             position: relative;
@@ -262,6 +306,13 @@
             overflow: hidden;
             text-overflow: ellipsis;
             padding: 16px 0 8px 0;
+            @include respond-to(lg) {
+                font-size: 1.6rem;
+            }
+            @include respond-to(sm) {
+                padding-top: 10px;
+                font-size: 1.4rem;
+            }
             .new-label {
                 position: absolute;
                 top: 0px;
@@ -273,6 +324,11 @@
                 font-size: 1rem;
                 font-weight: bold;
                 white-space: nowrap;
+
+                @include respond-to(sm) {
+                    padding: 1px 4px;
+                    font-size: 0.8rem;
+                }
             }
         }
 
@@ -282,6 +338,10 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+
+            @include respond-to(sm) {
+                font-size: 1rem;
+            }
         }
     }
 }
