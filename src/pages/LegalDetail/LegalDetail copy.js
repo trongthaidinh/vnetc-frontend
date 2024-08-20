@@ -8,10 +8,6 @@ import DateTime from '~/components/DateTime';
 import Title from '~/components/Title';
 import { getLegalById } from '~/services/legalService';
 import { Helmet } from 'react-helmet';
-import { Worker, Viewer } from '@react-pdf-viewer/core';
-import { pdfjs } from 'react-pdf';
-
-import '@react-pdf-viewer/core/lib/styles/index.css';
 
 const cx = classNames.bind(styles);
 
@@ -56,17 +52,7 @@ const LegalDetail = () => {
             <div className={cx('header')}>
                 <Title text={`${legalDetail.name}`} className={cx('title')} />
             </div>
-            <div className={cx('content')}>
-                {legalDetail.pdfUrl ? (
-                    <div className={cx('pdf-viewer')}>
-                        <Worker workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`}>
-                            <Viewer fileUrl={legalDetail.pdfUrl} />
-                        </Worker>
-                    </div>
-                ) : (
-                    <div dangerouslySetInnerHTML={{ __html: legalDetail.content }} />
-                )}
-            </div>
+            <div className={cx('content')} dangerouslySetInnerHTML={{ __html: legalDetail.content }} />
             <DateTime
                 timestamp={legalDetail.createdAt}
                 views={legalDetail.views}
