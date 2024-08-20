@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import Card from '~/components/CardContent';
 import SuggestCard from '~/components/SuggestCard';
 import { getLegals } from '~/services/legalService';
-import { getCategoriesByType } from '~/services/categoryService';
+import { getCategories } from '~/services/categoryService';
 import styles from './Legal.module.scss';
 import Title from '~/components/Title';
 import ButtonGroup from '~/components/ButtonGroup';
@@ -30,7 +30,7 @@ const Legal = () => {
     useEffect(() => {
         const fetchCategoriesAndLegals = async () => {
             try {
-                const categoriesData = await getCategoriesByType(3);
+                const categoriesData = await getCategories();
                 setCategories(categoriesData);
 
                 const legalData = await getLegals();

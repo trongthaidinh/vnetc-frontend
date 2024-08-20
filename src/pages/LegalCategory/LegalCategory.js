@@ -32,7 +32,7 @@ function LegalCategory() {
     useEffect(() => {
         async function fetchCategory() {
             try {
-                const categories = await getCategoriesByType(3);
+                const categories = await getCategoriesByType(1);
                 const categoryIndex = categories.findIndex((cat) => cat.slug === slug);
                 const category = categories[categoryIndex];
                 if (category) {
@@ -76,11 +76,11 @@ function LegalCategory() {
 
     const renderLegalCategory = () => {
         return currentLegalCategory.map((legalItem) => (
-            <Link to={`${routes.legals}/${slug}/${legalItem._id}`} key={legalItem._id}>
+            <Link to={`${routes.legal}/${slug}/${legalItem._id}`} key={legalItem._id}>
                 <Card
-                    title={legalItem.name}
+                    title={legalItem.title}
                     image={legalItem.image}
-                    summary={legalItem.summary}
+                    summary={legalItem.content}
                     createdAt={new Date(legalItem.createdAt).getTime()}
                     views={legalItem.views}
                 />
@@ -114,11 +114,7 @@ function LegalCategory() {
         <div className={cx('container')}>
             <Helmet>
                 <title>{`${categoryName} | VNETC`}</title>
-                <meta
-                    name="description"
-                    content={`Khám phá thông tư ${categoryName} mà chúng tôi cung cấp tại VNETC.`}
-                />
-                <meta name="keywords" content={`thông tư, ${categoryName}, VNETC`} />
+                <meta name="description" content={`Văn bản pháp quy trong danh mục ${categoryName}.`} />
             </Helmet>
             <Title text={categoryName} />
             <div className={cx('legalGrid')}>{renderLegalCategory()}</div>
