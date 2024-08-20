@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import Card from '~/components/CardContent';
 import SuggestCard from '~/components/SuggestCard';
 import { getLegals } from '~/services/legalService';
-import { getCategories } from '~/services/categoryService';
+import { getCategoriesByType } from '~/services/categoryService';
 import styles from './Legal.module.scss';
 import Title from '~/components/Title';
 import ButtonGroup from '~/components/ButtonGroup';
@@ -19,7 +19,7 @@ import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
-const Legal = () => {
+function Legal() {
     const [legalItems, setLegalItems] = useState([]);
     const [groupedLegal, setGroupedLegal] = useState({});
     const [categories, setCategories] = useState([]);
@@ -30,14 +30,14 @@ const Legal = () => {
     useEffect(() => {
         const fetchCategoriesAndLegals = async () => {
             try {
-                const categoriesData = await getCategories();
+                const categoriesData = await getCategoriesByType(1);
                 setCategories(categoriesData);
 
                 const legalData = await getLegals();
                 const groupedLegalMap = {};
 
                 legalData?.forEach((item) => {
-                    const legalType = item.legalType;
+                    const legalType = item.type;
                     if (!groupedLegalMap[legalType]) {
                         groupedLegalMap[legalType] = [];
                     }
@@ -73,7 +73,7 @@ const Legal = () => {
     };
 
     const getCategorySlug = (legalType) => {
-        const category = categories[legalType];
+        const category = categories.find((cat, index) => index === legalType);
         return category ? category.slug : '';
     };
 
@@ -97,13 +97,12 @@ const Legal = () => {
     return (
         <article className={cx('wrapper')}>
             <Helmet>
-                <title>Thông tư | VNETC</title>
-                <meta name="description" content="Thông tư." />
-                <meta name="keywords" content="thông tư, VNETC" />
+                <title>Văn bản pháp quy | VNETC</title>
+                <meta name="description" content="Khám phá các dự án của chúng tôi." />
             </Helmet>
             <div className={cx('legal-section')}>
                 <div className={cx('legal-column')}>
-                    <h2 className={cx('legal-title')}>Thông tư</h2>
+                    <h2 className={cx('legal-title')}>Văn bản pháp quy</h2>
                     {Object.keys(groupedLegal).map((legalType) => {
                         const category = categories[legalType];
                         if (!category) return null;
@@ -116,7 +115,7 @@ const Legal = () => {
                                 <Title
                                     text={category.name}
                                     showSeeAll={true}
-                                    slug={`${routes.legals}/${category.slug}`}
+                                    slug={`${routes.legal}/${category.slug}`}
                                     categoryId={category._id}
                                 />
                                 <Swiper
@@ -135,12 +134,12 @@ const Legal = () => {
                                         disableOnInteraction: false,
                                     }}
                                 >
-                                    {groupedLegal[legalType]?.slice(0, 6).map((item, index) => (
+                                    {legalsInCategory?.slice(0, 6).map((item, index) => (
                                         <SwiperSlide key={index} className={cx('slide')}>
-                                            <Link to={`${routes.legals}/${category.slug}/${item._id}`}>
+                                            <Link to={`${routes.legal}/${category.slug}/${item._id}`}>
                                                 <Card
-                                                    title={item.name}
-                                                    summary={item.summary}
+                                                    title={item.title}
+                                                    summary={item.content}
                                                     image={item.image}
                                                     createdAt={item.createdAt}
                                                     views={item.views}
@@ -158,10 +157,10 @@ const Legal = () => {
                     <ButtonGroup buttons={['Ngẫu nhiên', 'Xem nhiều']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-items')}>
                         {filteredLegalItems.map((item, index) => (
-                            <Link key={index} to={`${routes.legals}/${getCategorySlug(item.legalType)}/${item._id}`}>
+                            <Link key={index} to={`${routes.legal}/${getCategorySlug(item.legalType)}/${item._id}`}>
                                 <SuggestCard
-                                    title={item.name}
-                                    summary={item.summary}
+                                    title={item.title}
+                                    summary={item.content}
                                     image={item.image}
                                     createdAt={item.createdAt}
                                     views={item.views}
@@ -173,6 +172,6 @@ const Legal = () => {
             </div>
         </article>
     );
-};
+}
 
 export default Legal;

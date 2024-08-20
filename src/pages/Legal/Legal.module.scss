@@ -17,7 +17,7 @@
     }
 }
 
-.service-section {
+.legal-section {
     width: var(--default-layout-width);
     display: grid;
     grid-template-columns: calc(75% - 10px) calc(25% - 10px);
@@ -33,25 +33,29 @@
     margin: 20px 0 10px 0;
 }
 
-.service-column {
-    .service-category {
+.legal-column {
+    .legal-category {
         margin-bottom: 40px;
     }
 
-    .service-items {
+    .legal-items {
         margin-top: 20px;
     }
 
-    .service-title {
+    .legal-title {
         font-size: 20px;
         min-width: 120px;
-        width: 150px;
+        max-width: 200px;
         padding: 4px 8px;
         background-color: var(--primary);
         color: var(--white);
         border-radius: 4px;
         text-align: center;
         margin-bottom: 20px;
+
+        @include respond-to(lg) {
+            max-width: 200px;
+        }
     }
 }
 
@@ -83,6 +87,6 @@
     }
 }
 
-.service-items a {
+.legal-items a {
     text-decoration: none;
 }
