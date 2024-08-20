@@ -24,7 +24,7 @@ function Products() {
     useEffect(() => {
         const fetchProductsAndCategories = async () => {
             try {
-                const productsData = await getServicesPagiation(2, 8);
+                const productsData = await getServicesPagiation(3, 8);
                 const categoriesData = await getCategoriesByType(3);
 
                 const sortedProducts = productsData.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
