@@ -11,7 +11,7 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import routes from '~/config/routes';
-import { getServices } from '~/services/serviceService';
+import { getServicesPagiation } from '~/services/serviceService';
 
 const cx = classNames.bind(styles);
 
@@ -24,9 +24,12 @@ function Products() {
     useEffect(() => {
         const fetchProductsAndCategories = async () => {
             try {
-                const productsData = await getServices();
+                const productsData = await getServicesPagiation(2, 8);
                 const categoriesData = await getCategoriesByType(3);
-                setProducts(productsData);
+
+                const sortedProducts = productsData.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+                setProducts(sortedProducts);
                 setCategories(categoriesData);
                 setLoading(false);
             } catch (err) {
