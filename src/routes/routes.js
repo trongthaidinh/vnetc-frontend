@@ -64,6 +64,9 @@ import AddDepartment from '~/pages/Admin/Department/AddDepartment/AddDepartment'
 import MemberList from '~/pages/Admin/Department/MemberList';
 import AddMember from '~/pages/Admin/Department/AddMember/AddMember';
 import UpdateMember from '~/pages/Admin/Department/UpdateMember';
+import Legal from '~/pages/Legal';
+import LegalCategory from '~/pages/LegalCategory';
+import LegalDetail from '~/pages/LegalDetail';
 
 // Public Routes
 const publicRoutes = [
@@ -122,16 +125,16 @@ const publicRoutes = [
         component: ServiceCategory,
         layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.services} categoryType={3} />,
     },
-    { path: config.routes.legal, component: Service, layout: OnlyHeaderLayout },
+    { path: config.routes.legal, component: Legal, layout: OnlyHeaderLayout },
     {
         path: config.routes.legalDetail,
-        component: ServiceDetail,
-        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.legal} categoryType={4} />,
+        component: LegalDetail,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.legal} categoryType={5} />,
     },
     {
         path: config.routes.legalCategory,
-        component: ServiceCategory,
-        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.legal} categoryType={4} />,
+        component: LegalCategory,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.legal} categoryType={5} />,
     },
     { path: config.routes.search, component: Search, layout: OnlyHeaderLayout },
     { path: config.routes.error404, component: Error404, layout: NothingLayout },
