@@ -2,7 +2,7 @@ import httpRequest from '~/utils/httpRequest';
 
 export const getLegals = async () => {
     try {
-        const response = await httpRequest.get(`/legals`);
+        const response = await httpRequest.get(`/document`);
         return response.data.data;
     } catch (error) {
         console.error('Error fetching legal', error);
@@ -12,7 +12,7 @@ export const getLegals = async () => {
 
 export const getLegalsPagiation = async (page = 1, limit = 8) => {
     try {
-        const response = await httpRequest.get(`/legals?page=${page}&limit=${limit}`);
+        const response = await httpRequest.get(`/document?page=${page}&limit=${limit}`);
         return response.data.data;
     } catch (error) {
         console.error('Error fetching legal', error);
@@ -22,7 +22,7 @@ export const getLegalsPagiation = async (page = 1, limit = 8) => {
 
 export const getLegalById = async (id) => {
     try {
-        const response = await httpRequest.get(`/legals/${id}`);
+        const response = await httpRequest.get(`/document/${id}`);
         return response.data.data;
     } catch (error) {
         console.error(`Error fetching legal detail with id ${id}`, error);
@@ -32,7 +32,7 @@ export const getLegalById = async (id) => {
 
 export const getLegalByType = async (type) => {
     try {
-        const response = await httpRequest.get(`/legals?type=${type}`);
+        const response = await httpRequest.get(`/document?type=${type}`);
         return response.data.data;
     } catch (error) {
         console.error(`Error fetching legal for id=${type}:`, error);
@@ -42,7 +42,7 @@ export const getLegalByType = async (type) => {
 
 export const addLegal = async (legalData) => {
     try {
-        const response = await httpRequest.post('/legals', legalData);
+        const response = await httpRequest.post('/document', legalData);
         return response.data;
     } catch (error) {
         console.error('Error adding legal:', error);
