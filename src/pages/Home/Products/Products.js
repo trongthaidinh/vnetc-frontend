@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import Product from '~/components/Product';
-import { getProductsPagination } from '~/services/productService';
 import { getCategoriesByType } from '~/services/categoryService';
 import styles from './Products.module.scss';
 import Title from '~/components/Title';
@@ -12,6 +11,7 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import routes from '~/config/routes';
+import { getServices } from '~/services/serviceService';
 
 const cx = classNames.bind(styles);
 
@@ -24,8 +24,8 @@ function Products() {
     useEffect(() => {
         const fetchProductsAndCategories = async () => {
             try {
-                const productsData = await getProductsPagination();
-                const categoriesData = await getCategoriesByType(1);
+                const productsData = await getServices();
+                const categoriesData = await getCategoriesByType(3);
                 setProducts(productsData);
                 setCategories(categoriesData);
                 setLoading(false);
@@ -55,7 +55,7 @@ function Products() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Title text="Sản phẩm" showSeeAll={true} slug={`${routes.services}`} />
+                <Title text="Sản Phẩm & Dịch Vụ" showSeeAll={true} slug={`${routes.services}`} />
                 <Swiper
                     spaceBetween={10}
                     slidesPerView={4}
@@ -75,7 +75,7 @@ function Products() {
                     {products.map((product) => (
                         <SwiperSlide key={product._id} className={cx('slide')}>
                             <Product
-                                image={product.image[0]}
+                                image={product.image}
                                 name={product.name}
                                 productId={product._id}
                                 category={getCategorySlug(product.category_id)}

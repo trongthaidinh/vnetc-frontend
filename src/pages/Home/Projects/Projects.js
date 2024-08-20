@@ -55,7 +55,7 @@ function Projects() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Title text="Dự án và năng lực" showSeeAll={true} slug={`${routes.projects}`} />
+                <Title text="Dự án" showSeeAll={true} slug={`${routes.projects}`} />
                 <Swiper
                     spaceBetween={10}
                     slidesPerView={3}
