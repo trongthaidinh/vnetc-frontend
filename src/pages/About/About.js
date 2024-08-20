@@ -51,6 +51,30 @@ const About = () => (
                     <li>Website: vietnametc.com </li>
                     <li>Email: nhuthuyant@gmail.com</li>
                 </ul>
+                <br />
+                <h3>Hồ sơ pháp lý:</h3>
+                <div className={cx('legal-images')}>
+                    <img
+                        src="https://res.cloudinary.com/ddmzboxzu/image/upload/v1724033193/lvqkp5l7oqf7csgrj58v.jpg"
+                        alt=""
+                        width="502"
+                        height="732"
+                    />
+                    <img
+                        src="https://res.cloudinary.com/ddmzboxzu/image/upload/v1724033205/hig0flfqnwkyhrbhlexq.jpg"
+                        alt=""
+                        width="535"
+                        height="733"
+                    />
+                </div>
+                <div className={cx('legal-images')}>
+                    <img
+                        src="https://res.cloudinary.com/ddmzboxzu/image/upload/v1724033215/zv8otn6ifwgmlnzar0wb.jpg"
+                        alt=""
+                        width="502"
+                        height="735"
+                    />
+                </div>
             </div>
         </div>
     </article>
