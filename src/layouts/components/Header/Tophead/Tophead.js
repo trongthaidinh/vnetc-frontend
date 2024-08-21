@@ -43,7 +43,17 @@ const Tophead = () => {
             }
         };
 
-        const socket = io(process.env.REACT_APP_HOST);
+        const socket = io(`${process.env.REACT_APP_HOST}`, {
+            transports: ['websocket', 'polling'],
+        });
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        socket.on('connect_error', (error) => {
+            console.error('Connection error:', error);
+        });
 
         socket.on('newsAdded', (data) => {
             console.log(data);
