@@ -16,11 +16,12 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import { Helmet } from 'react-helmet';
+import { getNewsPagination } from '~/services/newsService';
 
 const cx = classNames.bind(styles);
 
 function Legal() {
-    const [legalItems, setLegalItems] = useState([]);
+    const [newsData, setNewsData] = useState([]);
     const [groupedLegal, setGroupedLegal] = useState({});
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -34,6 +35,7 @@ function Legal() {
                 setCategories(categoriesData);
 
                 const legalData = await getLegals();
+                const newsData = await getNewsPagination(1, 10);
                 const groupedLegalMap = {};
 
                 legalData?.forEach((item) => {
@@ -48,7 +50,7 @@ function Legal() {
                 });
 
                 setGroupedLegal(groupedLegalMap);
-                setLegalItems(legalData);
+                setNewsData(newsData);
             } catch (error) {
                 setError(error);
                 console.error('Error fetching categories or legals:', error);
@@ -86,13 +88,13 @@ function Legal() {
         return <LoadingScreen />;
     }
 
-    let filteredLegalItems = legalItems;
+    let filteredNewsItems = newsData;
     if (selectedSuggestion === 0) {
-        filteredLegalItems = shuffleArray([...legalItems]);
+        filteredNewsItems = shuffleArray([...newsData]);
     } else if (selectedSuggestion === 1) {
-        filteredLegalItems = legalItems.filter((item) => item.views > 10);
+        filteredNewsItems = newsData.filter((item) => item.views > 10);
     }
-    filteredLegalItems = filteredLegalItems.slice(0, 5);
+    filteredNewsItems = filteredNewsItems.slice(0, 5);
 
     return (
         <article className={cx('wrapper')}>
@@ -156,12 +158,12 @@ function Legal() {
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
                     <ButtonGroup buttons={['Ngẫu nhiên', 'Xem nhiều']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-items')}>
-                        {filteredLegalItems.map((item, index) => (
-                            <Link key={index} to={`${routes.legal}/${getCategorySlug(item.legalType)}/${item._id}`}>
+                        {filteredNewsItems.map((item, index) => (
+                            <Link key={index} to={`${routes.news}/${getCategorySlug(item.categoryId)}/${item._id}`}>
                                 <SuggestCard
                                     title={item.title}
-                                    summary={item.content}
-                                    image={item.image}
+                                    summary={item.summary}
+                                    image={item.images}
                                     createdAt={item.createdAt}
                                     views={item.views}
                                 />
