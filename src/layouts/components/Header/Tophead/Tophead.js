@@ -140,8 +140,12 @@ const Tophead = () => {
                 <Dropdown overlay={notificationMenu} trigger={['click']} placement="bottomRight">
                     <Badge dot={false} offset={[0, 1]} className={cx('notification-badge')}>
                         <div className={cx('notification-icon-wrapper')}>
-                            <BellOutlined className={cx('notification-icon')} />
-                            {hasNewNotification && <span className={cx('new-label')}>New</span>}
+                            {hasNewNotification && (
+                                <>
+                                    <BellOutlined className={cx('notification-icon')} />
+                                    <span className={cx('new-label')}>New</span>
+                                </>
+                            )}
                         </div>
                     </Badge>
                 </Dropdown>
