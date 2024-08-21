@@ -52,13 +52,7 @@ function Search() {
         <div className={cx('wrapper')}>
             <FontAwesomeIcon className={cx('icon')} icon={faSearch} onClick={showModal} />
 
-            <Modal
-                visible={isModalVisible}
-                onCancel={handleCancel}
-                footer={null}
-                centered
-                className={cx('search-modal')}
-            >
+            <Modal open={isModalVisible} onCancel={handleCancel} footer={null} centered className={cx('search-modal')}>
                 <div className={cx('search-container')}>
                     <FontAwesomeIcon className={cx('icon-input')} icon={faSearch} onClick={handleSearch} />
                     <Input
