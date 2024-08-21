@@ -57,7 +57,6 @@ function NewsCategory() {
                     const data = await getNewsByCategory(categoryId);
                     setNews(data);
 
-                    // Check if there's any news within the last 3 days
                     const isNew = data.some((newsItem) => dayjs().diff(dayjs(newsItem.createdAt), 'day') <= 3);
                     setHasNewNotification(isNew);
                 } catch (error) {
