@@ -23,7 +23,7 @@ function News() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const [newsData, categoryData] = await Promise.all([getNewsPagination(), getCategories()]);
+                const [newsData, categoryData] = await Promise.all([getNewsPagination(1, 12), getCategories()]);
                 setNews(newsData);
                 setCategories(categoryData);
             } catch (error) {
@@ -48,11 +48,11 @@ function News() {
     const filteredNews = (() => {
         switch (activeIndex) {
             case 0:
-                return [...newsArr].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                return [...newsArr].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4);
             case 1:
-                return newsArr.filter((news) => news.isFeatured);
+                return newsArr.filter((news) => news.isFeatured).slice(0, 4);
             case 2:
-                return newsArr.sort(() => Math.random() - 0.5);
+                return [...newsArr].sort(() => Math.random() - 0.5).slice(0, 4);
             default:
                 return newsArr;
         }
