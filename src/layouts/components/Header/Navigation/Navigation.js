@@ -163,7 +163,7 @@ function Navigation({ isFixed }) {
                                                     onMouseEnter={() => handleMouseEnterChild(link._id, childLink._id)}
                                                     onMouseLeave={() => handleMouseLeaveChild(link._id, childLink._id)}
                                                     onClick={(e) => {
-                                                        e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+                                                        e.stopPropagation();
                                                         toggleSubSubMenu(link._id, childLink._id);
                                                     }}
                                                 >
@@ -174,7 +174,7 @@ function Navigation({ isFixed }) {
                                                                 cx({ 'active-link': isActive })
                                                             }
                                                             onClick={(e) => {
-                                                                e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+                                                                e.stopPropagation();
                                                                 handleLinkClick();
                                                             }}
                                                         >
@@ -201,7 +201,7 @@ function Navigation({ isFixed }) {
                                                                 return (
                                                                     <li key={subChildLink._id}>
                                                                         <NavLink
-                                                                            to={`/${link.slug}/${childLink.slug}/${subChildLink.slug}`}
+                                                                            to={`/${link.slug}/${subChildLink.slug}`}
                                                                             className={({ isActive }) =>
                                                                                 cx({ 'active-link': isActive })
                                                                             }
