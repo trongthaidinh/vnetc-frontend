@@ -8,7 +8,7 @@ const cx = classNames.bind(styles);
 
 function SuggestCard({
     title = 'Default Title',
-    image = 'default.jpg',
+    image = 'https://res.cloudinary.com/ddmzboxzu/image/upload/v1724202469/cer_3_ldetgd.png',
     summary = 'Mô tả gợi ý',
     createdAt = Date.now(),
 }) {
