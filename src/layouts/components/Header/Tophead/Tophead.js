@@ -127,7 +127,7 @@ const Tophead = () => {
                         </div>
                     </div>
                 </div>
-                <Dropdown menu={notificationMenu} trigger={['click']} placement="bottomRight">
+                <Dropdown overlay={notificationMenu} trigger={['click']} placement="bottomRight">
                     <Badge dot={false} offset={[0, 1]} className={cx('notification-badge')}>
                         <div className={cx('notification-icon-wrapper')}>
                             <BellOutlined className={cx('notification-icon')} />

@@ -58,6 +58,7 @@ const routes = {
     projectDetail: '/du-an/:category/:id',
     services: '/san-pham-va-dich-vu',
     serviceDetail: '/san-pham-va-dich-vu/:category/:id',
+    serviceDocument: '/san-pham-va-dich-vu/:category/:slug',
     servicesCategory: `/san-pham-va-dich-vu/:slug`,
     legal: '/van-ban-phap-quy',
     legalDetail: '/van-ban-phap-quy/:category/:id',
