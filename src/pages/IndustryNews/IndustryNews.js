@@ -11,6 +11,7 @@ import Card from '~/components/CardContent/CardContent';
 import { getCategoriesByType } from '~/services/categoryService';
 import routes from '~/config/routes';
 import { Helmet } from 'react-helmet';
+import dayjs from 'dayjs';
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +21,7 @@ function NewsCategory() {
     const [categoryId, setCategoryId] = useState(null);
     const [categoryName, setCategoryName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [hasNewNotification, setHasNewNotification] = useState(false);
     const newsPerPage = 12;
 
     const extractSlugFromPathname = (pathname) => {
@@ -54,6 +56,10 @@ function NewsCategory() {
                 try {
                     const data = await getNewsByCategory(categoryId);
                     setNews(data);
+
+                    // Check if there's any news within the last 3 days
+                    const isNew = data.some((newsItem) => dayjs().diff(dayjs(newsItem.createdAt), 'day') <= 3);
+                    setHasNewNotification(isNew);
                 } catch (error) {
                     console.error('Error fetching news:', error);
                 }
@@ -76,10 +82,9 @@ function NewsCategory() {
     };
 
     const renderNewsCategory = () => {
-        return currentNewsCategory.map((newsItem, index) => (
+        return currentNewsCategory.map((newsItem) => (
             <Link to={`${routes.news}/${slug}/${newsItem._id}`} key={newsItem._id}>
                 <Card
-                    key={index}
                     title={newsItem.title}
                     image={newsItem.images}
                     summary={newsItem.summary}
@@ -120,6 +125,7 @@ function NewsCategory() {
                 <meta name="keywords" content={`${categoryName}, tin tức, VNETC`} />
             </Helmet>
             <Title text={categoryName} />
+            {hasNewNotification && <span className={cx('new-label')}>NEW</span>}
             <div className={cx('newsGrid')}>{renderNewsCategory()}</div>
             {renderPagination()}
         </div>

@@ -65,3 +65,57 @@
 a {
     text-decoration: none;
 }
+
+.new-label {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background-color: red;
+    color: white;
+    padding: 2px 8px;
+    font-size: 12px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    font-weight: bold;
+    white-space: nowrap;
+    animation: color-blink 2s linear infinite, blink 1s infinite;
+    @include respond-to(lg) {
+        display: none;
+    }
+}
+
+@keyframes color-blink {
+    0% {
+        background-color: red;
+        color: white;
+    }
+    25% {
+        background-color: green;
+        color: white;
+    }
+    50% {
+        background-color: orange;
+        color: black;
+    }
+    75% {
+        background-color: blue;
+        color: white;
+    }
+    100% {
+        background-color: red;
+        color: white;
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}

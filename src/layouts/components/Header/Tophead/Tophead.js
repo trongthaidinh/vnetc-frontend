@@ -35,7 +35,7 @@ const Tophead = () => {
                 if (hasNew) {
                     setTimeout(() => {
                         setHasNewNotification(false);
-                    }, 3 * 24 * 60 * 60 * 1000); // 3 ngày
+                    }, 3 * 24 * 60 * 60 * 1000);
                 }
             } catch (error) {
                 console.error('Failed to fetch notifications:', error);
@@ -73,7 +73,7 @@ const Tophead = () => {
         fetchCategories();
 
         return () => {
-            socket.off('notification');
+            socket.off('newsAdded');
             socket.disconnect();
         };
     }, []);

@@ -10,6 +10,8 @@ import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
 import { Link } from 'react-router-dom';
 import routes from '~/config/routes';
+import io from 'socket.io-client';
+import dayjs from 'dayjs';
 
 const cx = classNames.bind(styles);
 
@@ -19,6 +21,7 @@ function News() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [hasNewNotification, setHasNewNotification] = useState(false);
 
     useEffect(() => {
         const loadData = async () => {
@@ -26,6 +29,13 @@ function News() {
                 const [newsData, categoryData] = await Promise.all([getNewsPagination(1, 12), getCategories()]);
                 setNews(newsData);
                 setCategories(categoryData);
+
+                const isNew = newsData.some((news) => dayjs().diff(dayjs(news.createdAt), 'day') <= 3);
+                setHasNewNotification(isNew);
+
+                if (isNew) {
+                    setTimeout(() => setHasNewNotification(false), 3 * 24 * 60 * 60 * 1000);
+                }
             } catch (error) {
                 setError(error);
             } finally {
@@ -34,6 +44,39 @@ function News() {
         };
 
         loadData();
+
+        const socket = io(`${process.env.REACT_APP_HOST}`, {
+            transports: ['websocket', 'polling'],
+        });
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        socket.on('connect_error', (error) => {
+            console.error('Connection error:', error);
+        });
+
+        socket.on('newsAdded', async (data) => {
+            try {
+                // Refetch news data to include the newly added news
+                const updatedNewsData = await getNewsPagination(1, 12);
+                setNews(updatedNewsData);
+
+                const isNew = dayjs().diff(dayjs(data.createdAt), 's') <= 15;
+                if (isNew) {
+                    setHasNewNotification(true);
+                    setTimeout(() => setHasNewNotification(false), 15000);
+                }
+            } catch (error) {
+                console.error('Error fetching updated news:', error);
+            }
+        });
+
+        return () => {
+            socket.off('newsAdded');
+            socket.disconnect();
+        };
     }, []);
 
     if (error) {
@@ -70,7 +113,10 @@ function News() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Title text="Tin tức" showSeeAll={true} slug={`${routes.news}`} />
+                <div className={cx('title-container')}>
+                    <Title text="Tin tức" showSeeAll={true} slug={`${routes.news}`} />
+                    {hasNewNotification && <span className={cx('new-label')}>NEW</span>}
+                </div>
                 <ButtonGroup
                     buttons={['Mới nhất', 'Nổi bật', 'Ngẫu nhiên']}
                     onButtonClick={handleButtonClick}
