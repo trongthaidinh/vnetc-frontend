@@ -14,7 +14,7 @@ import { getNewsPagination } from '~/services/newsService';
 const cx = classNames.bind(styles);
 
 const Tophead = () => {
-    const [hasNewNotification, setHasNewNotification] = useState(true);
+    const [hasNewNotification, setHasNewNotification] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [categories, setCategories] = useState([]);
     const [newNotifications, setNewNotifications] = useState({});
@@ -45,7 +45,7 @@ const Tophead = () => {
 
         const socket = io(process.env.REACT_APP_HOST);
 
-        socket.on('notification', (data) => {
+        socket.on('newsAdded', (data) => {
             console.log(data);
             setHasNewNotification(true);
             fetchLatestNotifications();
