@@ -68,7 +68,7 @@ const UpdateLegal = () => {
         formData.append('title', values.title);
         formData.append('content', values.content);
         if (attachment) {
-            formData.append('attachments', attachment);
+            formData.append('file', attachment);
         }
         formData.append('type', values.type);
 
