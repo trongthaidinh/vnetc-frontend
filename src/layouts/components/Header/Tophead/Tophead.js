@@ -10,25 +10,33 @@ import routes from '~/config/routes';
 import { Badge, Dropdown, Menu } from 'antd';
 import { getCategoriesByType } from '~/services/categoryService';
 import { getNewsPagination } from '~/services/newsService';
+import dayjs from 'dayjs';
 
 const cx = classNames.bind(styles);
 
 const Tophead = () => {
-    const [hasNewNotification, setHasNewNotification] = useState(true);
+    const [hasNewNotification, setHasNewNotification] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [newNotifications, setNewNotifications] = useState({});
 
     useEffect(() => {
         const fetchLatestNotifications = async () => {
             try {
                 const notificationData = await getNewsPagination(1, 4);
-                const newNotificationsMap = notificationData.reduce((acc, notification) => {
-                    acc[notification._id] = true;
-                    return acc;
-                }, {});
-                setNotifications(notificationData);
-                setNewNotifications(newNotificationsMap);
+                const currentTime = dayjs();
+                const newNotificationsData = notificationData.map((notification) => ({
+                    ...notification,
+                    isNew: currentTime.diff(dayjs(notification.createdAt), 'day') <= 3,
+                }));
+                setNotifications(newNotificationsData);
+                const hasNew = newNotificationsData.some((notification) => notification.isNew);
+                setHasNewNotification(hasNew);
+
+                if (hasNew) {
+                    setTimeout(() => {
+                        setHasNewNotification(false);
+                    }, 3 * 24 * 60 * 60 * 1000); // 3 ngày
+                }
             } catch (error) {
                 console.error('Failed to fetch notifications:', error);
             }
@@ -81,40 +89,38 @@ const Tophead = () => {
         return category ? category.slug : '';
     };
 
-    // Filter notifications to show only new ones
-    const newNotificationsList = notifications.filter((notification) => newNotifications[notification._id]);
+    const notificationMenuItems = notifications.length
+        ? notifications.map((notification) => ({
+              key: notification._id,
+              label: (
+                  <Link to={`${routes.news}/${getCategorySlug(notification)}/${notification._id}`}>
+                      <div className={cx('news-item')}>
+                          <img
+                              width={100}
+                              src={notification.images}
+                              alt={notification.title}
+                              className={cx('news-image')}
+                          />
+                          <div className={cx('news-info')}>
+                              <div className={cx('news-title')}>
+                                  {notification.title}
+                                  {notification.isNew && <span className={cx('new-label')}>New</span>}
+                              </div>
+                              <div className={cx('news-summary')}>{notification.summary}</div>
+                          </div>
+                      </div>
+                  </Link>
+              ),
+          }))
+        : [
+              {
+                  key: 'no-notifications',
+                  label: <span>No new notifications</span>,
+                  disabled: true,
+              },
+          ];
 
-    const notificationMenu = (
-        <Menu className={cx('news-menu')}>
-            {newNotificationsList.length ? (
-                newNotificationsList.map((notification) => (
-                    <Menu.Item key={notification._id}>
-                        <Link to={`${routes.news}/${getCategorySlug(notification)}/${notification._id}`}>
-                            <div className={cx('news-item')}>
-                                <img
-                                    width={100}
-                                    src={notification.images}
-                                    alt={notification.title}
-                                    className={cx('news-image')}
-                                />
-                                <div className={cx('news-info')}>
-                                    <div className={cx('news-title')}>
-                                        {notification.title}
-                                        {newNotifications[notification._id] && (
-                                            <span className={cx('new-label')}>New</span>
-                                        )}
-                                    </div>
-                                    <div className={cx('news-summary')}>{notification.summary}</div>
-                                </div>
-                            </div>
-                        </Link>
-                    </Menu.Item>
-                ))
-            ) : (
-                <Menu.Item disabled>No new notifications</Menu.Item>
-            )}
-        </Menu>
-    );
+    const notificationMenu = <Menu className={cx('news-menu')} items={notificationMenuItems} />;
 
     return (
         <div className={cx('wrapper')}>
@@ -137,7 +143,7 @@ const Tophead = () => {
                         </div>
                     </div>
                 </div>
-                <Dropdown overlay={notificationMenu} trigger={['click']} placement="bottomRight">
+                <Dropdown menu={notificationMenu} trigger={['click']} placement="bottomRight">
                     <Badge dot={false} offset={[0, 1]} className={cx('notification-badge')}>
                         <div className={cx('notification-icon-wrapper')}>
                             {hasNewNotification && (
