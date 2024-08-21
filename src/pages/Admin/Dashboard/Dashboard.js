@@ -27,6 +27,7 @@ const sidebarItems = [
     { title: 'Quản lý sản phẩm', icon: faBox, count: 0, route: routes.productList },
     { title: 'Quản lý tin tức', icon: faNewspaper, count: 0, route: routes.newsList },
     { title: 'Quản lý dự án', icon: faDiagramProject, count: 0, route: routes.projectList },
+    { title: 'Quản lý tài liệu', icon: faClipboardList, count: 0, route: routes.legalList },
     { title: 'Quản lý dịch vụ', icon: faLayerGroup, count: 0, route: routes.serviceList },
     { title: 'Quản lý đối tác', icon: faHandshake, count: 0, route: routes.partnerList },
     { title: 'Quản lý thư viện', icon: faBookOpen, count: 0, route: routes.videosList },
