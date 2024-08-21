@@ -52,7 +52,7 @@ export const addLegal = async (legalData) => {
 
 export const updateLegal = async (id, legalData) => {
     try {
-        const response = await httpRequest.patch(`/legals/${id}`, legalData);
+        const response = await httpRequest.patch(`/document/${id}`, legalData);
         return response.data;
     } catch (error) {
         console.error(`Error updating legal with ID ${id}:`, error);
@@ -62,7 +62,7 @@ export const updateLegal = async (id, legalData) => {
 
 export const deleteLegal = async (id) => {
     try {
-        const response = await httpRequest.delete(`/legals/${id}`);
+        const response = await httpRequest.delete(`/document/${id}`);
         return response.data;
     } catch (error) {
         console.error(`Error deleting legal with ID ${id}:`, error);

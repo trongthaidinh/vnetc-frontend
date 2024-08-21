@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import Card from '~/components/CardContent';
+import Card from '~/components/CardDocument';
 import SuggestCard from '~/components/SuggestCard';
 import { getLegals } from '~/services/legalService';
 import { getCategoriesByType } from '~/services/categoryService';

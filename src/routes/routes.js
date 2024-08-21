@@ -67,6 +67,9 @@ import UpdateMember from '~/pages/Admin/Department/UpdateMember';
 import Legal from '~/pages/Legal';
 import LegalCategory from '~/pages/LegalCategory';
 import LegalDetail from '~/pages/LegalDetail';
+import UpdateLegal from '~/pages/Admin/Legal/UpdateLegal';
+import LegalList from '~/pages/Admin/Legal/LegalList';
+import AddLegal from '~/pages/Admin/Legal/AddLegal';
 
 // Public Routes
 const publicRoutes = [
@@ -168,6 +171,9 @@ const privateRoutes = [
     { path: config.routes.updateProject, component: UpdateProject, layout: AdminLayout },
     { path: config.routes.projectList, component: ProjectList, layout: AdminLayout },
     { path: config.routes.addProject, component: AddProject, layout: AdminLayout },
+    { path: config.routes.updateLegal, component: UpdateLegal, layout: AdminLayout },
+    { path: config.routes.legalList, component: LegalList, layout: AdminLayout },
+    { path: config.routes.addLegal, component: AddLegal, layout: AdminLayout },
     { path: config.routes.updateUser, component: UpdateUser, layout: AdminLayout },
     { path: config.routes.userList, component: UserList, layout: AdminLayout },
     { path: config.routes.videosList, component: VideoList, layout: AdminLayout },

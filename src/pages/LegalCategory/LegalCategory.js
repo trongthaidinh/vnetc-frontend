@@ -7,7 +7,7 @@ import { getLegalByType } from '~/services/legalService';
 import Title from '~/components/Title';
 import styles from './LegalCategory.module.scss';
 import { Link } from 'react-router-dom';
-import Card from '~/components/CardContent/CardContent';
+import Card from '~/components/CardDocument';
 import { getCategoriesByType } from '~/services/categoryService';
 import routes from '~/config/routes';
 import { Helmet } from 'react-helmet';

@@ -246,6 +246,30 @@ const SideBar = () => {
                     </ul>
                 </li>
                 <li>
+                    <div className={styles.menuItem} onClick={() => toggleMenu('documentManagement')}>
+                        <FontAwesomeIcon icon={faClipboardList} className={styles.menuIcon} />
+                        <span className={styles.menuText}>
+                            {!isCollapsed && (
+                                <>
+                                    Quản lý tài liệu
+                                    <FontAwesomeIcon
+                                        icon={openMenus.documentManagement ? faChevronDown : faChevronRight}
+                                        className={styles.chevronIcon}
+                                    />
+                                </>
+                            )}
+                        </span>
+                    </div>
+                    <ul className={`${styles.subMenu} ${openMenus.documentManagement ? styles.open : ''}`}>
+                        <li>
+                            <NavLink to={routes.legalList}>Danh sách tài liệu</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={routes.addLegal}>Thêm tài liệu</NavLink>
+                        </li>
+                    </ul>
+                </li>
+                <li>
                     <div className={styles.menuItem} onClick={() => toggleMenu('partnerManagement')}>
                         <FontAwesomeIcon icon={faHandshake} className={styles.menuIcon} />
                         <span className={styles.menuText}>

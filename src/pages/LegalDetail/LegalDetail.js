@@ -4,7 +4,6 @@ import classNames from 'classnames/bind';
 import styles from './LegalDetail.module.scss';
 import LoadingScreen from '~/components/LoadingScreen';
 import PushNotification from '~/components/PushNotification';
-import DateTime from '~/components/DateTime';
 import Title from '~/components/Title';
 import { getLegalById } from '~/services/legalService';
 import { Helmet } from 'react-helmet';
@@ -72,7 +71,6 @@ const LegalDetail = () => {
                     <div dangerouslySetInnerHTML={{ __html: legalDetail.content }} />
                 )}
             </div>
-            <DateTime timestamp={legalDetail.createdAt} showDate={true} showTime={true} />
         </article>
     );
 };
