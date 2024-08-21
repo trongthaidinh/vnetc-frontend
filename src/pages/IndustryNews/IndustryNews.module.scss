@@ -81,7 +81,11 @@ a {
     white-space: nowrap;
     animation: color-blink 2s linear infinite, blink 1s infinite;
     @include respond-to(lg) {
-        display: none;
+        top: 24px;
+    }
+
+    @include respond-to(sm) {
+        top: 12px;
     }
 }
 

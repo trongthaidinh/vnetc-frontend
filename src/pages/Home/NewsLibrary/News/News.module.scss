@@ -47,7 +47,7 @@
     white-space: nowrap;
     animation: color-blink 2s linear infinite, blink 1s infinite;
     @include respond-to(lg) {
-        display: none;
+        left: 100px;
     }
 }
 
