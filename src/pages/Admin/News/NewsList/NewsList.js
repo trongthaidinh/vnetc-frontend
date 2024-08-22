@@ -74,11 +74,10 @@ const NewsList = () => {
                 <table className={styles.table}>
                     <thead>
                         <tr>
+                            <th>Hình ảnh</th>
                             <th>Tiêu đề</th>
                             <th>Tóm tắt</th>
-                            <th>Số lượt xem</th>
                             <th>Nổi bật</th>
-                            <th>Hình ảnh</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -86,13 +85,12 @@ const NewsList = () => {
                         {currentNews.length > 0 ? (
                             currentNews.map((article) => (
                                 <tr key={article._id}>
-                                    <td>{article.title}</td>
-                                    <td>{article.summary}</td>
-                                    <td>{article.views}</td>
-                                    <td>{article.isFeatured ? 'Có' : 'Không'}</td>
                                     <td>
                                         <img src={article.images} alt={article.title} className={styles.newsImage} />
                                     </td>
+                                    <td>{article.title}</td>
+                                    <td>{article.summary}</td>
+                                    <td>{article.isFeatured ? 'Có' : 'Không'}</td>
                                     <td>
                                         <Link to={`/admin/update-news/${article._id}`} className={styles.editButton}>
                                             <FontAwesomeIcon icon={faEdit} /> Sửa
