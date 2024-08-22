@@ -136,19 +136,26 @@ function Legal() {
                                         disableOnInteraction: false,
                                     }}
                                 >
-                                    {legalsInCategory?.slice(0, 6).map((item, index) => (
-                                        <SwiperSlide key={index} className={cx('slide')}>
-                                            <Link to={`${routes.legal}/${category.slug}/${item._id}`}>
-                                                <Card
-                                                    title={item.title}
-                                                    summary={item.content}
-                                                    image={item.image}
-                                                    createdAt={item.createdAt}
-                                                    views={item.views}
-                                                />
-                                            </Link>
-                                        </SwiperSlide>
-                                    ))}
+                                    {legalsInCategory?.slice(0, 6).map((item, index) => {
+                                        const imageUrl = item.attachments
+                                            ? `${process.env.REACT_APP_HOST}/${item.attachments
+                                                  .find((attachment) => attachment.file_type === 'img')
+                                                  ?.file_url.replace(/\\/g, '/')}`
+                                            : null;
+                                        return (
+                                            <SwiperSlide key={index} className={cx('slide')}>
+                                                <Link to={`${routes.legal}/${category.slug}/${item._id}`}>
+                                                    <Card
+                                                        title={item.title}
+                                                        summary={item.content}
+                                                        image={imageUrl}
+                                                        createdAt={item.createdAt}
+                                                        views={item.views}
+                                                    />
+                                                </Link>
+                                            </SwiperSlide>
+                                        );
+                                    })}
                                 </Swiper>
                             </div>
                         );

@@ -32,7 +32,7 @@ export const getLegalById = async (id) => {
 
 export const getLegalByType = async (type) => {
     try {
-        const response = await httpRequest.get(`/document/type/${type}`);
+        const response = await httpRequest.get(`/document?type=${type}`);
         return response.data.data;
     } catch (error) {
         console.error(`Error fetching legal for id=${type}:`, error);

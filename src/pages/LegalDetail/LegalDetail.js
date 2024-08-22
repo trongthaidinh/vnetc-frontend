@@ -47,7 +47,9 @@ const LegalDetail = () => {
     }
 
     const pdfUrl = legalDetail.attachments
-        ? `${process.env.REACT_APP_HOST}/${legalDetail.attachments.replace(/\\/g, '/')}`
+        ? `${process.env.REACT_APP_HOST}/${legalDetail.attachments
+              .find((attachment) => attachment.file_type === 'pdf')
+              ?.file_url.replace(/\\/g, '/')}`
         : null;
 
     return (
