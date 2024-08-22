@@ -11,6 +11,7 @@ import Card from '~/components/CardDocument';
 import { getCategoriesByType } from '~/services/categoryService';
 import routes from '~/config/routes';
 import { Helmet } from 'react-helmet';
+import { Empty } from 'antd'; // Import Ant Design's Empty component
 
 const cx = classNames.bind(styles);
 
@@ -118,8 +119,18 @@ function LegalCategory() {
                 <meta name="description" content={`Văn bản pháp quy trong danh mục ${categoryName}.`} />
             </Helmet>
             <Title text={categoryName} />
-            <div className={cx('legalGrid')}>{renderLegalCategory()}</div>
-            {renderPagination()}
+            <div className={cx('legalGrid')}>
+                {legal.length > 0 ? (
+                    renderLegalCategory()
+                ) : (
+                    <>
+                        <div />
+                        <Empty description="Không có văn bản nào để hiển thị" />
+                        <div />
+                    </>
+                )}
+            </div>
+            {legal.length > 0 && renderPagination()}
         </div>
     );
 }

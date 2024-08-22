@@ -24,6 +24,7 @@ function Legal() {
     const [newsData, setNewsData] = useState([]);
     const [groupedLegal, setGroupedLegal] = useState({});
     const [categories, setCategories] = useState([]);
+    const [newsCategories, setNewsCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedSuggestion, setSelectedSuggestion] = useState(0);
@@ -32,7 +33,9 @@ function Legal() {
         const fetchCategoriesAndLegals = async () => {
             try {
                 const categoriesData = await getCategoriesByType(1);
+                const categoriesNews = await getCategoriesByType(2);
                 setCategories(categoriesData);
+                setNewsCategories(categoriesNews);
 
                 const legalData = await getLegals();
                 const newsData = await getNewsPagination(1, 10);
@@ -74,8 +77,9 @@ function Legal() {
         return array;
     };
 
-    const getCategorySlug = (legalType) => {
-        const category = categories.find((cat, index) => index === legalType);
+    const getCategorySlug = (categoryId) => {
+        const category = newsCategories.find((category) => categoryId === category._id);
+        console.log(category.slug);
         return category ? category.slug : '';
     };
 
