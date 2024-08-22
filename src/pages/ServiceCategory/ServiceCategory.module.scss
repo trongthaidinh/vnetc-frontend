@@ -22,8 +22,11 @@
 }
 
 .serviceGrid {
+    min-height: 300px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-content: center;
     gap: 20px;
     margin: 40px 0;
     @include respond-to(sm) {

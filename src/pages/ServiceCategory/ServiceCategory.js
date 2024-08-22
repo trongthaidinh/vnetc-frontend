@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { getServiceByType } from '~/services/serviceService';
+import { getServiceByCategory } from '~/services/serviceService';
 import Title from '~/components/Title';
 import styles from './ServiceCategory.module.scss';
-import { Link } from 'react-router-dom';
 import Card from '~/components/CardContent/CardContent';
 import { getCategoriesByType } from '~/services/categoryService';
 import routes from '~/config/routes';
 import { Helmet } from 'react-helmet';
+import { Empty } from 'antd';
 
 const cx = classNames.bind(styles);
 
 function ServiceCategory() {
     const location = useLocation();
     const [service, setService] = useState([]);
-    const [serviceType, setServiceType] = useState(0);
+    const [categoryId, setCategoryId] = useState(null);
+    const [subcategoryId, setSubcategoryId] = useState(null);
     const [categoryName, setCategoryName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const servicePerPage = 9;
+    const servicePerPage = 12;
 
     const extractSlugFromPathname = (pathname) => {
         const parts = pathname.split('/');
@@ -33,10 +34,21 @@ function ServiceCategory() {
         async function fetchCategory() {
             try {
                 const categories = await getCategoriesByType(3);
-                const categoryIndex = categories.findIndex((cat) => cat.slug === slug);
-                const category = categories[categoryIndex];
-                if (category) {
-                    setServiceType(categoryIndex);
+                let category = categories.find((cat) => cat.slug === slug);
+
+                if (!category) {
+                    for (const cat of categories) {
+                        const subcategory = cat.subcategories.find((subcat) => subcat.slug === slug);
+                        if (subcategory) {
+                            setCategoryId(cat._id);
+                            setSubcategoryId(subcategory._id);
+                            setCategoryName(subcategory.name);
+                            return;
+                        }
+                    }
+                } else {
+                    setCategoryId(category._id);
+                    setSubcategoryId(null); // Reset subcategoryId if a parent category is selected
                     setCategoryName(category.name);
                 }
             } catch (error) {
@@ -47,20 +59,47 @@ function ServiceCategory() {
         if (slug) {
             fetchCategory();
         }
-    }, [slug]);
+    }, [slug]); // Re-fetch category whenever the slug changes
 
     useEffect(() => {
         async function fetchServiceCategory() {
             try {
-                const data = await getServiceByType(serviceType);
-                setService(data);
+                let data = [];
+                if (subcategoryId) {
+                    data = await getServiceByCategory(subcategoryId);
+                } else if (categoryId) {
+                    data = await getServiceByCategory(categoryId);
+
+                    if (!Array.isArray(data) || data.message === 'No services found') {
+                        const categories = await getCategoriesByType(3);
+                        const parentCategory = categories.find((cat) => cat._id === categoryId);
+
+                        if (parentCategory && parentCategory.subcategories) {
+                            const subcategoryServices = await Promise.all(
+                                parentCategory.subcategories.map(async (subcat) => {
+                                    const services = await getServiceByCategory(subcat._id);
+                                    if (Array.isArray(services) && services.length > 0) {
+                                        return services.filter((service) => service._id || service.name);
+                                    } else {
+                                        return null;
+                                    }
+                                }),
+                            );
+
+                            data = subcategoryServices.filter(Boolean).flat();
+                        }
+                    }
+                }
+                setService(Array.isArray(data) ? data : []);
             } catch (error) {
                 console.error('Error fetching service:', error);
             }
         }
 
-        fetchServiceCategory();
-    }, [serviceType]);
+        if (categoryId || subcategoryId) {
+            fetchServiceCategory();
+        }
+    }, [categoryId, subcategoryId, slug]);
 
     const indexOfLastService = currentPage * servicePerPage;
     const indexOfFirstService = indexOfLastService - servicePerPage;
@@ -75,9 +114,20 @@ function ServiceCategory() {
     };
 
     const renderServiceCategory = () => {
-        return currentServiceCategory.map((serviceItem) => (
+        if (currentServiceCategory.length === 0) {
+            return (
+                <>
+                    <div />
+                    <Empty className={cx('empty-element')} description="Không có dịch vụ để hiển thị" />
+                    <div />
+                </>
+            );
+        }
+
+        return currentServiceCategory.map((serviceItem, index) => (
             <Link to={`${routes.services}/${slug}/${serviceItem._id}`} key={serviceItem._id}>
                 <Card
+                    key={index}
                     title={serviceItem.name}
                     image={serviceItem.image}
                     summary={serviceItem.summary}
@@ -113,12 +163,9 @@ function ServiceCategory() {
     return (
         <div className={cx('container')}>
             <Helmet>
-                <title>{`${categoryName} | VNETC`}</title>
-                <meta
-                    name="description"
-                    content={`Khám phá dịch vụ ${categoryName} mà chúng tôi cung cấp tại VNETC.`}
-                />
-                <meta name="keywords" content={`dịch vụ, ${categoryName}, VNETC`} />
+                <title>{categoryName} | VNETC</title>
+                <meta name="description" content={`Xem các dịch vụ liên quan đến ${categoryName} trên VNETC.`} />
+                <meta name="keywords" content={`${categoryName}, dịch vụ, VNETC`} />
             </Helmet>
             <Title text={categoryName} />
             <div className={cx('serviceGrid')}>{renderServiceCategory()}</div>

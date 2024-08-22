@@ -39,7 +39,6 @@ const Service = () => {
                     categoriesData.map(async (category) => {
                         const serviceData = await getServiceByCategory(category._id);
                         if (serviceData.length > 0) {
-                            // Only add categories with items
                             groupedServiceMap[category._id] = serviceData.map((item) => ({
                                 ...item,
                                 image: item.image,
@@ -113,7 +112,7 @@ const Service = () => {
                                 <Title
                                     text={category.name || 'Loading...'}
                                     showSeeAll={true}
-                                    slug={`${routes.service}/${category.slug}`}
+                                    slug={`${routes.services}/${category.slug}`}
                                     categoryId={category._id}
                                 />
                                 <Swiper
@@ -155,7 +154,7 @@ const Service = () => {
                     <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-items')}>
                         {filteredServiceItems.map((item, index) => (
-                            <Link key={index} to={`${routes.service}/${getCategorySlug(item.categoryId)}/${item._id}`}>
+                            <Link key={index} to={`${routes.services}/${getCategorySlug(item.categoryId)}/${item._id}`}>
                                 <SuggestCard
                                     title={item.name}
                                     summary={item.summary}
