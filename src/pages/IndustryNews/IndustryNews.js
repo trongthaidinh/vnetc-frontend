@@ -12,6 +12,11 @@ import { getCategoriesByType } from '~/services/categoryService';
 import routes from '~/config/routes';
 import { Helmet } from 'react-helmet';
 import dayjs from 'dayjs';
+import { DatePicker, Space, Button, Empty } from 'antd';
+import { FilterOutlined } from '@ant-design/icons';
+import 'moment/locale/vi';
+
+const { RangePicker } = DatePicker;
 
 const cx = classNames.bind(styles);
 
@@ -21,6 +26,7 @@ function NewsCategory() {
     const [categoryId, setCategoryId] = useState(null);
     const [categoryName, setCategoryName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [filterDates, setFilterDates] = useState([]);
     const newsPerPage = 12;
 
     const extractSlugFromPathname = (pathname) => {
@@ -54,8 +60,17 @@ function NewsCategory() {
             if (categoryId) {
                 try {
                     const data = await getNewsByCategory(categoryId);
+                    const filteredNews =
+                        filterDates.length === 2
+                            ? data.filter(
+                                  (newsItem) =>
+                                      dayjs(newsItem.createdAt).isAfter(filterDates[0]) &&
+                                      dayjs(newsItem.createdAt).isBefore(filterDates[1].endOf('day')),
+                              )
+                            : data;
+
                     setNews(
-                        data.map((newsItem) => ({
+                        filteredNews.map((newsItem) => ({
                             ...newsItem,
                             isNew: dayjs().diff(dayjs(newsItem.createdAt), 'day') <= 3,
                         })),
@@ -67,7 +82,7 @@ function NewsCategory() {
         }
 
         fetchNewsCategory();
-    }, [categoryId]);
+    }, [categoryId, filterDates]);
 
     const indexOfLastNews = currentPage * newsPerPage;
     const indexOfFirstNews = indexOfLastNews - newsPerPage;
@@ -81,14 +96,28 @@ function NewsCategory() {
         }
     };
 
+    const handleRangeChange = (dates) => {
+        setFilterDates(dates);
+    };
+
     const renderNewsCategory = () => {
+        if (currentNewsCategory.length === 0) {
+            return (
+                <>
+                    <div />
+                    <Empty description="Không có tin tức để hiển thị" />
+                    <div />
+                </>
+            );
+        }
+
         return currentNewsCategory.map((newsItem) => (
             <Link to={`${routes.news}/${slug}/${newsItem._id}`} key={newsItem._id}>
                 <Card
                     title={newsItem.title}
                     image={newsItem.images}
                     summary={newsItem.summary}
-                    createdAt={new Date(newsItem.createdAt).getTime()}
+                    createdAt={newsItem.createdAt}
                     views={newsItem.views}
                     isNew={newsItem.isNew}
                 />
@@ -126,6 +155,21 @@ function NewsCategory() {
                 <meta name="keywords" content={`${categoryName}, tin tức, VNETC`} />
             </Helmet>
             <Title text={categoryName} />
+
+            <div className={cx('filter')}>
+                <Space direction="vertical" size={12}>
+                    <RangePicker onChange={handleRangeChange} locale="vi" />
+                </Space>
+                <Button
+                    className={cx('filter-button')}
+                    type="primary"
+                    icon={<FilterOutlined />}
+                    onClick={() => setCurrentPage(1)}
+                >
+                    Áp dụng
+                </Button>
+            </div>
+
             <div className={cx('newsGrid')}>{renderNewsCategory()}</div>
             {renderPagination()}
         </div>

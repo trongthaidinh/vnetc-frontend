@@ -131,7 +131,7 @@ function ServiceCategory() {
                     title={serviceItem.name}
                     image={serviceItem.image}
                     summary={serviceItem.summary}
-                    createdAt={new Date(serviceItem.createdAt).getTime()}
+                    createdAt={serviceItem.createdAt}
                     views={serviceItem.views}
                 />
             </Link>
