@@ -1,3 +1,4 @@
+// News.jsx
 import React, { useState, useEffect } from 'react';
 import styles from './News.module.scss';
 import classNames from 'classnames/bind';
@@ -21,7 +22,6 @@ function News() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
-    const [hasNewNotification, setHasNewNotification] = useState(false);
 
     useEffect(() => {
         const loadData = async () => {
@@ -29,13 +29,6 @@ function News() {
                 const [newsData, categoryData] = await Promise.all([getNewsPagination(1, 12), getCategories()]);
                 setNews(newsData);
                 setCategories(categoryData);
-
-                const isNew = newsData.some((news) => dayjs().diff(dayjs(news.createdAt), 'day') <= 3);
-                setHasNewNotification(isNew);
-
-                if (isNew) {
-                    setTimeout(() => setHasNewNotification(false), 3 * 24 * 60 * 60 * 1000);
-                }
             } catch (error) {
                 setError(error);
             } finally {
@@ -57,17 +50,10 @@ function News() {
             console.error('Connection error:', error);
         });
 
-        socket.on('newsAdded', async (data) => {
+        socket.on('newsAdded', async () => {
             try {
-                // Refetch news data to include the newly added news
                 const updatedNewsData = await getNewsPagination(1, 12);
                 setNews(updatedNewsData);
-
-                const isNew = dayjs().diff(dayjs(data.createdAt), 's') <= 15;
-                if (isNew) {
-                    setHasNewNotification(true);
-                    setTimeout(() => setHasNewNotification(false), 15000);
-                }
             } catch (error) {
                 console.error('Error fetching updated news:', error);
             }
@@ -115,7 +101,6 @@ function News() {
             <div className={cx('inner')}>
                 <div className={cx('title-container')}>
                     <Title text="Tin tức" showSeeAll={true} slug={`${routes.news}`} />
-                    {hasNewNotification && <span className={cx('new-label')}>NEW</span>}
                 </div>
                 <ButtonGroup
                     buttons={['Mới nhất', 'Nổi bật', 'Ngẫu nhiên']}
@@ -123,18 +108,23 @@ function News() {
                     activeIndex={activeIndex}
                 />
                 <div className={cx('news-list')}>
-                    {filteredNews.map((news, index) => (
-                        <Link key={index} to={`${routes.news}/${getCategorySlug(news)}/${news._id}`}>
-                            <CardContent
-                                title={news.title}
-                                summary={news.summary}
-                                image={news.images}
-                                link={news.link}
-                                createdAt={news.createdAt}
-                                views={news.views}
-                            />
-                        </Link>
-                    ))}
+                    {filteredNews.map((news, index) => {
+                        const isNew = dayjs().diff(dayjs(news.createdAt), 'day') <= 3;
+
+                        return (
+                            <Link key={index} to={`${routes.news}/${getCategorySlug(news)}/${news._id}`}>
+                                <CardContent
+                                    title={news.title}
+                                    summary={news.summary}
+                                    image={news.images}
+                                    link={news.link}
+                                    createdAt={news.createdAt}
+                                    views={news.views}
+                                    isNew={isNew}
+                                />
+                            </Link>
+                        );
+                    })}
                 </div>
             </div>
         </div>

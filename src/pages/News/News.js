@@ -13,9 +13,10 @@ import routes from '~/config/routes';
 import { getCategoriesByType } from '~/services/categoryService';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
+import { Helmet } from 'react-helmet';
+import dayjs from 'dayjs';
 import 'swiper/css';
 import 'swiper/css/autoplay';
-import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
@@ -41,6 +42,7 @@ const News = () => {
                         groupedNewsMap[category._id] = newsData.map((item) => ({
                             ...item,
                             image: item.images,
+                            isNew: dayjs().diff(dayjs(item.createdAt), 'day') <= 3, // Determine if the item is new
                         }));
                     }),
                 );
@@ -135,6 +137,7 @@ const News = () => {
                                                     image={item.images}
                                                     createdAt={item.createdAt}
                                                     views={item.views}
+                                                    isNew={item.isNew} // Pass isNew prop
                                                 />
                                             </Link>
                                         </SwiperSlide>
@@ -156,6 +159,7 @@ const News = () => {
                                     image={item.images}
                                     createdAt={item.createdAt}
                                     views={item.views}
+                                    isNew={item.isNew} // Pass isNew prop
                                 />
                             </Link>
                         ))}

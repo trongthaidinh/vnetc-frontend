@@ -2,6 +2,7 @@
 @import '../../styles/variables';
 
 .card {
+    position: relative;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 2px 4px 12px #00000014;
@@ -74,4 +75,45 @@
 .card_title-link {
     text-decoration: none;
     color: inherit;
+}
+
+.new-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    padding: 2px 8px;
+    font-size: 12px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    font-weight: bold;
+    white-space: nowrap;
+    z-index: 800;
+    animation: blink 2s infinite;
+    @include respond-to(lg) {
+        top: 24px;
+    }
+
+    @include respond-to(sm) {
+        top: 12px;
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }

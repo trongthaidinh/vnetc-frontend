@@ -21,7 +21,6 @@ function NewsCategory() {
     const [categoryId, setCategoryId] = useState(null);
     const [categoryName, setCategoryName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [hasNewNotification, setHasNewNotification] = useState(false);
     const newsPerPage = 12;
 
     const extractSlugFromPathname = (pathname) => {
@@ -55,10 +54,12 @@ function NewsCategory() {
             if (categoryId) {
                 try {
                     const data = await getNewsByCategory(categoryId);
-                    setNews(data);
-
-                    const isNew = data.some((newsItem) => dayjs().diff(dayjs(newsItem.createdAt), 'day') <= 3);
-                    setHasNewNotification(isNew);
+                    setNews(
+                        data.map((newsItem) => ({
+                            ...newsItem,
+                            isNew: dayjs().diff(dayjs(newsItem.createdAt), 'day') <= 3,
+                        })),
+                    );
                 } catch (error) {
                     console.error('Error fetching news:', error);
                 }
@@ -89,6 +90,7 @@ function NewsCategory() {
                     summary={newsItem.summary}
                     createdAt={new Date(newsItem.createdAt).getTime()}
                     views={newsItem.views}
+                    isNew={newsItem.isNew}
                 />
             </Link>
         ));
@@ -124,7 +126,6 @@ function NewsCategory() {
                 <meta name="keywords" content={`${categoryName}, tin tức, VNETC`} />
             </Helmet>
             <Title text={categoryName} />
-            {hasNewNotification && <span className={cx('new-label')}>NEW</span>}
             <div className={cx('newsGrid')}>{renderNewsCategory()}</div>
             {renderPagination()}
         </div>
