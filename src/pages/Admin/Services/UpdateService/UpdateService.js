@@ -1,35 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate, useParams } from 'react-router-dom';
 import { getServiceById, updateService } from '~/services/serviceService';
 import { getCategoriesByType } from '~/services/categoryService';
 import CustomEditor from '~/components/CustomEditor';
 import PushNotification from '~/components/PushNotification';
 import styles from './UpdateService.module.scss';
-import routes from '~/config/routes';
+import { useParams, useNavigate } from 'react-router-dom';
 import LoadingScreen from '~/components/LoadingScreen';
+import routes from '~/config/routes';
 import Title from '~/components/Title';
 
 const UpdateService = () => {
-    const navigate = useNavigate();
     const { id } = useParams();
+    const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [initialValues, setInitialValues] = useState(null);
 
     const validationSchema = Yup.object({
-        name: Yup.string().required('Tên dịch vụ là bắt buộc'),
+        title: Yup.string().required('Tiêu đề là bắt buộc'),
         summary: Yup.string().required('Tóm tắt là bắt buộc'),
-        image: Yup.string().required('Hình ảnh là bắt buộc'),
-        serviceType: Yup.string().required('Loại dịch vụ là bắt buộc'),
+        image: Yup.mixed().required('Hình ảnh là bắt buộc'),
+        categoryId: Yup.string().required('Danh mục là bắt buộc'),
         content: Yup.string().required('Nội dung là bắt buộc'),
+        isFeatured: Yup.boolean(),
     });
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const fetchedCategories = await getCategoriesByType(3);
+                const fetchedCategories = await getCategoriesByType(2);
                 setCategories(fetchedCategories);
             } catch (error) {
                 console.error('Lỗi khi tải danh mục:', error);
@@ -40,11 +41,12 @@ const UpdateService = () => {
             try {
                 const service = await getServiceById(id);
                 setInitialValues({
-                    name: service.name,
+                    title: service.name,
                     summary: service.summary,
-                    image: service.image || '',
-                    serviceType: service.serviceType,
+                    image: service.image,
+                    categoryId: service.categoryId,
                     content: service.content,
+                    isFeatured: service.isFeatured,
                 });
             } catch (error) {
                 console.error('Lỗi khi tải dịch vụ:', error);
@@ -63,37 +65,47 @@ const UpdateService = () => {
     const handleSubmit = async (values, { resetForm }) => {
         const formData = new FormData();
 
-        formData.append('name', values.name);
+        formData.append('title', values.title);
         formData.append('summary', values.summary);
-        formData.append('image', values.image);
-        formData.append('serviceType', values.serviceType);
+
+        if (values.image) {
+            formData.append('images', values.image);
+        } else {
+            formData.append('images', initialValues.image);
+        }
+
+        formData.append('categoryId', values.categoryId);
         formData.append('content', values.content);
-        formData.append('createdBy', 'admin');
+        formData.append('isFeatured', values.isFeatured);
 
         try {
             await updateService(id, formData);
             setNotification({ message: 'Cập nhật dịch vụ thành công!', type: 'success' });
             resetForm();
-            navigate(routes.serviceList);
+            setTimeout(() => {
+                navigate(routes.serviceList);
+            }, 1000);
         } catch (error) {
             setNotification({ message: 'Lỗi khi cập nhật dịch vụ.', type: 'error' });
             console.error('Lỗi khi cập nhật dịch vụ:', error);
         }
     };
 
-    if (!initialValues) return <LoadingScreen />;
+    if (!initialValues) {
+        return <LoadingScreen />;
+    }
 
     return (
-        <div className={styles.updateService}>
+        <div className={styles.editService}>
             <Title text="Cập nhật dịch vụ" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
                     <Form className={styles.form}>
                         <div className={styles.formGroup}>
-                            <label htmlFor="name">Tên Dịch vụ</label>
-                            <Field name="name" type="text" className={styles.input} />
-                            <ErrorMessage name="name" component="div" className={styles.error} />
+                            <label htmlFor="title">Tiêu Đề</label>
+                            <Field name="title" type="text" className={styles.input} />
+                            <ErrorMessage name="title" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
                             <label htmlFor="summary">Tóm Tắt</label>
@@ -115,26 +127,24 @@ const UpdateService = () => {
                                     src={
                                         typeof values.image === 'string'
                                             ? values.image
-                                            : values.image instanceof File
-                                            ? URL.createObjectURL(values.image)
-                                            : ''
+                                            : URL.createObjectURL(values.image)
                                     }
-                                    alt="News"
+                                    alt="Service"
                                     className={styles.serviceImage}
                                 />
                             </div>
                         )}
                         <div className={styles.formGroup}>
-                            <label htmlFor="serviceType">Loại Dịch vụ</label>
-                            <Field as="select" name="serviceType" className={styles.input}>
-                                <option value="">Chọn loại dịch vụ</option>
-                                {categories.map((category, index) => (
-                                    <option key={category._id} value={index}>
+                            <label htmlFor="categoryId">Danh Mục</label>
+                            <Field as="select" name="categoryId" className={styles.input}>
+                                <option value="">Chọn danh mục</option>
+                                {categories.map((category) => (
+                                    <option key={category._id} value={category._id}>
                                         {category.name}
                                     </option>
                                 ))}
                             </Field>
-                            <ErrorMessage name="serviceType" component="div" className={styles.error} />
+                            <ErrorMessage name="categoryId" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
                             <label htmlFor="content">Nội Dung</label>
@@ -144,8 +154,14 @@ const UpdateService = () => {
                             />
                             <ErrorMessage name="content" component="div" className={styles.error} />
                         </div>
+                        <div className={styles.formGroup}>
+                            <label>
+                                <Field type="checkbox" name="isFeatured" />
+                                Đánh dấu là nổi bật
+                            </label>
+                        </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                            Cập Nhật Dịch vụ
+                            Cập Nhật Dịch Vụ
                         </button>
                     </Form>
                 )}

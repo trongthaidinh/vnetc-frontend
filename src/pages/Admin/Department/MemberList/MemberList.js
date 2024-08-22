@@ -103,7 +103,13 @@ const MemberList = () => {
                                         <img src={member.image} alt={member.name} className={styles.memberImage} />
                                     </td>
                                     <td>{member.name}</td>
-                                    <td>{member.position === 0 ? 'Ban lãnh đạo' : 'Đội công trình'}</td>
+                                    <td>
+                                        {member.position === 0
+                                            ? 'Ban lãnh đạo'
+                                            : member.position === 1
+                                            ? 'Nhân viên'
+                                            : 'Đội công trình'}
+                                    </td>
                                     <td>{member.yearOfBirth}</td>
                                     <td>{member.qualification}</td>
                                     <td>{member.seniority} năm</td> {/* Hiển thị năm kinh nghiệm */}

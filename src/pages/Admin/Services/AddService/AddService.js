@@ -1,33 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
 import { addService } from '~/services/serviceService';
 import { getCategoriesByType } from '~/services/categoryService';
 import CustomEditor from '~/components/CustomEditor';
 import PushNotification from '~/components/PushNotification';
 import styles from './AddService.module.scss';
 import routes from '~/config/routes';
+import { useNavigate } from 'react-router-dom';
 import Title from '~/components/Title';
 import { useDropzone } from 'react-dropzone';
 
 const AddService = () => {
-    const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [files, setFiles] = useState([]);
+    const navigate = useNavigate();
 
     const initialValues = {
-        name: '',
+        title: '',
         summary: '',
-        serviceType: '',
+        images: [],
+        categoryId: '',
         content: '',
+        isFeatured: false,
     };
 
     const validationSchema = Yup.object({
-        name: Yup.string().required('Tên dịch vụ là bắt buộc'),
+        title: Yup.string().required('Tiêu đề là bắt buộc'),
         summary: Yup.string().required('Tóm tắt là bắt buộc'),
-        serviceType: Yup.string().required('Loại dịch vụ là bắt buộc'),
+        images: Yup.array().required('Hình ảnh là bắt buộc'),
+        categoryId: Yup.string().required('Danh mục là bắt buộc'),
         content: Yup.string().required('Nội dung là bắt buộc'),
     });
 
@@ -53,13 +56,14 @@ const AddService = () => {
     const handleSubmit = async (values, { resetForm }) => {
         const formData = new FormData();
 
-        formData.append('name', values.name);
+        formData.append('name', values.title);
         formData.append('summary', values.summary);
         files.forEach((image) => {
             formData.append('image', image);
         });
-        formData.append('serviceType', values.serviceType);
+        formData.append('categoryId', values.categoryId);
         formData.append('content', values.content);
+        formData.append('isFeatured', values.isFeatured);
         formData.append('createdBy', 'admin');
 
         try {
@@ -82,15 +86,15 @@ const AddService = () => {
 
     return (
         <div className={styles.addService}>
-            <Title text="Thêm dịch vụ" />
+            <Title text="Thêm mới dịch vụ" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
                     <Form className={styles.form}>
                         <div className={styles.formGroup}>
-                            <label htmlFor="name">Tên Dịch vụ</label>
-                            <Field name="name" type="text" className={styles.input} />
-                            <ErrorMessage name="name" component="div" className={styles.error} />
+                            <label htmlFor="title">Tiêu Đề</label>
+                            <Field name="title" type="text" className={styles.input} />
+                            <ErrorMessage name="title" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
                             <label htmlFor="summary">Tóm Tắt</label>
@@ -103,15 +107,15 @@ const AddService = () => {
                                 <input {...getInputProps()} />
                                 <p>Kéo thả file vào đây, hoặc nhấn để chọn file</p>
                             </div>
-                            <ErrorMessage name="image" component="div" className={styles.error} />
+                            <ErrorMessage name="images" component="div" className={styles.error} />
                         </div>
-                        <div className={styles.imagePreview}>
+                        <div className={styles.imagesPreview}>
                             {files.map((img, index) => (
                                 <div key={index} className={styles.imageContainer}>
                                     <img
                                         src={URL.createObjectURL(img)}
                                         alt={`Service ${index}`}
-                                        className={styles.productImage}
+                                        className={styles.serviceImage}
                                     />
                                     <button
                                         type="button"
@@ -124,16 +128,21 @@ const AddService = () => {
                             ))}
                         </div>
                         <div className={styles.formGroup}>
-                            <label htmlFor="serviceType">Loại Dịch vụ</label>
-                            <Field as="select" name="serviceType" className={styles.input}>
-                                <option value="">Chọn loại dịch vụ</option>
-                                {categories.map((category, index) => (
-                                    <option key={category._id} value={index}>
-                                        {category.name}
-                                    </option>
+                            <label htmlFor="categoryId">Danh Mục</label>
+                            <Field as="select" name="categoryId" className={styles.input}>
+                                <option value="">Chọn danh mục</option>
+                                {categories.map((category) => (
+                                    <React.Fragment key={category._id}>
+                                        <option value={category._id}>{category.name}</option>
+                                        {category.subcategories.map((subcategory) => (
+                                            <option key={subcategory._id} value={subcategory._id}>
+                                                &nbsp;&nbsp;-- {subcategory.name}
+                                            </option>
+                                        ))}
+                                    </React.Fragment>
                                 ))}
                             </Field>
-                            <ErrorMessage name="serviceType" component="div" className={styles.error} />
+                            <ErrorMessage name="categoryId" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
                             <label htmlFor="content">Nội Dung</label>
@@ -143,8 +152,14 @@ const AddService = () => {
                             />
                             <ErrorMessage name="content" component="div" className={styles.error} />
                         </div>
+                        <div className={styles.formGroup}>
+                            <label>
+                                <Field type="checkbox" name="isFeatured" />
+                                Đánh dấu là nổi bật
+                            </label>
+                        </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                            Thêm Dịch vụ
+                            Thêm Dịch Vụ
                         </button>
                     </Form>
                 )}
