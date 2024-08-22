@@ -1,21 +1,17 @@
-// src/components/SideBar.js
 import React, { useEffect, useState } from 'react';
-import classNames from 'classnames/bind';
+import { Menu, Spin } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleDot } from '@fortawesome/free-solid-svg-icons';
-import styles from './SideBar.module.scss';
-import Menu, { MenuItem } from './Menu';
-import { getCategoriesByType } from '~/services/categoryService';
 import { useBaseRoute } from '~/context/BaseRouteContext';
-import LoadingScreen from '~/components/LoadingScreen';
-
-const cx = classNames.bind(styles);
+import { Link, useLocation } from 'react-router-dom';
+import { getCategoriesByType } from '~/services/categoryService';
 
 function SideBar({ categoryType }) {
     const [categoriesData, setCategoriesData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const baseRoute = useBaseRoute();
+    const location = useLocation();
 
     useEffect(() => {
         async function fetchCategoryData() {
@@ -33,29 +29,86 @@ function SideBar({ categoryType }) {
         fetchCategoryData();
     }, [categoryType]);
 
+    const getIconStyle = (active) => ({
+        marginRight: 8,
+        color: active ? '#e31a2a' : '#2d2e8a',
+    });
+
+    const getTextStyle = (active) => ({
+        fontWeight: 600,
+        color: active ? '#0866ff' : 'inherit',
+    });
+
     const renderMenuItems = () => {
         if (loading) {
-            return <LoadingScreen />;
+            return (
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '100%',
+                        minHeight: '100px',
+                    }}
+                >
+                    <Spin size="small" />
+                </div>
+            );
         }
 
         if (error || !categoriesData) {
-            return <LoadingScreen />;
+            return <div>Error loading data</div>;
         }
 
-        return categoriesData.map((category) => (
-            <MenuItem
-                key={category._id}
-                title={category.name}
-                to={`${baseRoute}/${category.slug}`}
-                icon={<FontAwesomeIcon icon={faCircleDot} />}
-                activeIcon={<FontAwesomeIcon icon={faCircleDot} />}
-            />
-        ));
+        return categoriesData.map((category) => {
+            const isActive = location.pathname.includes(category.slug);
+
+            if (category.subcategories && category.subcategories.length > 0) {
+                return (
+                    <Menu.SubMenu
+                        key={category._id}
+                        title={
+                            <span style={getTextStyle(isActive)}>
+                                <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(isActive)} />
+                                {category.name}
+                            </span>
+                        }
+                    >
+                        {category.subcategories.map((subcategory) => {
+                            const subcategoryActive = location.pathname.includes(subcategory.slug);
+
+                            return (
+                                <Menu.Item key={subcategory._id}>
+                                    <Link
+                                        to={`${baseRoute}/${subcategory.slug}`}
+                                        style={getTextStyle(subcategoryActive)}
+                                    >
+                                        <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(subcategoryActive)} />
+                                        {subcategory.name}
+                                    </Link>
+                                </Menu.Item>
+                            );
+                        })}
+                    </Menu.SubMenu>
+                );
+            }
+
+            return (
+                <Menu.Item key={category._id}>
+                    <Link to={`${baseRoute}/${category.slug}`} style={getTextStyle(isActive)}>
+                        <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(isActive)} />
+                        {category.name}
+                    </Link>
+                </Menu.Item>
+            );
+        });
     };
 
     return (
-        <aside className={cx('wrapper')}>
-            <Menu>{renderMenuItems()}</Menu>
+        <aside style={{ width: '100%', height: '100%' }}>
+            <Menu mode="inline" theme="light">
+                {renderMenuItems()}
+            </Menu>
         </aside>
     );
 }

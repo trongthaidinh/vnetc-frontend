@@ -145,13 +145,7 @@ function Legal() {
                                         return (
                                             <SwiperSlide key={index} className={cx('slide')}>
                                                 <Link to={`${routes.legal}/${category.slug}/${item._id}`}>
-                                                    <Card
-                                                        title={item.title}
-                                                        summary={item.content}
-                                                        image={imageUrl}
-                                                        createdAt={item.createdAt}
-                                                        views={item.views}
-                                                    />
+                                                    <Card title={item.title} summary={item.content} image={imageUrl} />
                                                 </Link>
                                             </SwiperSlide>
                                         );

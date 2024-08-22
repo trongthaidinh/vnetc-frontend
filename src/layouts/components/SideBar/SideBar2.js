@@ -6,8 +6,6 @@ import { useBaseRoute } from '~/context/BaseRouteContext';
 import { Link, useLocation } from 'react-router-dom';
 import { getCategoriesByType } from '~/services/categoryService';
 
-const { SubMenu } = Menu;
-
 function SideBar({ categoryType }) {
     const [categoriesData, setCategoriesData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -65,18 +63,18 @@ function SideBar({ categoryType }) {
         return categoriesData.map((category) => {
             const isActive = location.pathname.includes(category.slug);
 
-            return (
-                <SubMenu
-                    key={category._id}
-                    title={
-                        <span style={getTextStyle(isActive)}>
-                            <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(isActive)} />
-                            {category.name}
-                        </span>
-                    }
-                >
-                    {category.subcategories && category.subcategories.length > 0 ? (
-                        category.subcategories.map((subcategory) => {
+            if (category.subcategories && category.subcategories.length > 0) {
+                return (
+                    <Menu.SubMenu
+                        key={category._id}
+                        title={
+                            <span style={getTextStyle(isActive)}>
+                                <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(isActive)} />
+                                {category.name}
+                            </span>
+                        }
+                    >
+                        {category.subcategories.map((subcategory) => {
                             const subcategoryActive = location.pathname.includes(subcategory.slug);
 
                             return (
@@ -90,16 +88,18 @@ function SideBar({ categoryType }) {
                                     </Link>
                                 </Menu.Item>
                             );
-                        })
-                    ) : (
-                        <Menu.Item key={category._id}>
-                            <Link to={`${baseRoute}/${category.slug}`} style={getTextStyle(isActive)}>
-                                <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(isActive)} />
-                                {category.name}
-                            </Link>
-                        </Menu.Item>
-                    )}
-                </SubMenu>
+                        })}
+                    </Menu.SubMenu>
+                );
+            }
+
+            return (
+                <Menu.Item key={category._id}>
+                    <Link to={`${baseRoute}/${category.slug}`} style={getTextStyle(isActive)}>
+                        <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(isActive)} />
+                        {category.name}
+                    </Link>
+                </Menu.Item>
             );
         });
     };

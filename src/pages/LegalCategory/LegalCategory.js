@@ -75,17 +75,18 @@ function LegalCategory() {
     };
 
     const renderLegalCategory = () => {
-        return currentLegalCategory.map((legalItem) => (
-            <Link to={`${routes.legal}/${slug}/${legalItem._id}`} key={legalItem._id}>
-                <Card
-                    title={legalItem.title}
-                    image={legalItem.image}
-                    summary={legalItem.content}
-                    createdAt={new Date(legalItem.createdAt).getTime()}
-                    views={legalItem.views}
-                />
-            </Link>
-        ));
+        return currentLegalCategory.map((legalItem) => {
+            const imageUrl = legalItem.attachments
+                ? `${process.env.REACT_APP_HOST}/${legalItem.attachments
+                      .find((attachment) => attachment.file_type === 'img')
+                      ?.file_url.replace(/\\/g, '/')}`
+                : null;
+            return (
+                <Link to={`${routes.legal}/${slug}/${legalItem._id}`} key={legalItem._id}>
+                    <Card title={legalItem.title} image={imageUrl} summary={legalItem.content} />
+                </Link>
+            );
+        });
     };
 
     const renderPagination = () => {
