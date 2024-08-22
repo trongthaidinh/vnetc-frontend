@@ -93,7 +93,7 @@ const AddLegal = () => {
                             <ErrorMessage name="content" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
-                            <label>Chọn File PDF</label>
+                            <label>Chọn File PDF và Hình ảnh</label>
                             <div {...getRootProps()} className={styles.dropzone}>
                                 <input {...getInputProps()} />
                                 <p>Kéo thả file vào đây, hoặc nhấn để chọn file</p>

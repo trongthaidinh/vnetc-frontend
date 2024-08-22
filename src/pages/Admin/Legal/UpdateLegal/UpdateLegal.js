@@ -42,9 +42,9 @@ const UpdateLegal = () => {
                     title: legal.title,
                     content: legal.content,
                     type: legal.type,
-                    attachments: legal.attachments || '', // Initialize the attachment field
+                    attachments: legal.attachments || '',
                 });
-                setAttachment(legal.attachments || null); // Set initial attachment state
+                setAttachment(legal.attachments || null);
             } catch (error) {
                 console.error('Lỗi khi tải văn bản pháp quy:', error);
             }
@@ -108,7 +108,7 @@ const UpdateLegal = () => {
                             <ErrorMessage name="content" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formGroup}>
-                            <label>Chọn File PDF</label>
+                            <label>Chọn File PDF và Hình ảnh</label>
                             <div {...getRootProps()} className={styles.dropzone}>
                                 <input {...getInputProps()} />
                                 <p>Kéo thả file vào đây, hoặc nhấn để chọn file</p>

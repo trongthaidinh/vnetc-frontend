@@ -69,40 +69,48 @@ const LegalList = () => {
                 <table className={styles.table}>
                     <thead>
                         <tr>
+                            <th>Hình ảnh</th>
                             <th>Tên văn bản pháp quy</th>
                             <th>Tóm tắt</th>
-                            {/* <th>Số lượt xem</th> */}
-                            {/* <th>Hình ảnh</th> */}
                             <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
                         {currentLegals.length > 0 ? (
-                            currentLegals.map((legal) => (
-                                <tr key={legal._id}>
-                                    <td>{legal.title}</td>
-                                    <td>{legal.content}</td>
-                                    {/* <td>{legal.views}</td> */}
-                                    {/* <td>
-                                        <img
-                                            src={
-                                                legal.image ||
-                                                'https://res.cloudinary.com/ddmzboxzu/image/upload/v1724202469/cer_3_ldetgd.png'
-                                            }
-                                            alt={legal.title}
-                                            className={styles.legalImage}
-                                        />
-                                    </td> */}
-                                    <td>
-                                        <Link to={`/admin/update-legal/${legal._id}`} className={styles.editButton}>
-                                            <FontAwesomeIcon icon={faEdit} /> Sửa
-                                        </Link>
-                                        <button onClick={() => handleDelete(legal._id)} className={styles.deleteButton}>
-                                            <FontAwesomeIcon icon={faTrash} /> Xóa
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
+                            currentLegals.map((legal) => {
+                                const imageUrl = legal.attachments
+                                    ? `${process.env.REACT_APP_HOST}/${legal.attachments
+                                          .find((attachment) => attachment.file_type === 'img')
+                                          ?.file_url.replace(/\\/g, '/')}`
+                                    : null;
+                                return (
+                                    <tr key={legal._id}>
+                                        <td>
+                                            <img
+                                                src={
+                                                    imageUrl ||
+                                                    'https://res.cloudinary.com/ddmzboxzu/image/upload/v1724202469/cer_3_ldetgd.png'
+                                                }
+                                                alt={legal.title}
+                                                className={styles.legalImage}
+                                            />
+                                        </td>
+                                        <td>{legal.title}</td>
+                                        <td>{legal.content}</td>
+                                        <td>
+                                            <Link to={`/admin/update-legal/${legal._id}`} className={styles.editButton}>
+                                                <FontAwesomeIcon icon={faEdit} /> Sửa
+                                            </Link>
+                                            <button
+                                                onClick={() => handleDelete(legal._id)}
+                                                className={styles.deleteButton}
+                                            >
+                                                <FontAwesomeIcon icon={faTrash} /> Xóa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })
                         ) : (
                             <tr>
                                 <td colSpan="5">Không có dữ liệu</td>
