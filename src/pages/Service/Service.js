@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Card from '~/components/CardContent';
 import SuggestCard from '~/components/SuggestCard';
-import { getServices } from '~/services/serviceService';
-import { getCategoriesByType } from '~/services/categoryService';
+import { getServiceByCategory } from '~/services/serviceService';
 import styles from './Service.module.scss';
 import Title from '~/components/Title';
 import ButtonGroup from '~/components/ButtonGroup';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
 import routes from '~/config/routes';
+import { getCategoriesByType } from '~/services/categoryService';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -21,59 +21,52 @@ const cx = classNames.bind(styles);
 
 const Service = () => {
     const [serviceItems, setServiceItems] = useState([]);
-    const [groupedService, setGroupedService] = useState({});
     const [categories, setCategories] = useState([]);
+    const [groupedService, setGroupedService] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedSuggestion, setSelectedSuggestion] = useState(0);
 
     useEffect(() => {
-        const fetchCategoriesAndServices = async () => {
+        const fetchCategoriesAndService = async () => {
             try {
                 const categoriesData = await getCategoriesByType(3);
                 setCategories(categoriesData);
 
-                const serviceData = await getServices();
                 const groupedServiceMap = {};
 
-                serviceData?.forEach((item) => {
-                    const serviceType = item.serviceType;
-                    if (!groupedServiceMap[serviceType]) {
-                        groupedServiceMap[serviceType] = [];
-                    }
-                    groupedServiceMap[serviceType].push({
-                        ...item,
-                        image: item.image,
-                    });
-                });
+                await Promise.all(
+                    categoriesData.map(async (category) => {
+                        const serviceData = await getServiceByCategory(category._id);
+                        if (serviceData.length > 0) {
+                            // Only add categories with items
+                            groupedServiceMap[category._id] = serviceData.map((item) => ({
+                                ...item,
+                                image: item.image,
+                            }));
+                        }
+                    }),
+                );
 
                 setGroupedService(groupedServiceMap);
-                setServiceItems(serviceData);
+                setServiceItems(Object.values(groupedServiceMap).flat());
             } catch (error) {
                 setError(error);
-                console.error('Error fetching categories or services:', error);
+                console.error('Error fetching service:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchCategoriesAndServices();
+        fetchCategoriesAndService();
     }, []);
 
     const handleButtonClick = (index) => {
         setSelectedSuggestion(index);
     };
 
-    const shuffleArray = (array) => {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    };
-
-    const getCategorySlug = (serviceType) => {
-        const category = categories[serviceType];
+    const getCategorySlug = (categoryId) => {
+        const category = categories.find((category) => categoryId === category._id);
         return category ? category.slug : '';
     };
 
@@ -86,37 +79,41 @@ const Service = () => {
         return <LoadingScreen />;
     }
 
-    let filteredServiceItems = serviceItems;
-    if (selectedSuggestion === 0) {
-        filteredServiceItems = shuffleArray([...serviceItems]);
-    } else if (selectedSuggestion === 1) {
-        filteredServiceItems = serviceItems.filter((item) => item.views > 10);
-    }
-    filteredServiceItems = filteredServiceItems.slice(0, 5);
+    const filteredServiceItems = serviceItems
+        .filter((item) => {
+            if (selectedSuggestion === 0) {
+                return item.isFeatured;
+            }
+            if (selectedSuggestion === 1) {
+                return item.views > 10;
+            }
+            return true;
+        })
+        .slice(0, 5);
 
     return (
         <article className={cx('wrapper')}>
             <Helmet>
                 <title>Dịch vụ | VNETC</title>
-                <meta name="description" content="Khám phá các dịch vụ mà chúng tôi cung cấp tại VNETC." />
-                <meta name="keywords" content="dịch vụ, VNETC" />
+                <meta name="description" content="Cập nhật những dịch vụ mới nhất về ngành điện lực." />
+                <meta name="keywords" content="dịch vụ, cập nhật, VNETC" />
             </Helmet>
             <div className={cx('service-section')}>
                 <div className={cx('service-column')}>
                     <h2 className={cx('service-title')}>Dịch vụ</h2>
-                    {Object.keys(groupedService).map((serviceType) => {
-                        const category = categories[serviceType];
-                        if (!category) return null;
+                    {categories.map((category) => {
+                        const slides = groupedService[category._id] || [];
+                        const shouldLoop = slides.length > 3;
 
-                        const servicesInCategory = groupedService[serviceType];
-                        const shouldLoop = servicesInCategory.length > 3;
+                        // Only render if the category has items
+                        if (slides.length === 0) return null;
 
                         return (
-                            <div key={serviceType} className={cx('service-category')}>
+                            <div key={category._id} className={cx('service-category')}>
                                 <Title
-                                    text={category.name}
+                                    text={category.name || 'Loading...'}
                                     showSeeAll={true}
-                                    slug={`${routes.services}/${category.slug}`}
+                                    slug={`${routes.service}/${category.slug}`}
                                     categoryId={category._id}
                                 />
                                 <Swiper
@@ -135,7 +132,7 @@ const Service = () => {
                                         disableOnInteraction: false,
                                     }}
                                 >
-                                    {groupedService[serviceType]?.slice(0, 6).map((item, index) => (
+                                    {slides.map((item, index) => (
                                         <SwiperSlide key={index} className={cx('slide')}>
                                             <Link to={`${routes.services}/${category.slug}/${item._id}`}>
                                                 <Card
@@ -155,13 +152,10 @@ const Service = () => {
                 </div>
                 <div className={cx('suggest')}>
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
-                    <ButtonGroup buttons={['Ngẫu nhiên', 'Xem nhiều']} onButtonClick={handleButtonClick} />
+                    <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-items')}>
                         {filteredServiceItems.map((item, index) => (
-                            <Link
-                                key={index}
-                                to={`${routes.services}/${getCategorySlug(item.serviceType)}/${item._id}`}
-                            >
+                            <Link key={index} to={`${routes.service}/${getCategorySlug(item.categoryId)}/${item._id}`}>
                                 <SuggestCard
                                     title={item.name}
                                     summary={item.summary}

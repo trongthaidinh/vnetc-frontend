@@ -40,6 +40,16 @@ export const getServiceByType = async (type) => {
     }
 };
 
+export const getServiceByCategory = async (categoryId) => {
+    try {
+        const response = await httpRequest.get(`/services?categoryId=${categoryId}`);
+        return response.data.data;
+    } catch (error) {
+        console.error(`Error fetching services for id=${categoryId}:`, error);
+        throw error;
+    }
+};
+
 export const addService = async (serviceData) => {
     try {
         const response = await httpRequest.post('/services', serviceData);
