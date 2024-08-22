@@ -53,7 +53,7 @@ function Legal() {
                 });
 
                 setGroupedLegal(groupedLegalMap);
-                setNewsData(newsData);
+                setNewsData(newsData.news);
             } catch (error) {
                 setError(error);
                 console.error('Error fetching categories or legals:', error);

@@ -81,10 +81,10 @@ const Service = () => {
     const filteredServiceItems = serviceItems
         .filter((item) => {
             if (selectedSuggestion === 0) {
-                return item.isFeatured;
+                return item.views > 10;
             }
             if (selectedSuggestion === 1) {
-                return item.views > 10;
+                return item.isFeatured;
             }
             return true;
         })
@@ -151,7 +151,7 @@ const Service = () => {
                 </div>
                 <div className={cx('suggest')}>
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
-                    <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} onButtonClick={handleButtonClick} />
+                    <ButtonGroup buttons={['Xem nhiều', 'Nổi bật']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-items')}>
                         {filteredServiceItems.map((item, index) => (
                             <Link key={index} to={`${routes.services}/${getCategorySlug(item.categoryId)}/${item._id}`}>

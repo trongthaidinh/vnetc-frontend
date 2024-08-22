@@ -39,10 +39,10 @@ const News = () => {
                 await Promise.all(
                     categoriesData.map(async (category) => {
                         const newsData = await getNewsByCategory(category._id);
-                        groupedNewsMap[category._id] = newsData.map((item) => ({
+                        groupedNewsMap[category._id] = newsData.news.map((item) => ({
                             ...item,
                             image: item.images,
-                            isNew: dayjs().diff(dayjs(item.createdAt), 'day') <= 3, // Determine if the item is new
+                            isNew: dayjs().diff(dayjs(item.createdAt), 'day') <= 3,
                         }));
                     }),
                 );

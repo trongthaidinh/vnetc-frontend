@@ -20,7 +20,7 @@ const NewsList = () => {
             try {
                 const data = await getNewsAll();
                 if (data) {
-                    setNews(data);
+                    setNews(data.news);
                 } else {
                     setNotification({ message: 'Failed to fetch news.', type: 'error' });
                 }

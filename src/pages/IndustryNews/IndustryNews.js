@@ -59,18 +59,13 @@ function NewsCategory() {
         async function fetchNewsCategory() {
             if (categoryId) {
                 try {
-                    const data = await getNewsByCategory(categoryId);
-                    const filteredNews =
-                        filterDates.length === 2
-                            ? data.filter(
-                                  (newsItem) =>
-                                      dayjs(newsItem.createdAt).isAfter(filterDates[0]) &&
-                                      dayjs(newsItem.createdAt).isBefore(filterDates[1].endOf('day')),
-                              )
-                            : data;
+                    const startDate = filterDates[0] ? dayjs(filterDates[0]).format('YYYY-MM-DD') : '';
+                    const endDate = filterDates[1] ? dayjs(filterDates[1]).format('YYYY-MM-DD') : '';
+
+                    const data = await getNewsByCategory(categoryId, startDate, endDate);
 
                     setNews(
-                        filteredNews.map((newsItem) => ({
+                        data.news.map((newsItem) => ({
                             ...newsItem,
                             isNew: dayjs().diff(dayjs(newsItem.createdAt), 'day') <= 3,
                         })),
@@ -98,6 +93,7 @@ function NewsCategory() {
 
     const handleRangeChange = (dates) => {
         setFilterDates(dates);
+        setCurrentPage(1);
     };
 
     const renderNewsCategory = () => {

@@ -24,7 +24,7 @@ const Tophead = () => {
             try {
                 const notificationData = await getNewsPagination(1, 4);
                 const currentTime = dayjs();
-                const newNotificationsData = notificationData.map((notification) => ({
+                const newNotificationsData = notificationData.news.map((notification) => ({
                     ...notification,
                     isNew: currentTime.diff(dayjs(notification.createdAt), 'day') <= 3,
                 }));

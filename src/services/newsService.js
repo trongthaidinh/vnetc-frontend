@@ -60,9 +60,15 @@ export const getNewsById = async (id) => {
     }
 };
 
-export const getNewsByCategory = async (categoryId) => {
+export const getNewsByCategory = async (categoryId, startDate = '', endDate = '') => {
     try {
-        const response = await httpRequest.get(`/news?categoryId=${categoryId}`);
+        const response = await httpRequest.get('/news', {
+            params: {
+                categoryId,
+                startDate,
+                endDate,
+            },
+        });
         return response.data.data;
     } catch (error) {
         console.error(`Error fetching news for id=${categoryId}:`, error);
