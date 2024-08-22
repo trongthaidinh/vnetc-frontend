@@ -60,13 +60,15 @@ export const getNewsById = async (id) => {
     }
 };
 
-export const getNewsByCategory = async (categoryId, startDate = '', endDate = '') => {
+export const getNewsByCategory = async (categoryId, startDate = '', endDate = '', page = 1, limit = 10) => {
     try {
         const response = await httpRequest.get('/news', {
             params: {
                 categoryId,
                 startDate,
                 endDate,
+                page,
+                limit,
             },
         });
         return response.data.data;

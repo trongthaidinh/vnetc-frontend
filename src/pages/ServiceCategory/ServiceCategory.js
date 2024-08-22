@@ -21,7 +21,7 @@ function ServiceCategory() {
     const [subcategoryId, setSubcategoryId] = useState(null);
     const [categoryName, setCategoryName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const servicePerPage = 12;
+    const servicePerPage = 6;
 
     const extractSlugFromPathname = (pathname) => {
         const parts = pathname.split('/');
@@ -48,7 +48,7 @@ function ServiceCategory() {
                     }
                 } else {
                     setCategoryId(category._id);
-                    setSubcategoryId(null); // Reset subcategoryId if a parent category is selected
+                    setSubcategoryId(null);
                     setCategoryName(category.name);
                 }
             } catch (error) {
@@ -59,7 +59,7 @@ function ServiceCategory() {
         if (slug) {
             fetchCategory();
         }
-    }, [slug]); // Re-fetch category whenever the slug changes
+    }, [slug]);
 
     useEffect(() => {
         async function fetchServiceCategory() {

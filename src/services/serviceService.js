@@ -40,9 +40,15 @@ export const getServiceByType = async (type) => {
     }
 };
 
-export const getServiceByCategory = async (categoryId) => {
+export const getServiceByCategory = async (categoryId, page = 1, limit = 10) => {
     try {
-        const response = await httpRequest.get(`/services?categoryId=${categoryId}`);
+        const response = await httpRequest.get('/services', {
+            params: {
+                categoryId,
+                page,
+                limit,
+            },
+        });
         return response.data.data;
     } catch (error) {
         console.error(`Error fetching services for id=${categoryId}:`, error);
