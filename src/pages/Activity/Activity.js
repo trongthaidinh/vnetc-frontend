@@ -31,7 +31,7 @@ const Activity = () => {
     useEffect(() => {
         const fetchCategoriesAndActivity = async () => {
             try {
-                const categoriesData = await getCategoriesByType(2);
+                const categoriesData = await getCategoriesByType(5);
                 setCategories(categoriesData);
 
                 const groupedActivityMap = {};

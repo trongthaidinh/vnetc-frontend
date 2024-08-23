@@ -11,12 +11,7 @@ import Card from '~/components/CardContent/CardContent';
 import { getCategoriesByType } from '~/services/categoryService';
 import routes from '~/config/routes';
 import { Helmet } from 'react-helmet';
-import dayjs from 'dayjs';
-import { DatePicker, Space, Button, Empty } from 'antd';
-import { FilterOutlined } from '@ant-design/icons';
-import 'moment/locale/vi';
-
-const { RangePicker } = DatePicker;
+import { Empty } from 'antd';
 
 const cx = classNames.bind(styles);
 
@@ -26,10 +21,8 @@ function ActivityCategory() {
     const [categoryId, setCategoryId] = useState(null);
     const [categoryName, setCategoryName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [filterDates, setFilterDates] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const activityPerPage = 6;
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     const extractSlugFromPathname = (pathname) => {
         const parts = pathname.split('/');
@@ -41,7 +34,7 @@ function ActivityCategory() {
     useEffect(() => {
         async function fetchCategory() {
             try {
-                const categories = await getCategoriesByType(2);
+                const categories = await getCategoriesByType(5);
                 const category = categories.find((cat) => cat.slug === slug);
                 if (category) {
                     setCategoryId(category._id);
@@ -61,21 +54,11 @@ function ActivityCategory() {
         async function fetchActivityCategory() {
             if (categoryId) {
                 try {
-                    const startDate = filterDates[0] ? dayjs(filterDates[0]).format('YYYY-MM-DD') : '';
-                    const endDate = filterDates[1] ? dayjs(filterDates[1]).format('YYYY-MM-DD') : '';
-
-                    const data = await getActivityByCategory(
-                        categoryId,
-                        startDate,
-                        endDate,
-                        currentPage,
-                        activityPerPage,
-                    );
+                    const data = await getActivityByCategory(categoryId, currentPage, activityPerPage);
 
                     setActivity(
                         data.activity.map((activityItem) => ({
                             ...activityItem,
-                            isNew: dayjs().diff(dayjs(activityItem.createdAt), 'day') <= 3,
                         })),
                     );
                     setTotalPages(data.totalPages);
@@ -86,29 +69,12 @@ function ActivityCategory() {
         }
 
         fetchActivityCategory();
-    }, [categoryId, filterDates, currentPage]);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+    }, [categoryId, currentPage]);
 
     const handlePageChange = (pageNumber) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
             setCurrentPage(pageNumber);
         }
-    };
-
-    const handleRangeChange = (dates) => {
-        setFilterDates(dates);
-        setCurrentPage(1);
     };
 
     const renderActivityCategory = () => {
@@ -172,29 +138,6 @@ function ActivityCategory() {
                 <meta name="keywords" content={`${categoryName}, hoạt động, VNETC`} />
             </Helmet>
             <Title text={categoryName} />
-
-            <div className={cx('filter')}>
-                <Space direction="vertical" size={12}>
-                    <RangePicker
-                        onChange={handleRangeChange}
-                        locale="vi"
-                        popupStyle={{
-                            width: windowWidth < 992 ? '100%' : 'auto',
-                            maxWidth: windowWidth < 992 ? '300px' : 'none',
-                            minWidth: '250px',
-                            overflow: 'hidden',
-                        }}
-                    />
-                </Space>
-                <Button
-                    className={cx('filter-button')}
-                    type="primary"
-                    icon={<FilterOutlined />}
-                    onClick={() => setCurrentPage(1)}
-                >
-                    Lọc
-                </Button>
-            </div>
 
             <div className={cx('activityGrid')}>{renderActivityCategory()}</div>
             {renderPagination()}
