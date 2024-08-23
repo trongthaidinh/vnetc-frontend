@@ -155,9 +155,6 @@ const Search = () => {
 
     const filteredNews = suggests
         .filter((item) => {
-            if (selectedSuggestion === 0) {
-                return item.isFeatured;
-            }
             if (selectedSuggestion === 1) {
                 return item.views > 10;
             }
@@ -256,7 +253,7 @@ const Search = () => {
                 </div>
                 <div className={cx('suggest')}>
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
-                    <ButtonGroup buttons={['Nổi bật', 'Xem nhiều', 'Ngẫu nhiên']} onButtonClick={handleButtonClick} />
+                    <ButtonGroup buttons={['Xem nhiều', 'Ngẫu nhiên']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-list')}>
                         {filteredNews.map((item, index) => (
                             <Link key={index} to={`${routes.news}/${getCategorySlug(item)}/${item._id}`}>
