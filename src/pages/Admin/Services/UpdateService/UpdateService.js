@@ -96,7 +96,7 @@ const UpdateService = () => {
     }
 
     return (
-        <div className={styles.editService}>
+        <div className={styles.updateService}>
             <Title text="Cập nhật dịch vụ" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>

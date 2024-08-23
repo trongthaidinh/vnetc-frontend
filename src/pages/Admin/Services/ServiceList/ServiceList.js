@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEdit, faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { getServices, deleteService } from '~/services/serviceService';
+import { deleteService, getServicesPagiation } from '~/services/serviceService';
 import styles from './ServiceList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
@@ -17,7 +17,7 @@ const ServiceList = () => {
 
     useEffect(() => {
         const fetchServices = async () => {
-            const data = await getServices();
+            const data = await getServicesPagiation(1, 100);
             if (data) {
                 setServices(data);
             } else {

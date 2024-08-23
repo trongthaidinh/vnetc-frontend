@@ -10,7 +10,7 @@ export const getServices = async () => {
     }
 };
 
-export const getServicesPagiation = async (page = 1, limit = 8) => {
+export const getServicesPagiation = async (page = 1, limit = 1000) => {
     try {
         const response = await httpRequest.get(`/services?page=${page}&limit=${limit}`);
         return response.data.data;

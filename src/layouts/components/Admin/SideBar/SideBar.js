@@ -9,7 +9,7 @@ import {
     faClipboardList,
     faEnvelope,
     faUsers,
-    faBox,
+    // faBox,
     faCogs,
     faChevronRight,
     faChevronDown,
@@ -149,7 +149,7 @@ const SideBar = () => {
                         </li>
                     </ul>
                 </li>
-                <li>
+                {/* <li>
                     <div className={styles.menuItem} onClick={() => toggleMenu('productManagement')}>
                         <FontAwesomeIcon icon={faBox} className={styles.menuIcon} />
                         <span className={styles.menuText}>
@@ -172,7 +172,7 @@ const SideBar = () => {
                             <NavLink to={routes.addProduct}>Thêm sản phẩm</NavLink>
                         </li>
                     </ul>
-                </li>
+                </li> */}
                 <li>
                     <div className={styles.menuItem} onClick={() => toggleMenu('newsManagement')}>
                         <FontAwesomeIcon icon={faNewspaper} className={styles.menuIcon} />
@@ -227,7 +227,7 @@ const SideBar = () => {
                         <span className={styles.menuText}>
                             {!isCollapsed && (
                                 <>
-                                    Quản lý dịch vụ
+                                    Dịch vụ & sản phẩm
                                     <FontAwesomeIcon
                                         icon={openMenus.serviceManagement ? faChevronDown : faChevronRight}
                                         className={styles.chevronIcon}
@@ -238,10 +238,10 @@ const SideBar = () => {
                     </div>
                     <ul className={`${styles.subMenu} ${openMenus.serviceManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to={routes.serviceList}>Danh sách dịch vụ</NavLink>
+                            <NavLink to={routes.serviceList}>DS dịch vụ & sản phẩm</NavLink>
                         </li>
                         <li>
-                            <NavLink to={routes.addService}>Thêm dịch vụ</NavLink>
+                            <NavLink to={routes.addService}>Thêm dịch vụ & sản phẩm</NavLink>
                         </li>
                     </ul>
                 </li>
