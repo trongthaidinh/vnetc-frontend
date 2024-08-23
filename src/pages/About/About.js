@@ -55,7 +55,7 @@ const About = () => (
                 <h3>Hồ sơ pháp lý:</h3>
                 <div className={cx('legal-images')}>
                     <img
-                        src="https://res.cloudinary.com/ddmzboxzu/image/upload/v1724033193/lvqkp5l7oqf7csgrj58v.jpg"
+                        src="https://res.cloudinary.com/ddmzboxzu/image/upload/v1724381419/Screenshot_2024-08-23_094742_td1epn.png"
                         alt=""
                         width="502"
                         height="732"

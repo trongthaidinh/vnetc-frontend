@@ -70,6 +70,9 @@ import LegalDetail from '~/pages/LegalDetail';
 import UpdateLegal from '~/pages/Admin/Legal/UpdateLegal';
 import LegalList from '~/pages/Admin/Legal/LegalList';
 import AddLegal from '~/pages/Admin/Legal/AddLegal';
+import Activity from '~/pages/Activity';
+import ActivityDetail from '~/pages/ActivityDetail';
+import ActivityCategory from '~/pages/ActivityCategory';
 
 // Public Routes
 const publicRoutes = [
@@ -127,6 +130,17 @@ const publicRoutes = [
         path: config.routes.servicesCategory,
         component: ServiceCategory,
         layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.services} categoryType={3} />,
+    },
+    { path: config.routes.activity, component: Activity, layout: OnlyHeaderLayout },
+    {
+        path: config.routes.serviceDetail,
+        component: ActivityDetail,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.activity} categoryType={5} />,
+    },
+    {
+        path: config.routes.activityCategory,
+        component: ActivityCategory,
+        layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.activity} categoryType={5} />,
     },
     { path: config.routes.legal, component: Legal, layout: OnlyHeaderLayout },
     {
