@@ -191,7 +191,7 @@ const Search = () => {
                                         title={item.title}
                                         summary={item.summary}
                                         image={item.images}
-                                        createdAt={new Date(item.createdAt).getTime()}
+                                        createdAt={item.createdAt}
                                         views={item.views}
                                     />
                                 </Link>
@@ -211,7 +211,7 @@ const Search = () => {
                                         title={item.name}
                                         summary={item.summary}
                                         image={item.image}
-                                        createdAt={new Date(item.createdAt).getTime()}
+                                        createdAt={item.createdAt}
                                         views={item.views}
                                     />
                                 </Link>
@@ -231,7 +231,7 @@ const Search = () => {
                                         title={item.name}
                                         summary={item.summary}
                                         image={item.image}
-                                        createdAt={new Date(item.createdAt).getTime()}
+                                        createdAt={item.createdAt}
                                         views={item.views}
                                     />
                                 </Link>
@@ -262,7 +262,7 @@ const Search = () => {
                                     title={item.title}
                                     summary={item.summary}
                                     image={item.images}
-                                    createdAt={new Date(item.createdAt).getTime()}
+                                    createdAt={item.createdAt}
                                 />
                             </Link>
                         ))}

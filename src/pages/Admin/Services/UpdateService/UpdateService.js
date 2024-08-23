@@ -30,7 +30,7 @@ const UpdateService = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const fetchedCategories = await getCategoriesByType(2);
+                const fetchedCategories = await getCategoriesByType(3);
                 setCategories(fetchedCategories);
             } catch (error) {
                 console.error('Lỗi khi tải danh mục:', error);
@@ -139,9 +139,14 @@ const UpdateService = () => {
                             <Field as="select" name="categoryId" className={styles.input}>
                                 <option value="">Chọn danh mục</option>
                                 {categories.map((category) => (
-                                    <option key={category._id} value={category._id}>
-                                        {category.name}
-                                    </option>
+                                    <React.Fragment key={category._id}>
+                                        <option value={category._id}>{category.name}</option>
+                                        {category.subcategories.map((subcategory) => (
+                                            <option key={subcategory._id} value={subcategory._id}>
+                                                &nbsp;&nbsp;-- {subcategory.name}
+                                            </option>
+                                        ))}
+                                    </React.Fragment>
                                 ))}
                             </Field>
                             <ErrorMessage name="categoryId" component="div" className={styles.error} />
