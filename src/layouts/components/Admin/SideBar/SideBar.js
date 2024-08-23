@@ -10,6 +10,7 @@ import {
     faEnvelope,
     faUsers,
     // faBox,
+    faChartLine,
     faCogs,
     faChevronRight,
     faChevronDown,
@@ -149,30 +150,30 @@ const SideBar = () => {
                         </li>
                     </ul>
                 </li>
-                {/* <li>
-                    <div className={styles.menuItem} onClick={() => toggleMenu('productManagement')}>
-                        <FontAwesomeIcon icon={faBox} className={styles.menuIcon} />
+                <li>
+                    <div className={styles.menuItem} onClick={() => toggleMenu('activityManagement')}>
+                        <FontAwesomeIcon icon={faChartLine} className={styles.menuIcon} />
                         <span className={styles.menuText}>
                             {!isCollapsed && (
                                 <>
-                                    Quản lý sản phẩm
+                                    Quản lý hoạt động
                                     <FontAwesomeIcon
-                                        icon={openMenus.productManagement ? faChevronDown : faChevronRight}
+                                        icon={openMenus.activityManagement ? faChevronDown : faChevronRight}
                                         className={styles.chevronIcon}
                                     />
                                 </>
                             )}
                         </span>
                     </div>
-                    <ul className={`${styles.subMenu} ${openMenus.productManagement ? styles.open : ''}`}>
+                    <ul className={`${styles.subMenu} ${openMenus.activityManagement ? styles.open : ''}`}>
                         <li>
-                            <NavLink to={routes.productList}>Danh sách sản phẩm</NavLink>
+                            <NavLink to={routes.activityList}>Danh sách hoạt động</NavLink>
                         </li>
                         <li>
-                            <NavLink to={routes.addProduct}>Thêm sản phẩm</NavLink>
+                            <NavLink to={routes.addActivity}>Thêm hoạt động</NavLink>
                         </li>
                     </ul>
-                </li> */}
+                </li>
                 <li>
                     <div className={styles.menuItem} onClick={() => toggleMenu('newsManagement')}>
                         <FontAwesomeIcon icon={faNewspaper} className={styles.menuIcon} />

@@ -79,7 +79,6 @@ function Legal() {
 
     const getCategorySlug = (categoryId) => {
         const category = newsCategories.find((category) => categoryId === category._id);
-        console.log(category.slug);
         return category ? category.slug : '';
     };
 

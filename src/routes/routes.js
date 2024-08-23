@@ -73,6 +73,9 @@ import AddLegal from '~/pages/Admin/Legal/AddLegal';
 import Activity from '~/pages/Activity';
 import ActivityDetail from '~/pages/ActivityDetail';
 import ActivityCategory from '~/pages/ActivityCategory';
+import ActivityList from '~/pages/Admin/Activity/ActivityList';
+import AddActivity from '~/pages/Admin/Activity/AddActivity';
+import UpdateActivity from '~/pages/Admin/Activity/UpdateActivity';
 
 // Public Routes
 const publicRoutes = [
@@ -177,6 +180,9 @@ const privateRoutes = [
     { path: config.routes.newsList, component: NewsList, layout: AdminLayout },
     { path: config.routes.addNews, component: AddNews, layout: AdminLayout },
     { path: config.routes.updateNews, component: UpdateNews, layout: AdminLayout },
+    { path: config.routes.activityList, component: ActivityList, layout: AdminLayout },
+    { path: config.routes.addActivity, component: AddActivity, layout: AdminLayout },
+    { path: config.routes.updateActivity, component: UpdateActivity, layout: AdminLayout },
     { path: config.routes.serviceList, component: ServiceList, layout: AdminLayout },
     { path: config.routes.addService, component: AddService, layout: AdminLayout },
     { path: config.routes.updateService, component: UpdateService, layout: AdminLayout },
