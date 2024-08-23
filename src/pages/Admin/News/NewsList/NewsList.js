@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEdit, faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { getNewsAll, deleteNews } from '~/services/newsService';
+import { deleteNews, getNewsPagination } from '~/services/newsService';
 import styles from './NewsList.module.scss';
 import Title from '~/components/Title';
 import routes from '~/config/routes';
@@ -13,14 +13,16 @@ const NewsList = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [totalPages, setTotalPages] = useState(1);
     const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         const fetchNews = async () => {
             try {
-                const data = await getNewsAll();
-                if (data) {
-                    setNews(data.news);
+                const response = await getNewsPagination(currentPage, itemsPerPage);
+                if (response) {
+                    setNews(response.news);
+                    setTotalPages(response.totalPages);
                 } else {
                     setNotification({ message: 'Failed to fetch news.', type: 'error' });
                 }
@@ -31,7 +33,7 @@ const NewsList = () => {
         };
 
         fetchNews();
-    }, []);
+    }, [currentPage, itemsPerPage]);
 
     const handleDelete = async (id) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa tin tức này?')) {
@@ -48,10 +50,8 @@ const NewsList = () => {
 
     const filteredNews = news.filter((article) => article.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
-    const totalPages = Math.ceil(filteredNews.length / itemsPerPage);
     const indexOfLastNews = currentPage * itemsPerPage;
     const indexOfFirstNews = indexOfLastNews - itemsPerPage;
-    const currentNews = filteredNews.slice(indexOfFirstNews, indexOfLastNews);
 
     return (
         <div className={styles.newsContainer}>
@@ -82,8 +82,8 @@ const NewsList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {currentNews.length > 0 ? (
-                            currentNews.map((article) => (
+                        {news.length > 0 ? (
+                            news.map((article) => (
                                 <tr key={article._id}>
                                     <td>
                                         <img src={article.images} alt={article.title} className={styles.newsImage} />
@@ -106,7 +106,7 @@ const NewsList = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="6">Không có dữ liệu</td>
+                                <td colSpan="5">Không có dữ liệu</td>
                             </tr>
                         )}
                     </tbody>
@@ -131,7 +131,6 @@ const NewsList = () => {
                 </select>
             </div>
 
-            {/* Pagination */}
             <div className={styles.pagination}>
                 <span>
                     Hiện {indexOfFirstNews + 1} đến {Math.min(indexOfLastNews, filteredNews.length)} của{' '}
