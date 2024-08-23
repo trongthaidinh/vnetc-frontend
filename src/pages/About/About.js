@@ -18,7 +18,7 @@ const About = () => (
             <Title text="Tổng quan về VNETC" />
             <div className={cx('content')}>
                 <img
-                    src="https://res.cloudinary.com/ddmzboxzu/image/upload/v1721325167/iwo1jihkzk8jskxr6j7o.png"
+                    src="https://res.cloudinary.com/ddmzboxzu/image/upload/v1724383245/IMG_9870_hf4ian.jpg"
                     alt="Trụ sở công ty VNETC"
                 />
                 <p>
