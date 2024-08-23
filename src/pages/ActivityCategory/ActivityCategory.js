@@ -57,7 +57,7 @@ function ActivityCategory() {
                     const data = await getActivityByCategory(categoryId, currentPage, activityPerPage);
 
                     setActivity(
-                        data.activity.map((activityItem) => ({
+                        data.actions.map((activityItem) => ({
                             ...activityItem,
                         })),
                     );

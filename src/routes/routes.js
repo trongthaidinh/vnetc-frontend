@@ -133,7 +133,7 @@ const publicRoutes = [
     },
     { path: config.routes.activity, component: Activity, layout: OnlyHeaderLayout },
     {
-        path: config.routes.serviceDetail,
+        path: config.routes.activityDetail,
         component: ActivityDetail,
         layout: (props) => <DefaultLayout {...props} baseRoute={config.routes.activity} categoryType={5} />,
     },

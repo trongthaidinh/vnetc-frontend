@@ -14,15 +14,17 @@ import { getCategoriesByType } from '~/services/categoryService';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import { Helmet } from 'react-helmet';
-import dayjs from 'dayjs';
 import 'swiper/css';
 import 'swiper/css/autoplay';
+import { getNewsPagination } from '~/services/newsService';
 
 const cx = classNames.bind(styles);
 
 const Activity = () => {
-    const [activityItems, setActivityItems] = useState([]);
+    const [, setActivityItems] = useState([]);
+    const [news, setNews] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [newsCategories, setNewsCategories] = useState([]);
     const [groupedActivity, setGroupedActivity] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -32,6 +34,9 @@ const Activity = () => {
         const fetchCategoriesAndActivity = async () => {
             try {
                 const categoriesData = await getCategoriesByType(5);
+                const newsCategoriesData = await getCategoriesByType(2);
+
+                setNewsCategories(newsCategoriesData);
                 setCategories(categoriesData);
 
                 const groupedActivityMap = {};
@@ -39,15 +44,16 @@ const Activity = () => {
                 await Promise.all(
                     categoriesData.map(async (category) => {
                         const activityData = await getActivityByCategory(category._id);
-                        groupedActivityMap[category._id] = activityData.activity.map((item) => ({
+                        groupedActivityMap[category._id] = activityData.actions.map((item) => ({
                             ...item,
                             image: item.images,
-                            isNew: dayjs().diff(dayjs(item.createdAt), 'day') <= 3,
                         }));
                     }),
                 );
+                const newsData = await getNewsPagination(1, 10);
 
                 setGroupedActivity(groupedActivityMap);
+                setNews(newsData.news);
                 setActivityItems(Object.values(groupedActivityMap).flat());
             } catch (error) {
                 setError(error);
@@ -65,7 +71,7 @@ const Activity = () => {
     };
 
     const getCategorySlug = (categoryId) => {
-        const category = categories.find((category) => categoryId === category._id);
+        const category = newsCategories.find((category) => categoryId === category._id);
         return category ? category.slug : '';
     };
 
@@ -78,7 +84,7 @@ const Activity = () => {
         return <LoadingScreen />;
     }
 
-    const filteredActivityItems = activityItems
+    const filteredNewsItems = news
         .filter((item) => {
             if (selectedSuggestion === 0) {
                 return item.isFeatured;
@@ -93,13 +99,16 @@ const Activity = () => {
     return (
         <article className={cx('wrapper')}>
             <Helmet>
-                <title>Tin Tức | VNETC</title>
-                <meta name="description" content="Cập nhật những hoạt động mới nhất về ngành điện lực." />
+                <title>Hoạt Động | VNETC</title>
+                <meta
+                    name="description"
+                    content="Cập nhật những hoạt động sơ kết, tổng kết họp hành và vui chơi giải trí về công ty chúng tôi."
+                />
                 <meta name="keywords" content="hoạt động, cập nhật, VNETC" />
             </Helmet>
             <div className={cx('activity-section')}>
                 <div className={cx('activity-column')}>
-                    <h2 className={cx('activity-title')}>Tin Tức</h2>
+                    <h2 className={cx('activity-title')}>Hoạt Động</h2>
                     {categories.map((category) => {
                         const slides = groupedActivity[category._id]?.slice(0, 6) || [];
                         const shouldLoop = slides.length > 3;
@@ -137,7 +146,6 @@ const Activity = () => {
                                                     image={item.images}
                                                     createdAt={item.createdAt}
                                                     views={item.views}
-                                                    isNew={item.isNew} // Pass isNew prop
                                                 />
                                             </Link>
                                         </SwiperSlide>
@@ -151,15 +159,14 @@ const Activity = () => {
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
                     <ButtonGroup buttons={['Nổi bật', 'Xem nhiều']} onButtonClick={handleButtonClick} />
                     <div className={cx('suggest-items')}>
-                        {filteredActivityItems.map((item, index) => (
-                            <Link key={index} to={`${routes.activity}/${getCategorySlug(item.categoryId)}/${item._id}`}>
+                        {filteredNewsItems.map((item, index) => (
+                            <Link key={index} to={`${routes.news}/${getCategorySlug(item.categoryId)}/${item._id}`}>
                                 <SuggestCard
                                     title={item.title}
                                     summary={item.summary}
                                     image={item.images}
                                     createdAt={item.createdAt}
                                     views={item.views}
-                                    isNew={item.isNew} // Pass isNew prop
                                 />
                             </Link>
                         ))}

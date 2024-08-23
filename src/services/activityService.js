@@ -2,7 +2,7 @@ import httpRequest from '~/utils/httpRequest';
 
 export const getActivityPagination = async (page = 1, limit = 4) => {
     try {
-        const response = await httpRequest.get(`/activity?page=${page}&limit=${limit}`);
+        const response = await httpRequest.get(`/action?page=${page}&limit=${limit}`);
         return response.data.data;
     } catch (error) {
         console.error('Error fetching activity', error);
@@ -12,7 +12,7 @@ export const getActivityPagination = async (page = 1, limit = 4) => {
 
 export const getActivity = async () => {
     try {
-        const response = await httpRequest.get(`/activity`);
+        const response = await httpRequest.get(`/action`);
         return response.data.data;
     } catch (error) {
         console.error('Error fetching activity', error);
@@ -22,7 +22,7 @@ export const getActivity = async () => {
 
 export const getActivityAll = async () => {
     try {
-        const response = await httpRequest.get('/activity');
+        const response = await httpRequest.get('/action');
         return response.data.data;
     } catch (error) {
         console.error('Error fetching activity', error);
@@ -32,7 +32,7 @@ export const getActivityAll = async () => {
 
 export const getFeaturedActivity = async () => {
     try {
-        const response = await httpRequest.get('/activity/featured');
+        const response = await httpRequest.get('/action/featured');
         return response.data.data;
     } catch (error) {
         console.error('Error fetching activity', error);
@@ -42,7 +42,7 @@ export const getFeaturedActivity = async () => {
 
 export const getTopViews = async () => {
     try {
-        const response = await httpRequest.get('/activity/views');
+        const response = await httpRequest.get('/action/views');
         return response.data.data;
     } catch (error) {
         console.error('Error fetching activity', error);
@@ -52,7 +52,7 @@ export const getTopViews = async () => {
 
 export const getActivityById = async (id) => {
     try {
-        const response = await httpRequest.get(`/activity/${id}`);
+        const response = await httpRequest.get(`/action/${id}`);
         return response.data.data;
     } catch (error) {
         console.error(`Error fetching activity detail with id ${id}`, error);
@@ -60,13 +60,11 @@ export const getActivityById = async (id) => {
     }
 };
 
-export const getActivityByCategory = async (categoryId, startDate = '', endDate = '', page = 1, limit = 10) => {
+export const getActivityByCategory = async (categoryId, page = 1, limit = 10) => {
     try {
-        const response = await httpRequest.get('/activity', {
+        const response = await httpRequest.get('/action', {
             params: {
                 categoryId,
-                startDate,
-                endDate,
                 page,
                 limit,
             },
@@ -80,7 +78,7 @@ export const getActivityByCategory = async (categoryId, startDate = '', endDate 
 
 export const createActivity = async (activityData) => {
     try {
-        const response = await httpRequest.post('/activity', activityData);
+        const response = await httpRequest.post('/action', activityData);
         return response.data.data;
     } catch (error) {
         console.error('Error adding activity', error);
@@ -90,7 +88,7 @@ export const createActivity = async (activityData) => {
 
 export const updateActivity = async (id, activityData) => {
     try {
-        const response = await httpRequest.patch(`/activity/${id}`, activityData);
+        const response = await httpRequest.patch(`/action/${id}`, activityData);
         return response.data.data;
     } catch (error) {
         console.error(`Error updating activity with id ${id}`, error);
@@ -100,7 +98,7 @@ export const updateActivity = async (id, activityData) => {
 
 export const deleteActivity = async (id) => {
     try {
-        await httpRequest.delete(`/activity/${id}`);
+        await httpRequest.delete(`/action/${id}`);
     } catch (error) {
         console.error(`Error deleting activity with id ${id}`, error);
         throw error;
