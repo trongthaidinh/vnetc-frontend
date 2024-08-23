@@ -29,6 +29,7 @@ function NewsCategory() {
     const [filterDates, setFilterDates] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const newsPerPage = 6;
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     const extractSlugFromPathname = (pathname) => {
         const parts = pathname.split('/');
@@ -81,6 +82,18 @@ function NewsCategory() {
         fetchNewsCategory();
     }, [categoryId, filterDates, currentPage]);
 
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     const handlePageChange = (pageNumber) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
             setCurrentPage(pageNumber);
@@ -89,7 +102,7 @@ function NewsCategory() {
 
     const handleRangeChange = (dates) => {
         setFilterDates(dates);
-        setCurrentPage(1); // Reset to the first page when filter changes
+        setCurrentPage(1);
     };
 
     const renderNewsCategory = () => {
@@ -156,7 +169,16 @@ function NewsCategory() {
 
             <div className={cx('filter')}>
                 <Space direction="vertical" size={12}>
-                    <RangePicker onChange={handleRangeChange} locale="vi" />
+                    <RangePicker
+                        onChange={handleRangeChange}
+                        locale="vi"
+                        popupStyle={{
+                            width: windowWidth < 992 ? '100%' : 'auto',
+                            maxWidth: windowWidth < 992 ? '300px' : 'none',
+                            minWidth: '250px',
+                            overflow: 'hidden',
+                        }}
+                    />
                 </Space>
                 <Button
                     className={cx('filter-button')}
@@ -164,7 +186,7 @@ function NewsCategory() {
                     icon={<FilterOutlined />}
                     onClick={() => setCurrentPage(1)}
                 >
-                    Áp dụng
+                    Lọc
                 </Button>
             </div>
 

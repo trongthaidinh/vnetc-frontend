@@ -12,6 +12,7 @@ function SideBar({ categoryType }) {
     const [error, setError] = useState(null);
     const baseRoute = useBaseRoute();
     const location = useLocation();
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     useEffect(() => {
         async function fetchCategoryData() {
@@ -28,6 +29,18 @@ function SideBar({ categoryType }) {
 
         fetchCategoryData();
     }, [categoryType]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const getIconStyle = (active) => ({
         marginRight: 8,
@@ -105,10 +118,12 @@ function SideBar({ categoryType }) {
     };
 
     return (
-        <aside style={{ width: '100%', height: '100%' }}>
-            <Menu mode="inline" theme="light">
-                {renderMenuItems()}
-            </Menu>
+        <aside style={{ width: windowWidth < 1280 ? 0 : '100%', height: '100%', transition: 'width 0.3s ease' }}>
+            {windowWidth >= 1280 && (
+                <Menu mode="inline" theme="light">
+                    {renderMenuItems()}
+                </Menu>
+            )}
         </aside>
     );
 }
