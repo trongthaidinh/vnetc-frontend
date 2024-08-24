@@ -19,14 +19,17 @@ const useProvideAuth = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            const decoded = storedUser;
-            const isExpired = decoded.exp < Date.now() / 1000;
+        const tokenExp = localStorage.getItem('tokenExp');
+        const token = localStorage.getItem('user');
+        if (tokenExp) {
+            console.log(tokenExp, Date.now() / 1000);
+            const isExpired = tokenExp < Date.now() / 1000;
             if (!isExpired) {
-                setUser(decoded);
+                setUser(token);
             } else {
                 localStorage.removeItem('user');
+                localStorage.removeItem('tokenExp');
+                localStorage.removeItem('userEmail');
             }
         }
         setLoading(false);
@@ -37,7 +40,8 @@ const useProvideAuth = () => {
         if (response.status) {
             const { data } = response;
             setUser(data);
-            localStorage.setItem('user', data);
+            localStorage.setItem('user', data.token);
+            localStorage.setItem('tokenExp', data.decoded.exp);
             localStorage.setItem('userEmail', credentials.email);
             navigate('/admin/dashboard');
         } else {
@@ -50,6 +54,7 @@ const useProvideAuth = () => {
         logout();
         setUser(null);
         localStorage.removeItem('user');
+        localStorage.removeItem('tokenExp');
         localStorage.removeItem('userEmail');
         navigate('/login');
     };
