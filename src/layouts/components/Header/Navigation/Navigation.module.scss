@@ -12,7 +12,7 @@
     transition: transform 0.3s ease, opacity 0.3s ease;
     transform: translateY(0);
     z-index: 1000;
-    @include respond-to(lg) {
+    @include respond-to(xl) {
         padding: 0 20px;
     }
 
@@ -64,7 +64,7 @@
             font-size: 24px;
             color: white;
 
-            @include respond-to(lg) {
+            @include respond-to(xl) {
                 display: block;
             }
         }
@@ -91,7 +91,7 @@
                     background-color: var(--secondary);
                 }
 
-                @include respond-to(lg) {
+                @include respond-to(xl) {
                     min-width: 100%;
                 }
 
@@ -100,7 +100,7 @@
                     align-items: center;
                     justify-content: center;
                     width: 100%;
-                    @include respond-to(lg) {
+                    @include respond-to(xl) {
                         padding: 16px 20px;
                         justify-content: space-between;
                     }
@@ -109,7 +109,7 @@
                         display: flex;
                         gap: 8px;
                         flex-direction: column;
-                        @include respond-to(lg) {
+                        @include respond-to(xl) {
                             flex-direction: row;
                             gap: 20px;
                         }
@@ -129,7 +129,7 @@
                         cursor: pointer;
                         color: var(--white);
 
-                        @include respond-to(lg) {
+                        @include respond-to(xl) {
                             display: inline-block;
                         }
                     }
@@ -159,7 +159,7 @@
 
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-                    @include respond-to(lg) {
+                    @include respond-to(xl) {
                         display: none;
                         border-radius: 0;
                     }
@@ -219,7 +219,7 @@
                             }
 
                             .sub-link-wrapper {
-                                @include respond-to(lg) {
+                                @include respond-to(xl) {
                                     padding: 20px 40px;
                                     width: 100%;
                                     align-items: center;
@@ -256,7 +256,7 @@
         }
     }
 
-    @include respond-to(lg) {
+    @include respond-to(xl) {
         .inner {
             .navigation-links {
                 display: none;
@@ -308,7 +308,7 @@
 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-    @include respond-to(lg) {
+    @include respond-to(xl) {
         display: none;
         border-radius: 0;
     }
@@ -329,7 +329,7 @@
             transition: all ease-in-out 0.3s;
             text-transform: uppercase;
 
-            @include respond-to(lg) {
+            @include respond-to(xl) {
                 padding: 20px 40px;
             }
 
