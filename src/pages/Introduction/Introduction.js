@@ -7,6 +7,10 @@ import styles from './Introduction.module.scss';
 import PushNotification from '~/components/PushNotification';
 import LoadingScreen from '~/components/LoadingScreen';
 import { getPageBySlug } from '~/services/pageService';
+import { Viewer, Worker } from '@react-pdf-viewer/core';
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +19,7 @@ const Introduction = () => {
     const [pageContent, setPageContent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
     useEffect(() => {
         const fetchPageContent = async () => {
@@ -67,8 +72,15 @@ const Introduction = () => {
             <div className={cx('inner')}>
                 <Title text={pageContent.name} />
                 {pdfUrl && (
-                    <div className={cx('attachments')}>
-                        <embed src={pdfUrl} width="100%" height="1200px" type="application/pdf" />
+                    <div className={cx('pdf-viewer')}>
+                        <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
+                            <Viewer
+                                fileUrl={pdfUrl}
+                                plugins={[defaultLayoutPluginInstance]}
+                                initialPage={0}
+                                defaultScale={1.4}
+                            />
+                        </Worker>
                     </div>
                 )}
                 <div className={cx('content')} dangerouslySetInnerHTML={{ __html: pageContent.content }} />
