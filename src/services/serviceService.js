@@ -40,7 +40,7 @@ export const getServiceByType = async (type) => {
     }
 };
 
-export const getServiceByCategory = async (categoryId, page = 1, limit = 10) => {
+export const getServiceByCategory = async (categoryId, page = 1, limit = 1000) => {
     try {
         const response = await httpRequest.get('/services', {
             params: {
