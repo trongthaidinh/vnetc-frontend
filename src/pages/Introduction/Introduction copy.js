@@ -54,12 +54,9 @@ const Introduction = () => {
         return <PushNotification message="No content available" />;
     }
 
-    // const pdfUrl = pageContent.attachments
-    //     ? `${process.env.REACT_APP_HOST}/${pageContent.attachments.replace(/\\/g, '/')}`
-    //     : null;
-
-    const pdfUrl = pageContent.attachments;
-    console.log(pdfUrl);
+    const pdfUrl = pageContent.attachments
+        ? `${process.env.REACT_APP_HOST}/${pageContent.attachments.replace(/\\/g, '/')}`
+        : null;
 
     return (
         <article className={cx('wrapper')}>
@@ -75,8 +72,15 @@ const Introduction = () => {
             <div className={cx('inner')}>
                 <Title text={pageContent.name} />
                 {pdfUrl && (
-                    <div className={cx('attachments')}>
-                        <embed src={pdfUrl} width="100%" height="1200px" type="application/pdf" />
+                    <div className={cx('pdf-viewer')}>
+                        <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
+                            <Viewer
+                                fileUrl={pdfUrl}
+                                plugins={[defaultLayoutPluginInstance]}
+                                initialPage={0}
+                                defaultScale={1.4}
+                            />
+                        </Worker>
                     </div>
                 )}
                 <div className={cx('content')} dangerouslySetInnerHTML={{ __html: pageContent.content }} />
