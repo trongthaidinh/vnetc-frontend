@@ -39,11 +39,13 @@ const News = () => {
                 await Promise.all(
                     categoriesData.map(async (category) => {
                         const newsData = await getNewsByCategory(category._id);
-                        groupedNewsMap[category._id] = newsData.news.map((item) => ({
-                            ...item,
-                            image: item.images,
-                            isNew: dayjs().diff(dayjs(item.createdAt), 'day') <= 3,
-                        }));
+                        if (newsData.news.length > 0) {
+                            groupedNewsMap[category._id] = newsData.news.map((item) => ({
+                                ...item,
+                                image: item.images,
+                                isNew: dayjs().diff(dayjs(item.createdAt), 'day') <= 3,
+                            }));
+                        }
                     }),
                 );
 
@@ -100,52 +102,54 @@ const News = () => {
             <div className={cx('news-section')}>
                 <div className={cx('news-column')}>
                     <h2 className={cx('news-title')}>Tin Tức</h2>
-                    {categories.map((category) => {
-                        const slides = groupedNews[category._id]?.slice(0, 6) || [];
-                        const shouldLoop = slides.length > 3;
+                    {categories
+                        .filter((category) => groupedNews[category._id] && groupedNews[category._id].length > 0)
+                        .map((category) => {
+                            const slides = groupedNews[category._id]?.slice(0, 6) || [];
+                            const shouldLoop = slides.length > 3;
 
-                        return (
-                            <div key={category._id} className={cx('news-category')}>
-                                <Title
-                                    text={category.name || 'Loading...'}
-                                    showSeeAll={true}
-                                    slug={`${routes.news}/${category.slug}`}
-                                    categoryId={category._id}
-                                />
-                                <Swiper
-                                    spaceBetween={10}
-                                    slidesPerView={3}
-                                    breakpoints={{
-                                        1280: { slidesPerView: 3 },
-                                        1024: { slidesPerView: 3 },
-                                        768: { slidesPerView: 2 },
-                                        0: { slidesPerView: 1 },
-                                    }}
-                                    loop={shouldLoop}
-                                    modules={[Autoplay]}
-                                    autoplay={{
-                                        delay: 2000,
-                                        disableOnInteraction: false,
-                                    }}
-                                >
-                                    {groupedNews[category._id]?.slice(0, 6).map((item, index) => (
-                                        <SwiperSlide key={index} className={cx('slide')}>
-                                            <Link to={`${routes.news}/${category.slug}/${item._id}`}>
-                                                <Card
-                                                    title={item.title}
-                                                    summary={item.summary}
-                                                    image={item.images}
-                                                    createdAt={item.createdAt}
-                                                    views={item.views}
-                                                    isNew={item.isNew} // Pass isNew prop
-                                                />
-                                            </Link>
-                                        </SwiperSlide>
-                                    ))}
-                                </Swiper>
-                            </div>
-                        );
-                    })}
+                            return (
+                                <div key={category._id} className={cx('news-category')}>
+                                    <Title
+                                        text={category.name || 'Loading...'}
+                                        showSeeAll={true}
+                                        slug={`${routes.news}/${category.slug}`}
+                                        categoryId={category._id}
+                                    />
+                                    <Swiper
+                                        spaceBetween={10}
+                                        slidesPerView={3}
+                                        breakpoints={{
+                                            1280: { slidesPerView: 3 },
+                                            1024: { slidesPerView: 3 },
+                                            768: { slidesPerView: 2 },
+                                            0: { slidesPerView: 1 },
+                                        }}
+                                        loop={shouldLoop}
+                                        modules={[Autoplay]}
+                                        autoplay={{
+                                            delay: 2000,
+                                            disableOnInteraction: false,
+                                        }}
+                                    >
+                                        {slides.map((item, index) => (
+                                            <SwiperSlide key={index} className={cx('slide')}>
+                                                <Link to={`${routes.news}/${category.slug}/${item._id}`}>
+                                                    <Card
+                                                        title={item.title}
+                                                        summary={item.summary}
+                                                        image={item.images}
+                                                        createdAt={item.createdAt}
+                                                        views={item.views}
+                                                        isNew={item.isNew} // Pass isNew prop
+                                                    />
+                                                </Link>
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </div>
+                            );
+                        })}
                 </div>
                 <div className={cx('suggest')}>
                     <h2 className={cx('suggest-title')}>Có thể bạn quan tâm</h2>
