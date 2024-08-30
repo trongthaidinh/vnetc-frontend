@@ -19,7 +19,7 @@ const UpdateService = () => {
     const [initialValues, setInitialValues] = useState(null);
 
     const validationSchema = Yup.object({
-        title: Yup.string().required('Tiêu đề là bắt buộc'),
+        title: Yup.string().required('Tên dịch vụ là bắt buộc'),
         summary: Yup.string().required('Tóm tắt là bắt buộc'),
         image: Yup.mixed().required('Hình ảnh là bắt buộc'),
         categoryId: Yup.string().required('Danh mục là bắt buộc'),
@@ -65,7 +65,7 @@ const UpdateService = () => {
     const handleSubmit = async (values, { resetForm }) => {
         const formData = new FormData();
 
-        formData.append('title', values.title);
+        formData.append('name', values.title);
         formData.append('summary', values.summary);
 
         if (values.image) {
@@ -103,7 +103,7 @@ const UpdateService = () => {
                 {({ isSubmitting, setFieldValue, values }) => (
                     <Form className={styles.form}>
                         <div className={styles.formGroup}>
-                            <label htmlFor="title">Tiêu Đề</label>
+                            <label htmlFor="title">Tên dịch vụ</label>
                             <Field name="title" type="text" className={styles.input} />
                             <ErrorMessage name="title" component="div" className={styles.error} />
                         </div>
