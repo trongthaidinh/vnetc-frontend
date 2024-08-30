@@ -40,6 +40,7 @@ const routes = {
     updatePage: '/admin/update-page',
     categoryList: '/admin/category-list',
     addCategory: '/admin/add-category',
+    updateCategory: '/admin/update-category/:id',
     departmentList: '/admin/department-list',
     addDepartment: '/admin/add-department',
     memberList: '/admin/member-list',

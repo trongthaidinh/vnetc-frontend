@@ -40,8 +40,8 @@ const TeamModal = ({ visible, onClose, team }) => {
                         <div className={cx('team-info')}>
                             <h2 className={cx('team-name')}>{team.name}</h2>
                             <p className={cx('team-position')}>{team.qualification}</p>
-                            <p className={cx('team-seniority')}>Kinh nghiệm: {team.seniority} năm</p>
-                            <p className={cx('team-yearOfBirth')}>Năm sinh: {team.yearOfBirth}</p>
+                            {/* <p className={cx('team-seniority')}>Kinh nghiệm: {team.seniority} năm</p>
+                            <p className={cx('team-yearOfBirth')}>Năm sinh: {team.yearOfBirth}</p> */}
                         </div>
                     </div>
                 )}

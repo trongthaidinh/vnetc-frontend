@@ -78,7 +78,7 @@ const Introduction = () => {
                                 fileUrl={pdfUrl}
                                 plugins={[defaultLayoutPluginInstance]}
                                 initialPage={0}
-                                defaultScale={1.4}
+                                // defaultScale={1.4}
                             />
                         </Worker>
                     </div>

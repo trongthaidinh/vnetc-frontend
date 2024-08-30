@@ -1,25 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
-import { addCategory } from '~/services/categoryService';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getCategoryById, updateCategory } from '~/services/categoryService';
 import PushNotification from '~/components/PushNotification';
-import styles from './AddCategory.module.scss';
+import styles from './UpdateCategory.module.scss';
 import routes from '~/config/routes';
 import CATEGORY_TYPES from '~/constants/CategoryType/CategoryType';
 import Title from '~/components/Title';
 import Button from '~/components/Button';
 
-const AddCategory = () => {
+const UpdateCategory = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
     const [isError, setIsError] = useState(false);
     const [notificationMessage, setNotificationMessage] = useState('');
-    const [subcategories, setSubcategories] = useState([]); // State to store the added subcategories
-    const [currentSubcategory, setCurrentSubcategory] = useState(''); // State to store the current input value
+    const [categoryData, setCategoryData] = useState(null);
+    const [subcategories, setSubcategories] = useState([]);
+    const [currentSubcategory, setCurrentSubcategory] = useState('');
+
+    useEffect(() => {
+        // Fetch the category data based on the ID
+        const fetchCategoryData = async () => {
+            try {
+                const data = await getCategoryById(id);
+                setCategoryData(data);
+                setSubcategories(data.subcategories || []);
+            } catch (error) {
+                setIsError(true);
+                setNotificationMessage('Lỗi khi tải danh mục.');
+                console.error('Lỗi khi lấy thông tin danh mục:', error);
+            }
+        };
+        fetchCategoryData();
+    }, [id]);
 
     const initialValues = {
-        name: '',
-        type: '',
+        name: categoryData?.name || '',
+        type: categoryData?.type || '',
     };
 
     const validationSchema = Yup.object({
@@ -30,21 +48,19 @@ const AddCategory = () => {
             .max(Object.keys(CATEGORY_TYPES).length, 'Giá trị không hợp lệ'),
     });
 
-    const handleSubmit = async (values, { resetForm, setSubmitting }) => {
+    const handleSubmit = async (values, { setSubmitting }) => {
         try {
-            const categoryData = { ...values, subcategories };
-            await addCategory(categoryData);
-            resetForm();
-            setSubcategories([]); // Reset subcategories after submission
-            setNotificationMessage('Thêm danh mục thành công!');
+            const updatedCategoryData = { ...values, subcategories };
+            await updateCategory(id, updatedCategoryData);
+            setNotificationMessage('Cập nhật danh mục thành công!');
             setIsError(false);
             setTimeout(() => {
                 navigate(routes.categoryList);
             }, 1000);
         } catch (error) {
             setIsError(true);
-            setNotificationMessage('Lỗi khi thêm danh mục.');
-            console.error('Lỗi khi tạo danh mục:', error);
+            setNotificationMessage('Lỗi khi cập nhật danh mục.');
+            console.error('Lỗi khi cập nhật danh mục:', error);
         } finally {
             setSubmitting(false);
         }
@@ -62,15 +78,17 @@ const AddCategory = () => {
         setSubcategories(updatedSubcategories);
     };
 
+    if (!categoryData) return <div>Loading...</div>;
+
     return (
-        <div className={styles.addCategory}>
-            <Title text="Thêm Danh Mục"></Title>
+        <div className={styles.editCategory}>
+            <Title text="Chỉnh sửa Danh Mục"></Title>
             {notificationMessage && (
                 <PushNotification message={notificationMessage} type={isError ? 'error' : 'success'} />
             )}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (
-                    <Form className={styles.addForm}>
+                    <Form className={styles.editForm}>
                         <div className={styles.formGroup}>
                             <label htmlFor="name">Tên Danh mục</label>
                             <Field name="name" type="text" className={styles.input} />
@@ -110,7 +128,7 @@ const AddCategory = () => {
                             <div className={styles.subcategoriesList}>
                                 {subcategories.map((subcategory, index) => (
                                     <div key={index} className={styles.subcategoryItem}>
-                                        {index + 1}.{subcategory}
+                                        {index + 1}. {subcategory}
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveSubcategory(index)}
@@ -123,7 +141,7 @@ const AddCategory = () => {
                             </div>
                         </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                            Thêm Danh mục
+                            Cập nhật Danh mục
                         </button>
                     </Form>
                 )}
@@ -132,4 +150,4 @@ const AddCategory = () => {
     );
 };
 
-export default AddCategory;
+export default UpdateCategory;

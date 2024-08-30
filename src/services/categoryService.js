@@ -60,6 +60,16 @@ export const addCategory = async (categoryData) => {
     }
 };
 
+export const updateCategory = async (categoryData) => {
+    try {
+        const response = await httpRequest.patch('/category', categoryData);
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi khi thêm danh mục:', error);
+        throw error;
+    }
+};
+
 export const deleteCategory = async (id) => {
     try {
         const response = await httpRequest.delete(`/category/${id}`);

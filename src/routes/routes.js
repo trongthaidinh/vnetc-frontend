@@ -76,6 +76,7 @@ import ActivityCategory from '~/pages/ActivityCategory';
 import ActivityList from '~/pages/Admin/Activity/ActivityList';
 import AddActivity from '~/pages/Admin/Activity/AddActivity';
 import UpdateActivity from '~/pages/Admin/Activity/UpdateActivity';
+import UpdateCategory from '~/pages/Admin/Category/UpdateCategory';
 
 // Public Routes
 const publicRoutes = [
@@ -209,6 +210,7 @@ const privateRoutes = [
     { path: config.routes.updatePage, component: UpdatePage, layout: AdminLayout },
     { path: config.routes.categoryList, component: CategoryList, layout: AdminLayout },
     { path: config.routes.addCategory, component: AddCategory, layout: AdminLayout },
+    { path: config.routes.updateCategory, component: UpdateCategory, layout: AdminLayout },
     { path: config.routes.departmentList, component: DepartmentList, layout: AdminLayout },
     { path: config.routes.addDepartment, component: AddDepartment, layout: AdminLayout },
     { path: config.routes.memberList, component: MemberList, layout: AdminLayout },

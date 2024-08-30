@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faAngleRight, faAngleLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { getCategories, deleteCategory } from '~/services/categoryService';
 import styles from './CategoryList.module.scss';
 import Title from '~/components/Title';
@@ -95,6 +95,12 @@ const CategoryList = () => {
                                     <td>{new Date(category.createdAt).toLocaleString()}</td>
                                     <td>{new Date(category.updatedAt).toLocaleString()}</td>
                                     <td>
+                                        <Link
+                                            to={`/admin/update-category/${category._id}`}
+                                            className={styles.editButton}
+                                        >
+                                            <FontAwesomeIcon icon={faEdit} /> Sửa
+                                        </Link>
                                         <button
                                             onClick={() => handleDelete(category._id)}
                                             className={styles.deleteButton}
