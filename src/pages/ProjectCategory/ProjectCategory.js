@@ -11,6 +11,7 @@ import Card from '~/components/CardContent/CardContent';
 import { getCategoriesByType } from '~/services/categoryService';
 import routes from '~/config/routes';
 import { Helmet } from 'react-helmet';
+import { Empty } from 'antd';
 
 const cx = classNames.bind(styles);
 
@@ -75,6 +76,15 @@ function ProjectCategory() {
     };
 
     const renderProjectCategory = () => {
+        if (currentProjectCategory.length === 0) {
+            return (
+                <>
+                    <div />
+                    <Empty description="Đang cập nhật..." />
+                    <div />
+                </>
+            );
+        }
         return currentProjectCategory.map((projectItem) => (
             <Link to={`${routes.projects}/${slug}/${projectItem._id}`} key={projectItem._id}>
                 <Card

@@ -125,7 +125,7 @@ function LegalCategory() {
                 ) : (
                     <>
                         <div />
-                        <Empty description="Không có văn bản nào để hiển thị" />
+                        <Empty description="Đang cập nhật..." />
                         <div />
                     </>
                 )}

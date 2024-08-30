@@ -110,7 +110,7 @@ function NewsCategory() {
             return (
                 <>
                     <div />
-                    <Empty description="Không có tin tức để hiển thị" />
+                    <Empty description="Đang cập nhật..." />
                     <div />
                 </>
             );

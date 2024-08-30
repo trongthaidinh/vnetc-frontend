@@ -82,7 +82,7 @@ function ActivityCategory() {
             return (
                 <>
                     <div />
-                    <Empty description="Không có hoạt động để hiển thị" />
+                    <Empty description="Đang cập nhật..." />
                     <div />
                 </>
             );

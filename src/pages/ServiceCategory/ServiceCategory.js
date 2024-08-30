@@ -118,7 +118,7 @@ function ServiceCategory() {
             return (
                 <>
                     <div />
-                    <Empty className={cx('empty-element')} description="Không có dịch vụ để hiển thị" />
+                    <Empty className={cx('empty-element')} description="Đang cập nhật..." />
                     <div />
                 </>
             );
