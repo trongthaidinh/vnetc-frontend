@@ -12,12 +12,13 @@ import Title from '~/components/Title';
 const UpdatePageSchema = Yup.object({
     name: Yup.string().required('Tên không được để trống'),
     content: Yup.string().required('Nội dung không được để trống'),
+    attachments: Yup.mixed().test('fileType', 'Định dạng không hỗ trợ', (value) => true),
 });
 
 const UpdatePage = () => {
     const location = useLocation();
     const { slug } = location.state || {};
-    const [initialValues, setInitialValues] = useState({ name: '', content: '' });
+    const [initialValues, setInitialValues] = useState({ name: '', content: '', attachments: '' });
     const [currentSlug, setCurrentSlug] = useState('');
     const [notification, setNotification] = useState({ message: '', type: '' });
     const navigate = useNavigate();
@@ -29,7 +30,11 @@ const UpdatePage = () => {
             try {
                 const data = await getPageBySlug(slug);
                 if (data) {
-                    setInitialValues({ name: data.name, content: data.content });
+                    setInitialValues({
+                        name: data.name,
+                        content: data.content,
+                        attachments: data.attachments ? data.attachments.split('\\').pop() : '',
+                    });
                     setCurrentSlug(data.slug);
                 } else {
                     setNotification({ message: 'Không tìm thấy trang.', type: 'error' });
@@ -45,7 +50,15 @@ const UpdatePage = () => {
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
-            await updatePageContent(currentSlug, values);
+            const formData = new FormData();
+            formData.append('name', values.name);
+            formData.append('content', values.content);
+
+            if (values.attachments && values.attachments instanceof File) {
+                formData.append('file', values.attachments);
+            }
+
+            await updatePageContent(currentSlug, formData, true);
             setNotification({ message: 'Cập nhật trang thành công!', type: 'success' });
             setTimeout(() => {
                 navigate(routes.pageList);
@@ -82,6 +95,30 @@ const UpdatePage = () => {
                                 initialValue={values.content}
                             />
                             <ErrorMessage name="content" component="div" className={styles.error} />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="attachments">Upload PDF</label>
+                            {values.attachments && (
+                                <p>
+                                    Current file:{' '}
+                                    <strong>
+                                        {values.attachments instanceof File
+                                            ? values.attachments.name
+                                            : values.attachments}
+                                    </strong>
+                                </p>
+                            )}
+                            <input
+                                id="attachments"
+                                name="attachments"
+                                type="file"
+                                accept="application/pdf"
+                                onChange={(event) => {
+                                    setFieldValue('attachments', event.currentTarget.files[0]);
+                                }}
+                                className={styles.input}
+                            />
+                            <ErrorMessage name="attachments" component="div" className={styles.error} />
                         </div>
                         <div className={styles.formActions}>
                             <button type="submit" disabled={isSubmitting} className={styles.submitButton}>

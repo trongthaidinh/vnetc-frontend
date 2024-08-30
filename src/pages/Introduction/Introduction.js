@@ -12,7 +12,6 @@ const cx = classNames.bind(styles);
 
 const Introduction = () => {
     const { slug } = useParams();
-    console.log(slug);
     const [pageContent, setPageContent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -50,6 +49,10 @@ const Introduction = () => {
         return <PushNotification message="No content available" />;
     }
 
+    const pdfUrl = pageContent.attachments
+        ? `${process.env.REACT_APP_HOST}/${pageContent.attachments.replace(/\\/g, '/')}`
+        : null;
+
     return (
         <article className={cx('wrapper')}>
             <Helmet>
@@ -63,6 +66,11 @@ const Introduction = () => {
             </Helmet>
             <div className={cx('inner')}>
                 <Title text={pageContent.name} />
+                {pdfUrl && (
+                    <div className={cx('attachments')}>
+                        <embed src={pdfUrl} width="100%" height="1200px" type="application/pdf" />
+                    </div>
+                )}
                 <div className={cx('content')} dangerouslySetInnerHTML={{ __html: pageContent.content }} />
             </div>
         </article>

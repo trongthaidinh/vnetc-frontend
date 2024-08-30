@@ -13,14 +13,16 @@ const PageInfoList = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [totalPages, setTotalPages] = useState(1);
     const [notification, setNotification] = useState({ message: '', type: '' });
 
     useEffect(() => {
         const fetchPages = async () => {
             try {
-                const data = await getPageContent('gioi-thieu');
+                const data = await getPageContent('gioi-thieu', currentPage, itemsPerPage);
                 if (data) {
-                    setPages(data);
+                    setPages(data.pages);
+                    setTotalPages(data.totalPages);
                 } else {
                     setNotification({ message: 'Không có dữ liệu trang.', type: 'success' });
                 }
@@ -31,14 +33,14 @@ const PageInfoList = () => {
         };
 
         fetchPages();
-    }, []);
+    }, [currentPage, itemsPerPage]);
+
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+        setCurrentPage(1); // Reset to first page when searching
+    };
 
     const filteredPages = pages.filter((page) => page.name.toLowerCase().includes(searchTerm.toLowerCase()));
-
-    const totalPages = Math.ceil(filteredPages.length / itemsPerPage);
-    const indexOfLastPage = currentPage * itemsPerPage;
-    const indexOfFirstPage = indexOfLastPage - itemsPerPage;
-    const currentPages = filteredPages.slice(indexOfFirstPage, indexOfLastPage);
 
     return (
         <div className={styles.pageContainer}>
@@ -49,7 +51,7 @@ const PageInfoList = () => {
                     type="text"
                     placeholder="Tìm kiếm Trang..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={handleSearch}
                     className={styles.searchInput}
                 />
                 <Link to={routes.addPage} className={styles.addButton}>
@@ -68,10 +70,10 @@ const PageInfoList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {currentPages.length > 0 ? (
-                            currentPages.map((page, index) => (
+                        {filteredPages.length > 0 ? (
+                            filteredPages.map((page, index) => (
                                 <tr key={page._id}>
-                                    <td>{indexOfFirstPage + index + 1}</td>
+                                    <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
                                     <td>{page.name}</td>
                                     <td>
                                         <div
@@ -82,7 +84,7 @@ const PageInfoList = () => {
                                     <td>
                                         <Link
                                             to={`/admin/update-page`}
-                                            state={{ slug: page.slug }} // Passing slug via state
+                                            state={{ slug: page.slug }}
                                             className={styles.editButton}
                                         >
                                             <FontAwesomeIcon icon={faEdit} /> Sửa
@@ -119,8 +121,8 @@ const PageInfoList = () => {
 
             <div className={styles.pagination}>
                 <span>
-                    Hiện {indexOfFirstPage + 1} đến {Math.min(indexOfLastPage, filteredPages.length)} của{' '}
-                    {filteredPages.length}
+                    Hiện {(currentPage - 1) * itemsPerPage + 1} đến{' '}
+                    {Math.min(currentPage * itemsPerPage, filteredPages.length)} của {filteredPages.length}
                 </span>
                 <div className={styles.paginationControls}>
                     <button
