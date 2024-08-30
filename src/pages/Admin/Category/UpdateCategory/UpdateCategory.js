@@ -20,12 +20,12 @@ const UpdateCategory = () => {
     const [currentSubcategory, setCurrentSubcategory] = useState('');
 
     useEffect(() => {
-        // Fetch the category data based on the ID
         const fetchCategoryData = async () => {
             try {
                 const data = await getCategoryById(id);
                 setCategoryData(data);
-                setSubcategories(data.subcategories || []);
+                const subcategoryNames = data.subcategories.map((subcategory) => subcategory.name);
+                setSubcategories(subcategoryNames);
             } catch (error) {
                 setIsError(true);
                 setNotificationMessage('Lỗi khi tải danh mục.');
@@ -69,7 +69,7 @@ const UpdateCategory = () => {
     const handleAddSubcategory = () => {
         if (currentSubcategory.trim()) {
             setSubcategories([...subcategories, currentSubcategory]);
-            setCurrentSubcategory(''); // Clear the input field after adding
+            setCurrentSubcategory('');
         }
     };
 
@@ -81,14 +81,14 @@ const UpdateCategory = () => {
     if (!categoryData) return <div>Loading...</div>;
 
     return (
-        <div className={styles.editCategory}>
+        <div className={styles.updateCategory}>
             <Title text="Chỉnh sửa Danh Mục"></Title>
             {notificationMessage && (
                 <PushNotification message={notificationMessage} type={isError ? 'error' : 'success'} />
             )}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => (
-                    <Form className={styles.editForm}>
+                    <Form className={styles.updateForm}>
                         <div className={styles.formGroup}>
                             <label htmlFor="name">Tên Danh mục</label>
                             <Field name="name" type="text" className={styles.input} />
@@ -128,7 +128,7 @@ const UpdateCategory = () => {
                             <div className={styles.subcategoriesList}>
                                 {subcategories.map((subcategory, index) => (
                                     <div key={index} className={styles.subcategoryItem}>
-                                        {index + 1}. {subcategory}
+                                        {index + 1}.{subcategory}
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveSubcategory(index)}

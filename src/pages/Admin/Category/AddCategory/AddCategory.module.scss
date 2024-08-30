@@ -93,4 +93,10 @@
         margin: 8px 0;
         font-weight: 400;
     }
+
+    .subcategoryItem {
+        width: 40%;
+        display: flex;
+        justify-content: space-between;
+    }
 }

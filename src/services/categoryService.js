@@ -60,9 +60,9 @@ export const addCategory = async (categoryData) => {
     }
 };
 
-export const updateCategory = async (categoryData) => {
+export const updateCategory = async (id, categoryData) => {
     try {
-        const response = await httpRequest.patch('/category', categoryData);
+        const response = await httpRequest.patch(`/category/${id}`, categoryData);
         return response.data;
     } catch (error) {
         console.error('Lỗi khi thêm danh mục:', error);
