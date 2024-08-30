@@ -74,6 +74,12 @@ const About = () => (
                         width="502"
                         height="735"
                     />
+                    <img
+                        src="https://res.cloudinary.com/ddmzboxzu/image/upload/v1724991238/Screenshot_2024-08-30_111327_csebmj.png"
+                        alt=""
+                        width="502"
+                        height="735"
+                    />
                 </div>
             </div>
         </div>
