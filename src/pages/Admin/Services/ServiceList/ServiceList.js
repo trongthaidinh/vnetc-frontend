@@ -17,7 +17,7 @@ const ServiceList = () => {
 
     useEffect(() => {
         const fetchServices = async () => {
-            const data = await getServicesPagiation(1, 100);
+            const data = await getServicesPagiation(1, 1000);
             if (data) {
                 setServices(data);
             } else {
