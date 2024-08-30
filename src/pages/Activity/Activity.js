@@ -111,6 +111,9 @@ const Activity = () => {
                     <h2 className={cx('activity-title')}>Hoạt Động</h2>
                     {categories.map((category) => {
                         const slides = groupedActivity[category._id]?.slice(0, 6) || [];
+
+                        if (slides.length === 0) return null;
+
                         const shouldLoop = slides.length > 3;
 
                         return (
@@ -137,7 +140,7 @@ const Activity = () => {
                                         disableOnInteraction: false,
                                     }}
                                 >
-                                    {groupedActivity[category._id]?.slice(0, 6).map((item, index) => (
+                                    {slides.map((item, index) => (
                                         <SwiperSlide key={index} className={cx('slide')}>
                                             <Link to={`${routes.activity}/${category.slug}/${item._id}`}>
                                                 <Card
