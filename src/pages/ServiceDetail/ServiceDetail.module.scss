@@ -12,7 +12,6 @@
     }
 
     @include respond-to(sm) {
-        margin-top: var(--nav-height);
         padding: 10px;
     }
 
@@ -44,7 +43,8 @@
             }
 
             @include respond-to(sm) {
-                max-height: 200px;
+                object-fit: contain;
+                max-height: 560px;
             }
         }
 
