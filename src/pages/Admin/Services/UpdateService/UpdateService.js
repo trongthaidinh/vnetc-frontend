@@ -69,9 +69,9 @@ const UpdateService = () => {
         formData.append('summary', values.summary);
 
         if (values.image) {
-            formData.append('images', values.image);
+            formData.append('image', values.image);
         } else {
-            formData.append('images', initialValues.image);
+            formData.append('image', initialValues.image);
         }
 
         formData.append('categoryId', values.categoryId);
