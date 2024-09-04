@@ -14,8 +14,8 @@ const AddCategory = () => {
     const navigate = useNavigate();
     const [isError, setIsError] = useState(false);
     const [notificationMessage, setNotificationMessage] = useState('');
-    const [subcategories, setSubcategories] = useState([]); // State to store the added subcategories
-    const [currentSubcategory, setCurrentSubcategory] = useState(''); // State to store the current input value
+    const [subcategories, setSubcategories] = useState([]);
+    const [currentSubcategory, setCurrentSubcategory] = useState('');
 
     const initialValues = {
         name: '',

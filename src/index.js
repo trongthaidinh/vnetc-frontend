@@ -5,6 +5,9 @@ import reportWebVitals from './reportWebVitals';
 import { GlobalStyles } from '~/components/GlobalStyles';
 import { ConfigProvider } from 'antd';
 import viVN from 'antd/es/locale/vi_VN';
+import ReactGA from 'react-ga4';
+
+ReactGA.initialize('G-WC3TRNZKV1');
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,5 +19,7 @@ root.render(
         </GlobalStyles>
     </React.StrictMode>,
 );
+
+ReactGA.send('pageview');
 
 reportWebVitals();

@@ -9,6 +9,7 @@ import routes from '~/config/routes';
 import CATEGORY_TYPES from '~/constants/CategoryType/CategoryType';
 import Title from '~/components/Title';
 import Button from '~/components/Button';
+import { Spin } from 'antd';
 
 const UpdateCategory = () => {
     const navigate = useNavigate();
@@ -38,6 +39,7 @@ const UpdateCategory = () => {
     const initialValues = {
         name: categoryData?.name || '',
         type: categoryData?.type || '',
+        image: null, // Add image field
     };
 
     const validationSchema = Yup.object({
@@ -49,9 +51,16 @@ const UpdateCategory = () => {
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
+        const formData = new FormData();
+        formData.append('name', values.name);
+        formData.append('type', values.type);
+        if (values.image) {
+            formData.append('image', values.image); // Append image to the form data
+        }
+        formData.append('subcategories', JSON.stringify(subcategories));
+
         try {
-            const updatedCategoryData = { ...values, subcategories };
-            await updateCategory(id, updatedCategoryData);
+            await updateCategory(id, formData);
             setNotificationMessage('Cập nhật danh mục thành công!');
             setIsError(false);
             setTimeout(() => {
@@ -87,7 +96,7 @@ const UpdateCategory = () => {
                 <PushNotification message={notificationMessage} type={isError ? 'error' : 'success'} />
             )}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-                {({ isSubmitting }) => (
+                {({ isSubmitting, setFieldValue }) => (
                     <Form className={styles.updateForm}>
                         <div className={styles.formGroup}>
                             <label htmlFor="name">Tên Danh mục</label>
@@ -140,8 +149,22 @@ const UpdateCategory = () => {
                                 ))}
                             </div>
                         </div>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="image">Chọn Ảnh</label>
+                            <input
+                                id="image"
+                                name="image"
+                                type="file"
+                                accept="image/*"
+                                onChange={(event) => {
+                                    setFieldValue('image', event.currentTarget.files[0]);
+                                }}
+                                className={styles.input}
+                            />
+                            <ErrorMessage name="image" component="div" className={styles.error} />
+                        </div>
                         <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                            Cập nhật Danh mục
+                            {isSubmitting ? <Spin size="small" /> : 'Cập nhật Danh mục'}
                         </button>
                     </Form>
                 )}
