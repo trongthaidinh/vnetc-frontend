@@ -118,15 +118,9 @@ const Footer = () => {
                     <h4>Lĩnh vực hoạt động</h4>
                     <ul>
                         <li>
-                            <Link to={routes.products}>
-                                <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
-                                Sản phẩm
-                            </Link>
-                        </li>
-                        <li>
                             <Link to={routes.services}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
-                                Dịch vụ
+                                Sản phẩm và Dịch vụ
                             </Link>
                         </li>
                         <li>
