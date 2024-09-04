@@ -9,13 +9,17 @@ import ScrollToTop from '~/components/ScrollToTop';
 import Error404 from './pages/Error404';
 import usePageTracking from './hooks/usePageTracking';
 
-function App() {
+function PageTracker() {
     usePageTracking();
+    return null;
+}
 
+function App() {
     return (
         <Router>
             <AuthProvider>
                 <div className="App">
+                    <PageTracker />
                     <ScrollToTop />
                     <Routes>
                         {publicRoutes.map((route, index) => {
