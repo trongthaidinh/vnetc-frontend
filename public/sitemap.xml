@@ -4,13 +4,51 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
-<url>
-  <loc>https://vietnametc.com/</loc>
-  <lastmod>2024-08-30T16:53:08+00:00</lastmod>
-</url>
-
-
+            
+    <url>
+        <loc>https://vietnametc.com/</loc>
+        <lastmod>2024-08-30T16:53:08+00:00</lastmod>
+    </url>
+    
+    <url>
+        <loc>https://vietnametc.com/gioi-thieu</loc>
+        <lastmod>2024-08-30T16:53:08+00:00</lastmod>
+    </url>
+    
+    
+    <url>
+        <loc>https://vietnametc.com/tin-tuc</loc>
+        <lastmod>2024-08-30T16:53:08+00:00</lastmod>
+    </url>
+    
+    <url>
+        <loc>https://vietnametc.com/hoat-dong</loc>
+        <lastmod>2024-08-30T16:53:08+00:00</lastmod>
+    </url>
+    
+    <url>
+        <loc>https://vietnametc.com/du-an</loc>
+        <lastmod>2024-08-30T16:53:08+00:00</lastmod>
+    </url>
+    
+    <url>
+        <loc>https://vietnametc.com/san-pham-va-dich-vu</loc>
+        <lastmod>2024-08-30T16:53:08+00:00</lastmod>
+    </url>
+    
+    <url>
+        <loc>https://vietnametc.com/van-ban-phap-quy</loc>
+        <lastmod>2024-08-30T16:53:08+00:00</lastmod>
+    </url>
+    
+    <url>
+        <loc>https://vietnametc.com/doi-ngu</loc>
+        <lastmod>2024-08-30T16:53:08+00:00</lastmod>
+    </url>
+    
+    <url>
+        <loc>https://vietnametc.com/lien-he</loc>
+        <lastmod>2024-08-30T16:53:08+00:00</lastmod>
+    </url>
+    
 </urlset>
