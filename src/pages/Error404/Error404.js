@@ -8,7 +8,6 @@ const Error404 = () => {
             <div className={styles.errorContent}>
                 <h1 className={styles.errorTitle}>404</h1>
                 <h2 className={styles.errorSubTitle}>Đang cập nhật</h2>
-
                 <Link to="/" className={styles.backToHome}>
                     Quay lại Trang chủ
                 </Link>
