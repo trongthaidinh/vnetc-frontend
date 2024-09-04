@@ -12,10 +12,10 @@ import Partners from './Partners';
 const Home = () => (
     <article>
         <Helmet>
-            <title>Trang Chủ | VNETC </title>
+            <title>CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM</title>
             <meta
                 name="description"
-                content="VNETC cung cấp sản phẩm, dịch vụ cơ điện chất lượng hàng đầu và tin tức mới nhất ngành điện lực."
+                content="CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM là đơn vị cung cấp dịch vụ Kiểm định, Thử nghiệm, Quản lý vận hành, Bảo dưỡng - Sửa chữa thiết bị điện chất lượng hàng đầu."
             />
             <meta
                 name="keywords"
