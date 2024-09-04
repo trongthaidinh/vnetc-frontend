@@ -17,7 +17,10 @@ const Home = () => (
                 name="description"
                 content="VNETC cung cấp sản phẩm, dịch vụ cơ điện chất lượng hàng đầu và tin tức mới nhất ngành điện lực."
             />
-            <meta name="keywords" content="sản phẩm điện, dịch vụ điện, tin tức ngành điện lực, VNETC" />
+            <meta
+                name="keywords"
+                content="CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM, thí nghiệm điện, kiểm định thiết bị điện, thử nghiệm điện, sản phẩm cơ điện, tin tức ngành điện lực, VNETC"
+            />
             <meta name="author" content="CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM - VNETC" />
         </Helmet>
         <Banner />
