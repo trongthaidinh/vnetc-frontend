@@ -7,13 +7,10 @@ const Error404 = () => {
         <div className={styles.errorContainer}>
             <div className={styles.errorContent}>
                 <h1 className={styles.errorTitle}>404</h1>
-                <h2 className={styles.errorSubTitle}>Page Not Found</h2>
-                <p className={styles.errorText}>
-                    Oops! The page you're looking for cannot be found. It may have been removed, renamed, or is
-                    temporarily unavailable.
-                </p>
+                <h2 className={styles.errorSubTitle}>Đang cập nhật</h2>
+
                 <Link to="/" className={styles.backToHome}>
-                    Back to Home
+                    Quay lại Trang chủ
                 </Link>
             </div>
         </div>
