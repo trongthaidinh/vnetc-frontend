@@ -107,7 +107,7 @@ const Footer = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to={routes.about}>
+                            <Link to={`${routes.about}/ho-so-nang-luc`}>
                                 <FontAwesomeIcon className={cx('footer-chevon-icon')} icon={faChevronRight} />
                                 Hồ sơ năng lực
                             </Link>
