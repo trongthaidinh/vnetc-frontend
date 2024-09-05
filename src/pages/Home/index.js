@@ -15,7 +15,7 @@ const Home = () => (
             <title>CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM</title>
             <meta
                 name="description"
-                content="CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM là đơn vị cung cấp dịch vụ Kiểm định, Thử nghiệm, Quản lý vận hành, Bảo dưỡng - Sửa chữa thiết bị điện chất lượng hàng đầu."
+                content="CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM (VNETC) là đơn vị cung cấp dịch vụ Kiểm định, Thử nghiệm, Quản lý vận hành, Bảo dưỡng - Sửa chữa thiết bị điện chất lượng hàng đầu."
             />
             <meta
                 name="keywords"
