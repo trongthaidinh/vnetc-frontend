@@ -11,7 +11,7 @@ const About = () => (
         <Helmet>
             <title>Giới thiệu | VNETC</title>
             <meta name="description" content={'Thông tin về trang giới thiệu của VNETC.'} />
-            <meta name="keywords" content="giới thiệu, VNETC, thông tin công ty" />
+            <meta name="keywords" content="giới thiệu, VNETC, thông tin công ty, vietnametc" />
             <meta name="author" content="CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM - VNETC" />
         </Helmet>
         <div className={cx('inner')}>

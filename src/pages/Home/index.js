@@ -19,7 +19,7 @@ const Home = () => (
             />
             <meta
                 name="keywords"
-                content="CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM, thí nghiệm điện, kiểm định thiết bị điện, thử nghiệm điện, quản lý vận hành, phân tích kỹ thuật, sản phẩm cơ điện, tin tức ngành điện lực, VNETC"
+                content="CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM, thí nghiệm điện, kiểm định thiết bị điện, thử nghiệm điện, quản lý vận hành, phân tích kỹ thuật, sản phẩm cơ điện, tin tức ngành điện lực, VNETC, vietnametc"
             />
             <meta name="author" content="CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM - VNETC" />
         </Helmet>

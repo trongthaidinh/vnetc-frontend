@@ -95,7 +95,10 @@ const Service = () => {
             <Helmet>
                 <title>Dịch vụ | VNETC</title>
                 <meta name="description" content="Cập nhật những dịch vụ mới nhất về ngành điện lực." />
-                <meta name="keywords" content="dịch vụ, cập nhật, VNETC" />
+                <meta
+                    name="keywords"
+                    content="dịch vụ thí nghiệm, kiểm thử, thử nghiệm, quản lý vận hành, cập nhật, VNETC, vietnametc"
+                />
             </Helmet>
             <div className={cx('service-section')}>
                 <div className={cx('service-column')}>

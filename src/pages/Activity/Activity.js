@@ -104,7 +104,7 @@ const Activity = () => {
                     name="description"
                     content="Cập nhật những hoạt động sơ kết, tổng kết họp hành và vui chơi giải trí về công ty chúng tôi."
                 />
-                <meta name="keywords" content="hoạt động, cập nhật, VNETC" />
+                <meta name="keywords" content="hoạt động, vui chơi giải trí, VNETC, vietnametc" />
             </Helmet>
             <div className={cx('activity-section')}>
                 <div className={cx('activity-column')}>

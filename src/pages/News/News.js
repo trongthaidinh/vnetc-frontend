@@ -97,7 +97,7 @@ const News = () => {
             <Helmet>
                 <title>Tin Tức | VNETC</title>
                 <meta name="description" content="Cập nhật những tin tức mới nhất về ngành điện lực." />
-                <meta name="keywords" content="tin tức, cập nhật, VNETC" />
+                <meta name="keywords" content="tin tức, cập nhật, VNETC, vietnametc" />
             </Helmet>
             <div className={cx('news-section')}>
                 <div className={cx('news-column')}>

@@ -57,11 +57,8 @@ const TeamPage = () => {
         <div className={cx('teamPage')}>
             <Helmet>
                 <title>Đội Ngũ | VNETC</title>
-                <meta
-                    name="description"
-                    content="Tìm hiểu về đội ngũ của chúng tôi và những thành viên trong các phòng ban."
-                />
-                <meta name="keywords" content="đội ngũ, thành viên, phòng ban, VNETC" />
+                <meta name="description" content="Tìm hiểu về đội ngũ của chúng tôi." />
+                <meta name="keywords" content="đội ngũ, thành viên, phòng ban, VNETC, vietnametc" />
             </Helmet>
             {departments.map((department) => (
                 <React.Fragment key={department._id}>

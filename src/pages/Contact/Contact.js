@@ -60,7 +60,7 @@ const ContactPage = () => {
                     name="description"
                     content="Trang Liên Hệ của VNETC. Hãy gửi tin nhắn cho chúng tôi nếu bạn có bất kỳ câu hỏi nào."
                 />
-                <meta name="keywords" content="liên hệ, VNETC, gửi tin nhắn" />
+                <meta name="keywords" content="liên hệ, VNETC, gửi tin nhắn, vietnametc" />
                 <meta name="author" content="CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM - VNETC" />
             </Helmet>
             <div className={cx('mapContainer')}>

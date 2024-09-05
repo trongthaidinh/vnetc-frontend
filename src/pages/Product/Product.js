@@ -72,7 +72,7 @@ const Products = () => {
             <Helmet>
                 <title>Sản Phẩm | VNETC</title>
                 <meta name="description" content="Xem các sản phẩm điện lực chất lượng cao tại VNETC." />
-                <meta name="keywords" content="sản phẩm điện lực, kiểm thử, VNETC, chất lượng cao" />
+                <meta name="keywords" content="sản phẩm điện lực, kiểm thử, VNETC, vietnametc, chất lượng cao" />
             </Helmet>
             <div className={cx('products-section')}>
                 <div className={cx('products-column')}>
