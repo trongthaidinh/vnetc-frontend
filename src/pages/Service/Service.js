@@ -37,12 +37,27 @@ const Service = () => {
 
                 await Promise.all(
                     categoriesData.map(async (category) => {
-                        const serviceData = await getServiceByCategory(category._id);
-                        if (serviceData.length > 0) {
-                            groupedServiceMap[category._id] = serviceData.map((item) => ({
-                                ...item,
-                                image: item.image,
-                            }));
+                        const allSubcategoryServices = [];
+                        if (category.subcategories && category.subcategories.length > 0) {
+                            await Promise.all(
+                                category.subcategories.map(async (subcategory) => {
+                                    const serviceData = await getServiceByCategory(subcategory._id);
+                                    if (serviceData.length > 0) {
+                                        allSubcategoryServices.push(
+                                            ...serviceData.map((item) => ({
+                                                ...item,
+                                                image: item.image,
+                                                subcategoryId: subcategory._id,
+                                                subcategorySlug: subcategory.slug,
+                                            })),
+                                        );
+                                    }
+                                }),
+                            );
+                        }
+
+                        if (allSubcategoryServices.length > 0) {
+                            groupedServiceMap[category._id] = allSubcategoryServices;
                         }
                     }),
                 );
@@ -65,8 +80,11 @@ const Service = () => {
     };
 
     const getCategorySlug = (categoryId) => {
-        const category = categories.find((category) => categoryId === category._id);
-        return category ? category.slug : '';
+        const category = categories.find((category) =>
+            category.subcategories.some((subcategory) => subcategory._id === categoryId),
+        );
+        const subcategory = category?.subcategories.find((subcat) => subcat._id === categoryId);
+        return subcategory ? subcategory.slug : '';
     };
 
     if (error) {
@@ -93,7 +111,7 @@ const Service = () => {
     return (
         <article className={cx('wrapper')}>
             <Helmet>
-                <title>Dịch vụ | VNETC</title>
+                <title>Dịch vụ - Sản phẩm | VNETC</title>
                 <meta name="description" content="Cập nhật những dịch vụ mới nhất về ngành điện lực." />
                 <meta
                     name="keywords"
@@ -107,7 +125,6 @@ const Service = () => {
                         const slides = groupedService[category._id] || [];
                         const shouldLoop = slides.length > 3;
 
-                        // Only render if the category has items
                         if (slides.length === 0) return null;
 
                         return (
@@ -136,7 +153,7 @@ const Service = () => {
                                 >
                                     {slides.map((item, index) => (
                                         <SwiperSlide key={index} className={cx('slide')}>
-                                            <Link to={`${routes.services}/${category.slug}/${item._id}`}>
+                                            <Link to={`${routes.services}/${item.subcategorySlug}/${item._id}`}>
                                                 <Card
                                                     title={item.name}
                                                     summary={item.summary}
