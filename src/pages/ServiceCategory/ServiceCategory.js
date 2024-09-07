@@ -67,10 +67,11 @@ function ServiceCategory() {
                 let data = [];
                 if (subcategoryId) {
                     data = await getServiceByCategory(subcategoryId);
+                    data = data.service;
                 } else if (categoryId) {
                     data = await getServiceByCategory(categoryId);
 
-                    if (!Array.isArray(data) || data.message === 'No services found') {
+                    if (!Array.isArray(data.service) || data.message === 'No services found') {
                         const categories = await getCategoriesByType(3);
                         const parentCategory = categories.find((cat) => cat._id === categoryId);
 
@@ -78,8 +79,8 @@ function ServiceCategory() {
                             const subcategoryServices = await Promise.all(
                                 parentCategory.subcategories.map(async (subcat) => {
                                     const services = await getServiceByCategory(subcat._id);
-                                    if (Array.isArray(services) && services.length > 0) {
-                                        return services.filter((service) => service._id || service.name);
+                                    if (Array.isArray(services.service) && services.service.length > 0) {
+                                        return services.service.filter((service) => service._id || service.name);
                                     } else {
                                         return null;
                                     }
@@ -129,7 +130,7 @@ function ServiceCategory() {
                 <Card
                     key={index}
                     title={serviceItem.name}
-                    image={serviceItem.image}
+                    image={serviceItem.image[0]}
                     summary={serviceItem.summary}
                     createdAt={serviceItem.createdAt}
                     views={serviceItem.views}

@@ -24,14 +24,18 @@ const AddService = () => {
         categoryId: '',
         content: '',
         isFeatured: false,
+        type: '',
+        brand: '',
+        model: '',
     };
 
-    const validationSchema = Yup.object({
+    const validationSchema = Yup.object().shape({
         title: Yup.string().required('Tiêu đề là bắt buộc'),
         summary: Yup.string().required('Tóm tắt là bắt buộc'),
         images: Yup.array().required('Hình ảnh là bắt buộc'),
         categoryId: Yup.string().required('Danh mục là bắt buộc'),
         content: Yup.string().required('Nội dung là bắt buộc'),
+        type: Yup.string().required('Loại dịch vụ là bắt buộc'),
     });
 
     useEffect(() => {
@@ -64,6 +68,11 @@ const AddService = () => {
         formData.append('categoryId', values.categoryId);
         formData.append('content', values.content);
         formData.append('isFeatured', values.isFeatured);
+        formData.append('type', values.type);
+        if (values.type === 'isProduct') {
+            formData.append('brand', values.brand);
+            formData.append('model', values.model);
+        }
         formData.append('createdBy', 'admin');
 
         try {
@@ -91,6 +100,32 @@ const AddService = () => {
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, setFieldValue, values }) => (
                     <Form className={styles.form}>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="type">Loại dịch vụ</label>
+                            <Field as="select" name="type" className={styles.input}>
+                                <option value="">Chọn loại dịch vụ</option>
+                                <option value="isProduct">Sản phẩm</option>
+                                <option value="isService">Dịch vụ</option>
+                            </Field>
+                            <ErrorMessage name="type" component="div" className={styles.error} />
+                        </div>
+
+                        {/* Hiển thị thêm input brand và model khi type là isProduct */}
+                        {values.type === 'isProduct' && (
+                            <>
+                                <div className={styles.formGroup}>
+                                    <label htmlFor="brand">Hãng sản phẩm</label>
+                                    <Field name="brand" type="text" className={styles.input} />
+                                    <ErrorMessage name="brand" component="div" className={styles.error} />
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label htmlFor="model">Kiểu sản phẩm</label>
+                                    <Field name="model" type="text" className={styles.input} />
+                                    <ErrorMessage name="model" component="div" className={styles.error} />
+                                </div>
+                            </>
+                        )}
+
                         <div className={styles.formGroup}>
                             <label htmlFor="title">Tiêu Đề</label>
                             <Field name="title" type="text" className={styles.input} />
@@ -144,6 +179,7 @@ const AddService = () => {
                             </Field>
                             <ErrorMessage name="categoryId" component="div" className={styles.error} />
                         </div>
+
                         <div className={styles.formGroup}>
                             <label htmlFor="content">Nội Dung</label>
                             <CustomEditor

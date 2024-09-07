@@ -17,14 +17,16 @@ const UpdateService = () => {
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [initialValues, setInitialValues] = useState(null);
+    const [images, setImages] = useState([]);
 
     const validationSchema = Yup.object({
         title: Yup.string().required('Tên dịch vụ là bắt buộc'),
         summary: Yup.string().required('Tóm tắt là bắt buộc'),
-        image: Yup.mixed().required('Hình ảnh là bắt buộc'),
+        images: Yup.array().of(Yup.mixed()).required('Hình ảnh là bắt buộc'),
         categoryId: Yup.string().required('Danh mục là bắt buộc'),
         content: Yup.string().required('Nội dung là bắt buộc'),
         isFeatured: Yup.boolean(),
+        type: Yup.string().required('Loại dịch vụ là bắt buộc'),
     });
 
     useEffect(() => {
@@ -39,15 +41,20 @@ const UpdateService = () => {
 
         const fetchService = async () => {
             try {
-                const service = await getServiceById(id);
+                let service = await getServiceById(id);
+                service = service.data;
                 setInitialValues({
                     title: service.name,
                     summary: service.summary,
-                    image: service.image,
+                    images: service.image || [],
                     categoryId: service.categoryId,
                     content: service.content,
                     isFeatured: service.isFeatured,
+                    type: service.type,
+                    brand: service.brand || '',
+                    model: service.model || '',
                 });
+                setImages(service.image || []);
             } catch (error) {
                 console.error('Lỗi khi tải dịch vụ:', error);
             }
@@ -58,8 +65,9 @@ const UpdateService = () => {
     }, [id]);
 
     const handleImageUpload = (event, setFieldValue) => {
-        const file = event.target.files[0];
-        setFieldValue('image', file);
+        const files = Array.from(event.target.files);
+        setFieldValue('images', [...images, ...files]);
+        setImages((prevImages) => [...prevImages, ...files]);
     };
 
     const handleSubmit = async (values, { resetForm }) => {
@@ -67,16 +75,27 @@ const UpdateService = () => {
 
         formData.append('name', values.title);
         formData.append('summary', values.summary);
-
-        if (values.image) {
-            formData.append('image', values.image);
-        } else {
-            formData.append('image', initialValues.image);
-        }
-
         formData.append('categoryId', values.categoryId);
         formData.append('content', values.content);
         formData.append('isFeatured', values.isFeatured);
+        formData.append('type', values.type);
+
+        if (values.type === 'isProduct') {
+            formData.append('brand', values.brand);
+            formData.append('model', values.model);
+        }
+
+        if (values.images && values.images.length > 0) {
+            values.images.forEach((image) => {
+                if (typeof image === 'string') {
+                    formData.append('image', image);
+                } else {
+                    formData.append('image', image);
+                }
+            });
+        } else {
+            formData.append('image', initialValues.images);
+        }
 
         try {
             await updateService(id, formData);
@@ -103,6 +122,32 @@ const UpdateService = () => {
                 {({ isSubmitting, setFieldValue, values }) => (
                     <Form className={styles.form}>
                         <div className={styles.formGroup}>
+                            <label htmlFor="type">Loại dịch vụ</label>
+                            <Field as="select" name="type" className={styles.input}>
+                                <option value="">Chọn loại dịch vụ</option>
+                                <option value="isProduct">Sản phẩm</option>
+                                <option value="isService">Dịch vụ</option>
+                            </Field>
+                            <ErrorMessage name="type" component="div" className={styles.error} />
+                        </div>
+
+                        {/* Hiển thị thêm input brand và model khi type là isProduct */}
+                        {values.type === 'isProduct' && (
+                            <>
+                                <div className={styles.formGroup}>
+                                    <label htmlFor="brand">Hãng sản phẩm</label>
+                                    <Field name="brand" type="text" className={styles.input} />
+                                    <ErrorMessage name="brand" component="div" className={styles.error} />
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label htmlFor="model">Kiểu sản phẩm</label>
+                                    <Field name="model" type="text" className={styles.input} />
+                                    <ErrorMessage name="model" component="div" className={styles.error} />
+                                </div>
+                            </>
+                        )}
+
+                        <div className={styles.formGroup}>
                             <label htmlFor="title">Tên dịch vụ</label>
                             <Field name="title" type="text" className={styles.input} />
                             <ErrorMessage name="title" component="div" className={styles.error} />
@@ -117,21 +162,21 @@ const UpdateService = () => {
                             <input
                                 type="file"
                                 accept="image/*"
+                                multiple
                                 onChange={(event) => handleImageUpload(event, setFieldValue)}
                             />
-                            <ErrorMessage name="image" component="div" className={styles.error} />
+                            <ErrorMessage name="images" component="div" className={styles.error} />
                         </div>
-                        {values.image && (
+                        {values.images && (
                             <div className={styles.imagePreview}>
-                                <img
-                                    src={
-                                        typeof values.image === 'string'
-                                            ? values.image
-                                            : URL.createObjectURL(values.image)
-                                    }
-                                    alt="Service"
-                                    className={styles.serviceImage}
-                                />
+                                {values.images.map((image, index) => (
+                                    <img
+                                        key={index}
+                                        src={typeof image === 'string' ? image : URL.createObjectURL(image)}
+                                        alt={`Service ${index}`}
+                                        className={styles.serviceImage}
+                                    />
+                                ))}
                             </div>
                         )}
                         <div className={styles.formGroup}>

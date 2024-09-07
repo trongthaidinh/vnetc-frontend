@@ -18,8 +18,8 @@ const ServiceList = () => {
     useEffect(() => {
         const fetchServices = async () => {
             const data = await getServicesPagiation(1, 1000);
-            if (data) {
-                setServices(data);
+            if (data.service) {
+                setServices(data.service);
             } else {
                 alert('Failed to fetch services.');
             }
@@ -83,7 +83,11 @@ const ServiceList = () => {
                                     <td>{service.name}</td>
                                     <td>{service.summary}</td>
                                     <td>
-                                        <img src={service.image} alt={service.name} className={styles.serviceImage} />
+                                        <img
+                                            src={service.image[0]}
+                                            alt={service.name}
+                                            className={styles.serviceImage}
+                                        />
                                     </td>
                                     <td>
                                         <Link to={`/admin/update-service/${service._id}`} className={styles.editButton}>

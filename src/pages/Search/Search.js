@@ -94,6 +94,14 @@ const Search = () => {
         return category ? category.slug : '';
     };
 
+    const getServiceCategorySlug = (categoryId) => {
+        const category = categories.find((category) =>
+            category.subcategories.some((subcategory) => subcategory._id === categoryId),
+        );
+        const subcategory = category?.subcategories.find((subcat) => subcat._id === categoryId);
+        return subcategory ? subcategory.slug : '';
+    };
+
     const getProjectCategorySlug = (item) => {
         const category = categoriesProject.find((cat, index) => index === item.projectType);
         return category ? category.slug : '';
@@ -226,7 +234,10 @@ const Search = () => {
                         <Title text="Dịch vụ - Sản Phẩm" />
                         <div className={cx('service-result')}>
                             {searchResults.services.map((item, index) => (
-                                <Link key={index} to={`${routes.services}/${getCategorySlug(item)}/${item._id}`}>
+                                <Link
+                                    key={index}
+                                    to={`${routes.services}/${getServiceCategorySlug(item.categoryId)}/${item._id}`}
+                                >
                                     <Card
                                         title={item.name}
                                         summary={item.summary}

@@ -1,41 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import styles from './ProductDetail.module.scss';
+import styles from './ServiceDetail.module.scss';
 import LoadingScreen from '~/components/LoadingScreen';
 import PushNotification from '~/components/PushNotification';
 import Title from '~/components/Title';
 import Button from '~/components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faChevronDown, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { getProductById } from '~/services/productService';
+import { getServiceById } from '~/services/serviceService';
 import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 
-const ProductDetail = () => {
+const ServiceDetail = () => {
     const { id } = useParams();
-    const [productDetail, setProductDetail] = useState(null);
+    const [serviceDetail, setServiceDetail] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
 
     useEffect(() => {
-        const fetchProductDetail = async (productId) => {
+        const fetchServiceDetail = async (serviceId) => {
             try {
-                const data = await getProductById(productId);
-                setProductDetail(data);
+                const data = await getServiceById(serviceId);
+                setServiceDetail(data);
                 console.log(data);
             } catch (error) {
                 setError(error);
-                console.error('Error fetching product detail:', error);
+                console.error('Error fetching service detail:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchProductDetail(id);
+        fetchServiceDetail(id);
     }, [id]);
 
     const handleThumbnailClick = (index) => {
@@ -43,11 +43,11 @@ const ProductDetail = () => {
     };
 
     const handlePrevClick = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? productDetail.image.length - 1 : prevIndex - 1));
+        setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? serviceDetail.image.length - 1 : prevIndex - 1));
     };
 
     const handleNextClick = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex === productDetail.image.length - 1 ? 0 : prevIndex + 1));
+        setCurrentImageIndex((prevIndex) => (prevIndex === serviceDetail.image.length - 1 ? 0 : prevIndex + 1));
     };
 
     const handleThumbnailPrevClick = () => {
@@ -55,7 +55,7 @@ const ProductDetail = () => {
     };
 
     const handleThumbnailNextClick = () => {
-        const totalImages = productDetail.image.length;
+        const totalImages = serviceDetail.image.length;
         const remainingImages = totalImages - (thumbnailStartIndex + 1);
         console.log(remainingImages);
         if (remainingImages > 0) {
@@ -77,11 +77,11 @@ const ProductDetail = () => {
     return (
         <article className={cx('wrapper')}>
             <Helmet>
-                <title>{productDetail.name} | VNETC</title>
-                <meta name="description" content={`Chi tiết về sản phẩm: ${productDetail.name}.`} />
-                <meta name="keywords" content={`sản phẩm, ${productDetail.name}, VNETC`} />
+                <title>{serviceDetail.name} | VNETC</title>
+                <meta name="description" content={`Chi tiết về sản phẩm: ${serviceDetail.name}.`} />
+                <meta name="keywords" content={`sản phẩm, ${serviceDetail.name}, VNETC`} />
             </Helmet>
-            <div className={cx('product-section')}>
+            <div className={cx('service-section')}>
                 <div className={cx('thumbnails')}>
                     {thumbnailStartIndex > 0 && (
                         <button
@@ -95,18 +95,18 @@ const ProductDetail = () => {
                         className={cx('thumbnail-list')}
                         style={{ transform: `translateY(-${thumbnailStartIndex * 155}px)` }}
                     >
-                        {productDetail.image.slice(thumbnailStartIndex, thumbnailStartIndex + 4).map((image, index) => (
+                        {serviceDetail.image.slice(thumbnailStartIndex, thumbnailStartIndex + 4).map((image, index) => (
                             <div key={thumbnailStartIndex + index} className={cx('thumbnail-item')}>
                                 <img
                                     className={cx('thumbnail-image')}
                                     src={image}
-                                    alt={`${productDetail.name} thumbnail ${thumbnailStartIndex + index + 1}`}
+                                    alt={`${serviceDetail.name} thumbnail ${thumbnailStartIndex + index + 1}`}
                                     onClick={() => handleThumbnailClick(thumbnailStartIndex + index)}
                                 />
                             </div>
                         ))}
                     </div>
-                    {thumbnailStartIndex + 4 < productDetail.image.length && (
+                    {thumbnailStartIndex + 4 < serviceDetail.image.length && (
                         <button
                             className={cx('thumbnail-button', 'thumbnail-next-button')}
                             onClick={handleThumbnailNextClick}
@@ -116,7 +116,7 @@ const ProductDetail = () => {
                     )}
                 </div>
 
-                <div className={cx('product-image')}>
+                <div className={cx('service-image')}>
                     <button className={cx('prev-button')} onClick={handlePrevClick}>
                         <FontAwesomeIcon icon={faChevronLeft} />
                     </button>
@@ -124,12 +124,12 @@ const ProductDetail = () => {
                         className={cx('main-image-wrapper')}
                         style={{ transform: `translateX(-${currentImageIndex * 600}px)` }}
                     >
-                        {productDetail.image.map((image, index) => (
+                        {serviceDetail.image.map((image, index) => (
                             <img
                                 key={index}
                                 className={cx('main-image')}
                                 src={image}
-                                alt={`${productDetail.name} main ${index + 1}`}
+                                alt={`${serviceDetail.name} main ${index + 1}`}
                             />
                         ))}
                     </div>
@@ -137,27 +137,27 @@ const ProductDetail = () => {
                         <FontAwesomeIcon icon={faChevronRight} />
                     </button>
                 </div>
-                <div className={cx('product-details')}>
-                    <h2 className={cx('product-name')}>{productDetail.name}</h2>
-                    <p className={cx('product-info')}>
+                <div className={cx('service-details')}>
+                    <h2 className={cx('service-name')}>{serviceDetail.name}</h2>
+                    <p className={cx('service-info')}>
                         <span className={cx('label')}>Thương hiệu</span>
                         <span>:</span>
-                        <span>{productDetail.detail[0].brand}</span>
+                        <span>{serviceDetail.detail[0].brand}</span>
                     </p>
-                    <p className={cx('product-info')}>
+                    <p className={cx('service-info')}>
                         <span className={cx('label')}>Kích cỡ</span>
                         <span>:</span>
-                        <span>{productDetail.detail[0].size}</span>
+                        <span>{serviceDetail.detail[0].size}</span>
                     </p>
-                    <p className={cx('product-info')}>
+                    <p className={cx('service-info')}>
                         <span className={cx('label')}>Trọng lượng</span>
                         <span>:</span>
-                        <span>{productDetail.detail[0].weight} Kg</span>
+                        <span>{serviceDetail.detail[0].weight} Kg</span>
                     </p>
-                    <p className={cx('product-info')}>
+                    <p className={cx('service-info')}>
                         <span className={cx('label')}>Bảo hành</span>
                         <span>:</span>
-                        <span>{productDetail.detail[0].warranty} năm</span>
+                        <span>{serviceDetail.detail[0].warranty} năm</span>
                     </p>
                     <Button className={cx('contact-button')} primary>
                         <a href="tel:02623977171">Liên hệ</a>
@@ -168,11 +168,11 @@ const ProductDetail = () => {
                 <Title text="Thông tin sản phẩm" />
                 <div
                     className={cx('info-content')}
-                    dangerouslySetInnerHTML={{ __html: productDetail.detail[0].content }}
+                    dangerouslySetInnerHTML={{ __html: serviceDetail.detail[0].content }}
                 />
             </div>
         </article>
     );
 };
 
-export default ProductDetail;
+export default ServiceDetail;

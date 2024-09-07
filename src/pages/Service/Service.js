@@ -42,11 +42,11 @@ const Service = () => {
                             await Promise.all(
                                 category.subcategories.map(async (subcategory) => {
                                     const serviceData = await getServiceByCategory(subcategory._id);
-                                    if (serviceData.length > 0) {
+                                    if (serviceData.service) {
                                         allSubcategoryServices.push(
-                                            ...serviceData.map((item) => ({
+                                            ...serviceData.service.map((item) => ({
                                                 ...item,
-                                                image: item.image,
+                                                image: item.image[0],
                                                 subcategoryId: subcategory._id,
                                                 subcategorySlug: subcategory.slug,
                                             })),
@@ -178,7 +178,7 @@ const Service = () => {
                                 <SuggestCard
                                     title={item.name}
                                     summary={item.summary}
-                                    image={item.image}
+                                    image={item.image[0]}
                                     createdAt={item.createdAt}
                                     views={item.views}
                                 />

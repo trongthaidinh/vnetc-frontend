@@ -16,9 +16,9 @@ function Overview() {
                 <div className={cx('content')}>
                     <h2 className={cx('title')}>CÔNG TY CỔ PHẦN THÍ NGHIỆM CƠ ĐIỆN VIỆT NAM</h2>
                     <p className={cx('text')}>
-                        VNETC nổ lực phát triển bền vững và hướng đến trở thành một doanh nghiệp lớn phát triển mạnh mẽ
-                        trên 4 trụ cột chiến lược là Sản xuất thiết bị điện; Kiểm định – Hiệu chuẩn – Thử nghiệm thiết
-                        bị điện; Công nghệ thông tin; An toàn thông tin trên môi trường mạng.
+                        VNETC nổ lực phát triển bền vững, an toàn chất lượng và hướng đến trở thành một Doanh nghiệp uy
+                        tín phát triển mạnh mẽ trên 5 Lĩnh vực chiến lược là Sản xuất thiết bị điện – Kiểm định – Hiệu
+                        Chuẩn – Thử nghiệm thiết bị điện – Quản lý vận hành Đường dây và Trạm biến áp.
                     </p>
                     <p className={cx('text')}>
                         Không ngừng sáng tạo, nâng cao uy tín chất lượng của mình và đảm bảo sự hài lòng và an toàn của

@@ -27,7 +27,9 @@ function Products() {
                 const productsData = await getServicesPagiation(3, 40);
                 const categoriesData = await getCategoriesByType(3);
 
-                const sortedProducts = productsData.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                const sortedProducts = productsData.service.sort(
+                    (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+                );
 
                 setProducts(sortedProducts);
                 setCategories(categoriesData);
@@ -43,8 +45,11 @@ function Products() {
     }, []);
 
     const getCategorySlug = (categoryId) => {
-        const category = categories.find((cat) => cat._id === categoryId);
-        return category ? category.slug : 'unknown';
+        const category = categories.find((category) =>
+            category.subcategories.some((subcategory) => subcategory._id === categoryId),
+        );
+        const subcategory = category?.subcategories.find((subcat) => subcat._id === categoryId);
+        return subcategory ? subcategory.slug : '';
     };
 
     if (error) {
@@ -78,10 +83,10 @@ function Products() {
                     {products.map((product) => (
                         <SwiperSlide key={product._id} className={cx('slide')}>
                             <Product
-                                image={product.image}
+                                image={product.image[0]}
                                 name={product.name}
                                 productId={product._id}
-                                category={getCategorySlug(product.category_id)}
+                                category={getCategorySlug(product.categoryId)}
                             />
                         </SwiperSlide>
                     ))}
