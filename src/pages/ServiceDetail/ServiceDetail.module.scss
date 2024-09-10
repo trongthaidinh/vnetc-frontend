@@ -157,7 +157,8 @@
     gap: 30px;
     padding: 20px;
     border-radius: 4px;
-    @include respond-to(md) {
+    @include respond-to(lg) {
+        padding: 0px;
         flex: 0 0 40%;
     }
 }
@@ -236,7 +237,26 @@
     margin-bottom: 10px;
 }
 
-@media (max-width: 768px) {
+@include respond-to(lg) {
+    .service-section {
+        flex-direction: column;
+    }
+
+    .thumbnails {
+        flex: 0 0 100%;
+        order: 2;
+        text-align: center;
+        display: none;
+    }
+
+    .service-image,
+    .service-details {
+        flex: 1;
+        width: 100%;
+    }
+}
+
+@include respond-to(sm) {
     .service-section {
         flex-direction: column;
     }

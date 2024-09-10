@@ -20,6 +20,8 @@ const ServiceDetail = () => {
     const [error, setError] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
+    const [slideWidth, setSlideWidth] = useState(600);
+
     useEffect(() => {
         const fetchServiceDetail = async (serviceId) => {
             try {
@@ -35,6 +37,39 @@ const ServiceDetail = () => {
 
         fetchServiceDetail(id);
     }, [id]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const windowWidth = window.innerWidth;
+            if (windowWidth <= 360) {
+                setSlideWidth(326);
+            } else if (windowWidth <= 390) {
+                setSlideWidth(360);
+            } else if (windowWidth <= 420) {
+                setSlideWidth(380);
+            } else if (windowWidth <= 768) {
+                setSlideWidth(400);
+            } else if (windowWidth <= 800) {
+                setSlideWidth(750);
+            } else if (windowWidth <= 900) {
+                setSlideWidth(850);
+            } else if (windowWidth <= 1024) {
+                setSlideWidth(980);
+            } else if (windowWidth <= 1280) {
+                setSlideWidth(750);
+            } else {
+                setSlideWidth(600);
+            }
+        };
+
+        handleResize();
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const handleThumbnailClick = (index) => {
         setCurrentImageIndex(index);
@@ -130,7 +165,7 @@ const ServiceDetail = () => {
                             </button>
                             <div
                                 className={cx('main-image-wrapper')}
-                                style={{ transform: `translateX(-${currentImageIndex * 600}px)` }}
+                                style={{ transform: `translateX(-${currentImageIndex * slideWidth}px)` }}
                             >
                                 {serviceDetail.image.map((image, index) => (
                                     <img
@@ -158,7 +193,7 @@ const ServiceDetail = () => {
                                 <span>{serviceDetail.model}</span>
                             </p>
                             <Button className={cx('contact-button')} primary>
-                                <a href="tel:0931951140">Liên hệ (0931951140)</a>
+                                <a href="tel:0982064747">Liên hệ (0982064747)</a>
                             </Button>
                         </div>
                     </div>
